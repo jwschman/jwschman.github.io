@@ -25,4 +25,4 @@ jobs:
           PAGES_BRANCH: main
           BUILD_DIR: .
           TOKEN: ${{ secrets.PUBLIC_TOKEN }}
-          REPOSITORY: jwschman/jwschman.github.io
+          REPOSITORY: jwschman

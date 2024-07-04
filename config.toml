@@ -8,7 +8,7 @@ title = "JWSCHMAN"
 description = "I'm learnding."
 
 # The default site author.
-author = "John"
+author = "JW"
 
 # The default language; used in feeds.
 default_language = "en"
@@ -76,9 +76,9 @@ social_image = "icons/github.svg"
 name = "JWSCHMAN"
 bio = "Trying to figure things out."
 # The URL of avatar.
-avatar_url = "icons/github.svg"
+avatar_url = "icons/avatar.svg"
 # Invert color in dark mode.
-avatar_invert = false
+avatar_invert = true
 
 # The social icons below the profile on the home page.
 # The `name` should be the file name of static/icons/*.svg or the icon name of https://simpleicons.org/
@@ -87,7 +87,7 @@ name = "github"
 url = "https://github.com/jwschman"
 
 [[extra.profile.social]]
-name = "LinkedIn"
+name = "linkedin"
 url = "https://linkedin.com"
 
 #[[extra.profile.social]]

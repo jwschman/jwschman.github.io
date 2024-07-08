@@ -96,19 +96,19 @@ url = "https://linkedin.com"
 
 # The top menu.
 [[extra.menu]]
-name = "Posts"
+name = "posts"
 url = "$BASE_URL/posts"
 
-[[extra.menu]]
-name = "Guides"
-url = "$BASE_URL/guides"
+#[[extra.menu]]
+#name = "guides"
+#url = "$BASE_URL/guides"
 
 [[extra.menu]]
-name = "Tags"
+name = "tags"
 url = "$BASE_URL/tags"
 
 [[extra.menu]]
-name = "About"
+name = "about"
 url = "$BASE_URL/about"
 
 # The page footer options.

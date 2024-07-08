@@ -76,9 +76,9 @@ social_image = "icons/github.svg"
 name = "JWSCHMAN"
 bio = "Trying to figure things out."
 # The URL of avatar.
-avatar_url = "icons/avatar.svg"
+avatar_url = "icons/avatar.jpg"
 # Invert color in dark mode.
-avatar_invert = true
+avatar_invert = false
 
 # The social icons below the profile on the home page.
 # The `name` should be the file name of static/icons/*.svg or the icon name of https://simpleicons.org/
@@ -95,17 +95,22 @@ url = "https://linkedin.com"
 #url = "$BASE_URL/atom.xml"
 
 # The top menu.
-[[extra.menu]]
-name = "posts"
-url = "$BASE_URL/posts"
-
-#[[extra.menu]]
-#name = "guides"
-#url = "$BASE_URL/guides"
 
 [[extra.menu]]
 name = "tags"
 url = "$BASE_URL/tags"
+
+[[extra.menu]]
+name = "posts"
+url = "$BASE_URL/posts"
+
+[[extra.menu]]
+name = "guides"
+url = "$BASE_URL/guides"
+
+[[extra.menu]]
+name = "archive"
+url = "$BASE_URL/archive"
 
 [[extra.menu]]
 name = "about"

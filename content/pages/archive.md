@@ -1,6 +1,6 @@
 +++
-title = "Posts"
-path = "posts"
+title = "Archive"
+path = "archive"
 template = "archive.html"
 
 [extra]

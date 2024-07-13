@@ -100,13 +100,13 @@ url = "https://linkedin.com"
 name = "tags"
 url = "$BASE_URL/tags"
 
-[[extra.menu]]
-name = "posts"
-url = "$BASE_URL/posts"
+#[[extra.menu]]
+#name = "posts"
+#url = "$BASE_URL/posts"
 
-[[extra.menu]]
-name = "guides"
-url = "$BASE_URL/guides"
+#[[extra.menu]]
+#name = "guides"
+#url = "$BASE_URL/guides"
 
 [[extra.menu]]
 name = "archive"

@@ -12,18 +12,18 @@ if [ ! -d './content/posts/'$YEAR ]; then
     mkdir ./content/posts/$YEAR
 fi
 
-FILETITLE=$(echo $1 | tr " " "-")
+HYPHENATED_TITLE=$(echo $1 | tr " " "-")
 
 DATE="$(date +"%m-%d")"
 
-FULLDATE="$(date +"%Y-%m-%d")"
+DIRECTORY_NAME=$DATE-$HYPHENATED_TITLE
 
-FILENAME=$DATE-$FILETITLE
+FILE_PATH=./content/posts/$YEAR/$DIRECTORY_NAME
 
-FILEPATH=./content/posts/$YEAR/
+mkdir $FILE_PATH
 
-cp blank_post.md $FILEPATH/$FILENAME.md
+cp blank_post.md $FILE_PATH/index.md
 
-sed "s/title = \"\"/title = \"$1\"/" -i $FILEPATH/$FILENAME.md
+sed "s/title = \"\"/title = \"$1\"/" -i $FILE_PATH/index.md
 
-sed "s/date = \"\"/date = \"$YEAR-$DATE\"/" -i ./content/posts/$YEAR/$FILENAME.md
+sed "s/date = \"\"/date = \"$YEAR-$DATE\"/" -i $FILE_PATH/index.md

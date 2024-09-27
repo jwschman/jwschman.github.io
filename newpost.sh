@@ -14,7 +14,7 @@ if [ ! -d './content/posts/'$YEAR ]; then
 fi
 
 # build the variables to be used
-HYPHENATED_TITLE=$(echo $1 | tr " " "-")
+HYPHENATED_TITLE=$(echo $1 | tr " " "-" | tr '[:upper:]' '[:lower:]')
 DATE="$(date +"%m-%d")"
 DIRECTORY_NAME=$DATE-$HYPHENATED_TITLE
 FILE_PATH=./content/posts/$YEAR/$DIRECTORY_NAME

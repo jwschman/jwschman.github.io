@@ -1,5 +1,0 @@
-+++
-transparent = true
-title = "Guides"
-+++
-

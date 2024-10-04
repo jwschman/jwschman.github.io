@@ -5,11 +5,12 @@ date = "2024-10-03"
 
 [taxonomies] 
 tags = ["lfcs", "personal", "studies"]
+
+[extra]
+cover_image="lfcs-badge.png"
 +++
 
 As of 10/2/2024 I have officially passed the Linux Foundation Certified Systems Administrator exam.  I took the test the previous day and had to wait the full 24 hours before the scoring was released.  I knew that I completed almost all of the tasks correctly, but there were a few that I wasn't totally sure of.  I was hoping for a perfect score and was unable to get it, but I came pretty close.  I guess you can't prepare for everything.
-
-![LFCS Badge](lfcs-badge.png)
 
 ## Thoughts on the actual test
 

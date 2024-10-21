@@ -55,6 +55,11 @@ comment = false
 # The URL of social image.
 social_image = "icons/github.svg"
 
+[extra.favicon]
+favicon_16x16 = "/static/icon/favicon-16x16.png"
+favicon_32x32 = "/static/icons/favicon-32x32.png"
+favicon = "/static/icons/favicon.ico"
+
 [extra.style]
 # The custom background color.
 # bg_color = ""

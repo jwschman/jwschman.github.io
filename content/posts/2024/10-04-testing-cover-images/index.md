@@ -1,6 +1,6 @@
 +++
-title = "Testing cover images"
-description = ""
+title = "Zola Cover Images"
+description = "Testing out cover images as well as centering images in posts"
 date = "2024-10-04"
 
 [taxonomies] 

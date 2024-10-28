@@ -4,7 +4,7 @@ description = "Creating a Custom Status page for TrueNAS Jails"
 date = "2024-10-28"
 
 [taxonomies] 
-tags = ["go", "programming", "truenas", "api integration", "ai assistance", "portfolio"]
+tags = ["go", "programming", "truenas", "api integration", "aiz assistance", "portfolio"]
 
 [extra]
 cover_image="jrc_screenshot.png"

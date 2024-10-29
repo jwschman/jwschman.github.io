@@ -10,6 +10,8 @@ tags = ["go", "programming", "truenas", "api integration", "ai assistance"]
 cover_image="jrc_screenshot.png"
 +++
 
+Jailhouse Roll Call on Github: <https://github.com/jwschman/jrc>
+
 ## Background
 
 I have a lot of jails running on my TrueNAS server.  Checking their status through the GUI or by ssh using `iocage list` isn't difficult, but I wanted a simple, on-demand page that could give me a quick overview of each jail's status from anywhere on my local network.  I'm also in the process of becoming more familiar with programming in Go, so I thought making a page with all my jail information that I could just load up would be a fun and useful project.
@@ -41,3 +43,4 @@ This project was a fun way to dive deeper into Go programming and explore some n
 - Alex Edwards' Blog Archive: <https://www.alexedwards.net/blog/topic>
 - TrueNAS API Reference: <https://www.truenas.com/docs/core/api/>
 - ChatGPT: Assisted with generating CSS and JavaScript for styling and functionality
+- Link to Jailhouse Roll Call on Github: <https://github.com/jwschman/jrc>

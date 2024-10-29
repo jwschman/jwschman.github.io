@@ -4,12 +4,12 @@ description = "just a little bit about what I've been doing to study for the LFC
 date = "2024-09-18"
 
 [taxonomies] 
-tags = ["LFCS", "personal", "studies"]
+tags = ["lfcs", "certifications", "kodekloud", "studies"]
 +++
 
 I've been studying for a while and I finally set the date to take the LFCS.  The test is scheduled for October 1 and I'm pretty sure I'm ready for it.  I've actually been ready for a month or so, but I'm motivated to get a good score.  I know the score doesn't matter, only passing or failing, but I want to prove to myself that I can do it.
 
-So what are the resources that I used for studying?
+So what are the resources that I usegd for studying?
 
 ## Udemy: KodeKloud - Linux Foundation Certified Systems Administrator - LFCS
 

@@ -4,7 +4,7 @@ description = "General thoughts about getting the LFCS"
 date = "2024-10-03"
 
 [taxonomies] 
-tags = ["lfcs", "personal", "studies"]
+tags = ["lfcs", "certifications", "studies", "kodekloud"]
 
 [extra]
 cover_image="lfcs-badge.png"

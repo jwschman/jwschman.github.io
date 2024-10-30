@@ -5,7 +5,7 @@ theme = "kita"
 
 # The site title and description; used in feeds by default.
 title = "JWSCHMAN"
-description = "I'm learnding."
+description = "A personal website for John Schmanski"
 
 # The default site author.
 author = "JW"
@@ -79,7 +79,7 @@ favicon = "/static/icons/favicon.ico"
 # The profile on home page.
 [extra.profile]
 name = "JWSCHMAN"
-bio = "Trying to figure things out."
+bio = "Learning as I go."
 # The URL of avatar.
 avatar_url = "icons/avatar.jpg"
 # Invert color in dark mode.

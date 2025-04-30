@@ -3,18 +3,129 @@ title = "About me"
 path = "about"
 +++
 
-Hi, and welcome to my website! I’m John, a career educator with over 14 years of experience teaching English in Japan who’s now transitioning into the tech field--a lifelong interest of mine that’s finally becoming my career focus.
-
-My interest in technology began when I was young and includes fond memories of working with an Apple IIe in my elementary school library and my grandmother's Macintosh LC II.  In high school I learned some HTML and built a website for the Dragon Warrior game series, hosted on GeoCities.  I even asked for Microsoft FrontPage for Christmas one of those years.
-
-Though I began studying computer science in college, I ultimately shifted to education.   Technology remained a personal hobby during my teaching career, but recently, I decided to combine my love for learning and tech by pursuing a career in the industry.
-
-Originally from the United States, I’ve been living in Japan for the past 15 years where I’ve been teaching English at various junior high schools around central Nagano.  Living in Japan for this time has allowed me to experience and appreciate the local culture, with festivals being a particular favorite.  I take part as often as I can, whether as a spectator or participant.
+Hi, and welcome to my website! I’m John, a career educator with over 15 years of experience who’s now transitioning into the tech field--a lifelong interest that’s finally becoming my career focus.  Originally from the United States, I’ve been living in Japan for the past 15 years where I teach English at a junior high school in central Nagano.
 
 ## What I’m working on
 
-What really sparked my recent dive into technology was a TrueNAS server I set up five years ago.  It began as a simple quest for more storage with a Raspberry Pi and an external hard drive, but quickly turned into a full homelab experience when I found a used SuperMicro server on Yahoo Auctions.  Now, it’s a collection of interconnected services that my family relies on daily.
+What sparked my recent dive into technology was a TrueNAS server I set up in 2019.  It began as a simple quest for more storage with a Raspberry Pi and an external hard drive, but quickly turned into a full homelab experience when I purchased a used SuperMicro server on Yahoo Auctions.  After several changes (homelab... right?) and a recent interest in Kubernetes it's now a system of interconnected services and hardware including TrueNAS for storage, that original Raspberry Pi as a docker host, and a stack of three Lenovo ThinkCenters as a bare metal Kubernetes Cluster.  You can actually find out more on my [Homelabo Github page here](https://github.com/jwschman/homelabo).
 
-I’ve also recently been very interested in Go programming, working on small projects here and there when I have time.  Recently I put one of those projects, [Jailhouse Roll Call](https://github.com/jwschman/jrc), on GitHub.  It’s just a simple tool for me to check on the status of the several jails running on that TrueNAS server.
+I’ve also recently been very interested in Go programming, working on small projects here and there when I have time.  Recently I put one of those projects, [Jailhouse Roll Call](https://github.com/jwschman/jrc), on GitHub.  It’s just a simple tool for me to check on the status of the several jails that were running on that TrueNAS server.
 
-Since summer 2024 I’ve been actively pursuing different certifications to build and demonstrate my skills.  So far, I’ve earned LFCS and AWS Certified Cloud Practitioner certifications and am currently working on others to continue growing in the field.
+## My Toolbox
+
+Since starting this homelab journey I've grown to know and rely on different technologies.  Here is a list of some that I use regularly:
+
+<div class="toolbox">
+  <table>
+    <tr>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/kubernetes.svg" alt="Kubernetes">
+          <div>Kubernetes</div>
+        </div>
+      </td>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/argocd.svg" alt="ArgoCD">
+          <div>ArgoCD</div>
+        </div>
+      </td>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/helm.svg" alt="Helm">
+          <div>Helm</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/metallb.svg" alt="MetalLB">
+          <div>MetalLB</div>
+        </div>
+      </td>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/nginx.svg" alt="Ingress-NGINX">
+          <div>Ingress-NGINX</div>
+        </div>
+      </td>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/cert-manager.png" alt="cert-manager">
+          <div>Cert Manager</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/prometheus.svg" alt="prometheus">
+          <div>Prometheus</div>
+        </div>
+      </td>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/grafana.svg" alt="grafana">
+          <div>Grafana</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/truenas-core.svg" alt="truenas-core">
+          <div>TrueNAS Core</div>
+        </div>
+      </td>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/docker.svg" alt="docker">
+          <div>Docker</div>
+        </div>
+      </td>
+      <td>
+        <div class="toolbox-entry">
+          <img src="assets/stack-icons/nextcloud.svg" alt="nextcloud">
+          <div>Nextcloud</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+## Certifications
+
+Since summer 2024 I’ve been actively pursuing different certifications to build and demonstrate my skills.  Here is what I've earned so far:
+
+<div class="card-container">
+  <article>
+    <figure>
+      <img src="assets/cert-icons/cka.png" alt="First Image">
+      <figcaption>
+        <h3>CKA</h3>
+        <p>Certified Kubernetes Administrator</p>
+      </figcaption>
+    </figure>
+  </article>
+  <article>
+    <figure>
+      <img src="assets/cert-icons/lfcs.png" alt="Second Image">
+      <figcaption>
+        <h3>LFCS</h3>
+        <p>Linux Foundation Certified System Administrator</p>
+      </figcaption>
+    </figure>
+  </article>
+</div>
+<div class="card-container">
+  <article>
+    <figure>
+      <img src="assets/cert-icons/clf-c02.png" alt="First Image">
+      <figcaption>
+        <h3>CLF-C02</h3>
+        <p>AWS Certified Cloud Practitioner</p>
+      </figcaption>
+    </figure>
+  </article>
+</div>

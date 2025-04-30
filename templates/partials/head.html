@@ -3,7 +3,6 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
   <!-- Title -->
   <title>
     {% if page.title %}{{ page.title }} - {{ config.title }}{% else %}{{ config.title }}{% endif %}
@@ -78,9 +77,11 @@
     }
   </style>
 
-  <!-- Image Centering Added by jwschman-->
+  <!-- Image Centering and Table Style Added by jwschman-->
   
   <link rel="stylesheet" href="{{ get_url(path=`imagestyle.css`)}}" />
+  <link rel="stylesheet" href="{{ get_url(path=`tablestyle.css`)}}" />
+  <link rel="stylesheet" href="{{ get_url(path=`style.css`)}}" />
 
   {% if section.path is defined and section.path == "/" %}
   <!-- Avatar -->

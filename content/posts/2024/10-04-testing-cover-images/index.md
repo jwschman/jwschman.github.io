@@ -12,7 +12,7 @@ cover_image="slime.jpeg"
 
 I had a bit of trouble getting this cover image to work, and even more trouble finding any kind of documentation for how to do it.  What I eventually did was edit templates for pages and change the url for the images to...
 
-```text
+```
 src="{{ get_url(path=page.colocated_path, trailing_slash=true)}}{{page.extra.cover_image }}"
 ```
 
@@ -49,7 +49,7 @@ And here's the end result with the same image that I used for the cover image...
 
 achieved with this shortcode
 
-```text
+```
 {{/* image(src="slime.jpeg") */}}
 ```
 

@@ -372,7 +372,7 @@ I spent more time than I'd like to admit figuring out a good way to do this.  Fi
 
 So I decided to do a Kubernetes CronJob that would execute an rclone move from the specified Nextcloud folder into a PVC mounted inside the Paperless-NGX pod.  I'm pretty sure using an emptyDir here would be fine, but the PVC gives me a little more comfort that no data will be lost in case something goes wrong.
 
-The CronJob also pulls environemt variables from Vault.  Specifically, RCLONE_CONFIG_NEXTCLOUD_URL, RCLONE_CONFIG_NEXTCLOUD_USER, and RCLONE_CONFIG_NEXTCLOUD_PASS.  The RCLONE_CONFIG_NEXTCLOUD_PASS needs to be rclone encrypted before being saved as a secret in Vault, so on my Docker host I just ran `docker run --rm -it rclone/rclone obscure '<NEXTCLOUD-PASSWORD>'` and pasted the output into Vault.
+The CronJob also pulls environemt variables from Vault.  Specifically, `RCLONE_CONFIG_NEXTCLOUD_URL`, `RCLONE_CONFIG_NEXTCLOUD_USER`, and `RCLONE_CONFIG_NEXTCLOUD_PASS`.  The `RCLONE_CONFIG_NEXTCLOUD_PASS` needs to be rclone encrypted before being saved as a secret in Vault, so on my Docker host I just ran `docker run --rm -it rclone/rclone obscure '<NEXTCLOUD-PASSWORD>'` and pasted the output into Vault.
 
 Finally, because my PVCs are RWO I needed to run the job on the same node as Paperless-NGX which was solved with a simple PodAffinity.
 
@@ -455,8 +455,8 @@ I'm also open to any comments or feedback about how I approached this.  If you k
 
 ## Links and Resources
 
-[Paperless-NGX Homepage](https://docs.paperless-ngx.com/)
-[Paperless-NGX Docker-Compose Examples](https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose)
-[Kubernetes CronJob Documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
-[Kubernetes Pod Affinity Documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
-[Clear Scan on Google Play](https://play.google.com/store/apps/details?id=com.indymobileapp.document.scanner&hl=en&pli=1)
+- [Paperless-NGX Homepage](https://docs.paperless-ngx.com/)
+- [Paperless-NGX Docker-Compose Examples](https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose)
+- [Kubernetes CronJob Documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
+- [Kubernetes Pod Affinity Documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
+- [Clear Scan on Google Play](https://play.google.com/store/apps/details?id=com.indymobileapp.document.scanner&hl=en&pli=1)

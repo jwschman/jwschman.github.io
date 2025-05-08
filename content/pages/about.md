@@ -86,7 +86,7 @@ Since starting this homelab journey I've grown to know and rely on different tec
       </td>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/nextcloud.svg" alt="nextcloud">
+          <img src="/assets/stack-icons/nextcloud.svg" alt="nextcloud">
           <div>Nextcloud</div>
         </div>
       </td>
@@ -101,7 +101,7 @@ Since summer 2024 I’ve been actively pursuing different certifications to buil
 <div class="card-container">
   <article>
     <figure>
-      <img src="assets/cert-icons/cka.png" alt="First Image">
+      <img src="/assets/cert-icons/cka.png" alt="CKA">
       <figcaption>
         <h3>CKA</h3>
         <p>Certified Kubernetes Administrator</p>
@@ -110,7 +110,7 @@ Since summer 2024 I’ve been actively pursuing different certifications to buil
   </article>
   <article>
     <figure>
-      <img src="assets/cert-icons/lfcs.png" alt="Second Image">
+      <img src="assets/cert-icons/lfcs.png" alt="LFCS">
       <figcaption>
         <h3>LFCS</h3>
         <p>Linux Foundation Certified System Administrator</p>
@@ -121,7 +121,7 @@ Since summer 2024 I’ve been actively pursuing different certifications to buil
 <div class="card-container">
   <article>
     <figure>
-      <img src="assets/cert-icons/clf-c02.png" alt="First Image">
+      <img src="assets/cert-icons/clf-c02.png" alt="CLF-C02">
       <figcaption>
         <h3>CLF-C02</h3>
         <p>AWS Certified Cloud Practitioner</p>

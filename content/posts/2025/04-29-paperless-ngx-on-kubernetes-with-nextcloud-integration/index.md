@@ -38,7 +38,7 @@ Here's a list of the environment variables I used in the deployments.  Variables
 | 🔐 `PAPERLESS_DBPASS` | Password for Paperless DB in Postgres |
 | `PAPERLESS_REDIS` | Redis host |
 
-###  PostgreSQL Environment Variables
+### PostgreSQL Environment Variables
 
 | Name | Description |
 |-|-|
@@ -60,6 +60,7 @@ metadata:
   namespace: paperless
 spec:
   replicas: 1
+  revisionHistoryLimit: 5
   selector:
     matchLabels:
       app: paperless-ngx
@@ -112,21 +113,25 @@ spec:
           mountPath: /usr/src/paperless/media
         - name: consume
           mountPath: /usr/src/paperless/consume
-        readinessProbe:
-          httpGet:
-            path: /health
+        startupProbe:
+          tcpSocket:
             port: 8000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          failureThreshold: 3
-          successThreshold: 1
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 6
+        livenessProbe:
+          tcpSocket:
+            port: 8000
+        readinessProbe:
+          tcpSocket:
+            port: 8000
         resources:
           requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "1Gi"
+            memory: "512Mi"
             cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
       volumes:
       - name: media
         persistentVolumeClaim:
@@ -157,7 +162,7 @@ spec:
     spec:
       containers:
       - name: db
-        image: postgres:14
+        image: postgres:17.4
         env:
         - name: POSTGRES_DB
           value: paperless
@@ -217,7 +222,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis:7
+        image: redis:8
         ports:
         - containerPort: 6379
         resources:

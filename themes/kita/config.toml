@@ -1,14 +1,12 @@
 # The base URL of the site; the only required configuration variable.
-base_url = "https://jwschman.github.io"
-compile_sass = true
-theme = "kita"
+base_url = "https://kita-zola.pages.dev"
 
 # The site title and description; used in feeds by default.
-title = "JWSCHMAN"
-description = "A personal website for John Schmanski"
+title = "Kita"
+description = "Kita is a clean, elegant and simple blog theme for Zola."
 
 # The default site author.
-author = "JW"
+author = "st1020"
 
 # The default language; used in feeds.
 default_language = "en"
@@ -37,14 +35,12 @@ taxonomies = [{ name = "tags", rss = true, paginate_by = 5 }]
 # When set to "true", all code blocks are highlighted.
 highlight_code = true
 
-
 # A list of directories used to search for additional `.sublime-syntax` and `.tmTheme` files.
 extra_syntaxes_and_themes = []
 
 # The theme to use for code highlighting.
 # See below for list of allowed values.
-highlight_theme = "dracula"
-
+highlight_theme = "base16-ocean-dark"
 
 # The Kita theme style config.
 [extra]
@@ -56,11 +52,6 @@ mermaid = false
 comment = false
 # The URL of social image.
 social_image = "icons/github.svg"
-
-[extra.favicon]
-favicon_16x16 = "/static/icon/favicon-16x16.png"
-favicon_32x32 = "/static/icons/favicon-32x32.png"
-favicon = "/static/icons/favicon.ico"
 
 [extra.style]
 # The custom background color.
@@ -80,52 +71,47 @@ favicon = "/static/icons/favicon.ico"
 
 # The profile on home page.
 [extra.profile]
-name = "JWSCHMAN"
-bio = "Learning as I go."
+name = "Kita - Zola Theme"
+bio = "Kita is a clean, elegant and simple blog theme for Zola."
 # The URL of avatar.
-avatar_url = "icons/avatar.jpg"
+avatar_url = "icons/github.svg"
 # Invert color in dark mode.
-avatar_invert = false
+avatar_invert = true
 
 # The social icons below the profile on the home page.
 # The `name` should be the file name of static/icons/*.svg or the icon name of https://simpleicons.org/
 [[extra.profile.social]]
 name = "github"
-url = "https://github.com/jwschman"
+url = "https://github.com/st1020/kita"
 
 [[extra.profile.social]]
-name = "linkedin"
-url = "https://linkedin.com"
+name = "twitter"
+url = "https://github.com/st1020/kita"
 
-#[[extra.profile.social]]
-#name = "rss"
-#url = "$BASE_URL/atom.xml"
+[[extra.profile.social]]
+name = "rss"
+url = "$BASE_URL/atom.xml"
 
 # The top menu.
+[[extra.menu]]
+name = "Projects"
+url = "$BASE_URL/projects"
 
 [[extra.menu]]
-name = "tags"
-url = "$BASE_URL/tags"
-
-#[[extra.menu]]
-#name = "posts"
-#url = "$BASE_URL/posts"
-
-#[[extra.menu]]
-#name = "guides"
-#url = "$BASE_URL/guides"
-
-[[extra.menu]]
-name = "archive"
+name = "Archive"
 url = "$BASE_URL/archive"
 
 [[extra.menu]]
-name = "about"
+name = "Tags"
+url = "$BASE_URL/tags"
+
+[[extra.menu]]
+name = "About"
 url = "$BASE_URL/about"
 
 # The page footer options.
 [extra.footer]
-since = 2024
+since = 2020
 license = "CC BY-SA 4.0"
 license_url = "https://creativecommons.org/licenses/by-sa/4.0/deed"
 

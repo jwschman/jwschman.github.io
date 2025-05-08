@@ -20,19 +20,19 @@ Since starting this homelab journey I've grown to know and rely on different tec
     <tr>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/kubernetes.svg" alt="Kubernetes">
+          <img src="/assets/stack-icons/kubernetes.svg" alt="Kubernetes">
           <div>Kubernetes</div>
         </div>
       </td>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/argocd.svg" alt="ArgoCD">
+          <img src="/assets/stack-icons/argocd.svg" alt="ArgoCD">
           <div>ArgoCD</div>
         </div>
       </td>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/helm.svg" alt="Helm">
+          <img src="/assets/stack-icons/helm.svg" alt="Helm">
           <div>Helm</div>
         </div>
       </td>
@@ -40,19 +40,19 @@ Since starting this homelab journey I've grown to know and rely on different tec
     <tr>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/metallb.svg" alt="MetalLB">
+          <img src="/assets/stack-icons/metallb.svg" alt="MetalLB">
           <div>MetalLB</div>
         </div>
       </td>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/nginx.svg" alt="Ingress-NGINX">
+          <img src="/assets/stack-icons/nginx.svg" alt="Ingress-NGINX">
           <div>Ingress-NGINX</div>
         </div>
       </td>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/cert-manager.png" alt="cert-manager">
+          <img src="/assets/stack-icons/cert-manager.png" alt="cert-manager">
           <div>Cert Manager</div>
         </div>
       </td>
@@ -60,13 +60,13 @@ Since starting this homelab journey I've grown to know and rely on different tec
     <tr>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/prometheus.svg" alt="prometheus">
+          <img src="/assets/stack-icons/prometheus.svg" alt="prometheus">
           <div>Prometheus</div>
         </div>
       </td>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/grafana.svg" alt="grafana">
+          <img src="/assets/stack-icons/grafana.svg" alt="grafana">
           <div>Grafana</div>
         </div>
       </td>
@@ -74,13 +74,13 @@ Since starting this homelab journey I've grown to know and rely on different tec
     <tr>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/truenas-core.svg" alt="truenas-core">
+          <img src="/assets/stack-icons/truenas-core.svg" alt="truenas-core">
           <div>TrueNAS Core</div>
         </div>
       </td>
       <td>
         <div class="toolbox-entry">
-          <img src="assets/stack-icons/docker.svg" alt="docker">
+          <img src="/assets/stack-icons/docker.svg" alt="docker">
           <div>Docker</div>
         </div>
       </td>
@@ -110,7 +110,7 @@ Since summer 2024 I’ve been actively pursuing different certifications to buil
   </article>
   <article>
     <figure>
-      <img src="assets/cert-icons/lfcs.png" alt="LFCS">
+      <img src="/assets/cert-icons/lfcs.png" alt="LFCS">
       <figcaption>
         <h3>LFCS</h3>
         <p>Linux Foundation Certified System Administrator</p>
@@ -121,7 +121,7 @@ Since summer 2024 I’ve been actively pursuing different certifications to buil
 <div class="card-container">
   <article>
     <figure>
-      <img src="assets/cert-icons/clf-c02.png" alt="CLF-C02">
+      <img src="/assets/cert-icons/clf-c02.png" alt="CLF-C02">
       <figcaption>
         <h3>CLF-C02</h3>
         <p>AWS Certified Cloud Practitioner</p>

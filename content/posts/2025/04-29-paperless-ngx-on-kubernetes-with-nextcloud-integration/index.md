@@ -37,6 +37,8 @@ Here's a list of the environment variables I used in the deployments.  Variables
 | `PAPERLESS_DBUSER` | Paperless database user in Postgres |
 | 🔐 `PAPERLESS_DBPASS` | Password for Paperless DB in Postgres |
 | `PAPERLESS_REDIS` | Redis host |
+| `PAPERLESS_OCR_LANGUAGES` | Additional languages to install for OCR |
+| `PAPERLESS_OCR_LANGUAGE` | Languages used for OCR |
 
 ### PostgreSQL Environment Variables
 
@@ -79,6 +81,10 @@ spec:
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
         imagePullPolicy: IfNotPresent
         env:
+        - name: PAPERLESS_OCR_LANGUAGES
+          value: jpn
+        - name: PAPERLESS_OCR_LANGUAGE
+          value: eng+jpn
         - name: PAPERLESS_REDIS
           value: redis://redis:6379
         - name: PAPERLESS_DBHOST
@@ -384,7 +390,6 @@ Finally, because my PVCs are RWO I needed to run the job on the same node as Pap
 ### `cronjob.yaml`
 
 ```yaml
----
 ---
 apiVersion: batch/v1
 kind: CronJob

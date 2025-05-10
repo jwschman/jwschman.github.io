@@ -1,0 +1,110 @@
+/* Reset box-sizing globally */
+* {
+  box-sizing: border-box;
+}
+
+/* Toolbox table styles */
+.toolbox table {
+  width: 100%;
+  text-align: center;
+  table-layout: fixed;
+}
+
+.toolbox td {
+  vertical-align: middle;
+}
+
+.toolbox .toolbox-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.toolbox .toolbox-entry img {
+  width: 75px;
+  height: auto;
+}
+
+.toolbox .toolbox-entry div {
+  font-size: 1.25rem;
+}
+
+/* Card container styles*/
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-container article {
+  flex: 1 1 calc(45% - 1rem);
+  max-width: 500px;
+  --hover: 0;
+  transition: --hover 0.2s;
+}
+
+.card-container article:hover {
+  --hover: 1;
+}
+
+/* Card figures */
+.card-container figure {
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  --bg: hsl(220, 50%, calc(25% + (var(--hover) * 10%)));   
+  --accent: hsl(210, 10%, calc(50% + (var(--hover) * 10%)));
+  transition: background 0.4s ease;
+  background:
+    radial-gradient(circle at top left, var(--accent), transparent 75%),
+    var(--bg);
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.card-container img {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 30%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-container article:hover img {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.card-container article:active img {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+
+.card-container figcaption {
+  position: absolute;
+  top: 7rem;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+  padding: 0 0.1rem;
+}
+
+.card-container figcaption h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.card-container figcaption p {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+  opacity: 0.8;
+}

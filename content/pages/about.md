@@ -73,7 +73,7 @@ Since starting this homelab journey I've grown to know and rely on different tec
       <td>
         <div class="toolbox-entry">
           <img src="/assets/stack-icons/github.svg" alt="github">
-          <div>Grafana</div>
+          <div>GitHub</div>
         </div>
       </td>
     </tr>

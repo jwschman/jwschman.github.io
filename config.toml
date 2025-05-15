@@ -121,7 +121,7 @@ url = "$BASE_URL/archive"
 
 [[extra.menu]]
 name = "HomeLabo"
-url = "https://github.com/jwschman/homelab"
+url = "https://github.com/jwschman/homelabo"
 
 [[extra.menu]]
 name = "about"

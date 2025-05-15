@@ -95,7 +95,7 @@ url = "https://github.com/jwschman"
 
 [[extra.profile.social]]
 name = "linkedin"
-url = "https://linkedin.com"
+url = "https://www.linkedin.com/in/john-s-95240b2bb/
 
 #[[extra.profile.social]]
 #name = "rss"
@@ -118,6 +118,10 @@ url = "$BASE_URL/tags"
 [[extra.menu]]
 name = "archive"
 url = "$BASE_URL/archive"
+
+[[extra.menu]]
+name = "HomeLabo"
+url = "https://github.com/jwschman/homelab"
 
 [[extra.menu]]
 name = "about"

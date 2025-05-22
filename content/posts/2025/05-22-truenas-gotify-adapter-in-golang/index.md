@@ -24,7 +24,7 @@ And if I'm going through all of this and it's working this well, then I should j
 
 And so here we are.  [TrueNAS Gotify Adapter Golang](https://github.com/jwschman/truenas-gotify-adapter-golang) is available on GitHub.
 
-I'm going to skip the setup in this post since it's all available in [the documentation](https://github.com/jwschman/truenas-gotify-adapter-golang/readme.md) but it's very easy to set up and get going.
+I'm going to skip the setup in this post since it's all available in [the documentation](https://github.com/jwschman/truenas-gotify-adapter-golang/blob/main/readme.md) but it's very easy to set up and get going.
 
 Now I’ll actually see my TrueNAS alerts again, since I won’t have to log in to the dashboard just to check them. I barely open the TrueNAS UI anymore now that everything’s running in Kubernetes.
 

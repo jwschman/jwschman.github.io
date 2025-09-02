@@ -1,0 +1,114 @@
+<!--Salutation-->
+<section class="mb-12 text-lg">
+  <p">
+    Hey there!  I'm John, a Certified Linux and Kubernetes Administrator transitioning from 15 years in education to DevOps.  I love building and maintaining automated, production-like infrastructure in my homelab and documenting the journey through my projects and posts.  You can explore them below, and feel free to reach out if you'd like to connect.
+  </p>
+</section>
+
+<!--Projects-->
+<section class="mb-12 text-lg">
+  <h2 class="text-2xl font-semibold">Featured Projects</h2>
+
+  <div class="project-container">
+    
+    <article>
+      <a href="{{ get_url(path="projects") }}">
+        <figure>
+          <img src="/assets/project-icons/kubernetes.png" alt="Homelab">
+          <figcaption>
+            <h3>HomeLabo</h3>
+            <p>Automated & Open Kubernetes Homelab</p>
+              <div class="tech-tags">
+                <span>Kubernetes</span>
+                <span>ArgoCD</span>
+                <span>Automation</span>
+              </div>
+          </figcaption>
+        </figure>
+      </a>
+    </article>
+
+    <article>
+      <a href="{{ get_url(path="projects") }}">
+      <figure>
+        <img src="/assets/project-icons/aws.png" alt="Cloud Resume Challenge Site">
+        <figcaption>
+          <h3>Cloud Resume Challenge</h3>
+          <p>Serverless static site built entirely with IaC</p>
+            <div class="tech-tags">
+              <span>Terraform</span>
+              <span>AWS</span>
+              <span>CI/CD</span>
+            </div>
+        </figcaption>
+      </figure>
+    </a>
+    </article>
+  </div>
+  
+  <div class="project-container">
+  
+    <article>
+      <a href="{{ get_url(path="projects") }}">
+      <figure>
+        <img src="/assets/project-icons/gotify.svg" alt="TrueNAS Gotify Adapter">
+        <figcaption>
+          <h3>TrueNAS Gotify Adapter</h3>
+          <p>Get TrueNAS Notifications in Gotify</p>
+            <div class="tech-tags">
+              <span>Go</span>
+              <span>Docker</span>
+              <span>Github Actions</span>
+            </div>
+        </figcaption>
+      </figure>
+    </a>
+    </article>
+  
+    <article>
+      <a href="{{ get_url(path="projects") }}">
+      <figure>
+        <img src="/assets/project-icons/prometheus.svg" alt="Simple Shelly Exporter">
+        <figcaption>
+          <h3>Simple Shelly Exporter</h3>
+          <p>Prometheus Exporter for Shelly Plug US</p>
+            <div class="tech-tags">
+              <span>Go</span>
+              <span>Prometheus</span>
+              <span>API Integration</span>
+            </div>
+        </figcaption>
+      </figure>
+    </a>
+    </article>
+
+  </div>
+
+  <p class="mt-2"><a class="underline" href="{{ get_url(path="pages/projects.md") }}">See all of my projects →</a></p>
+
+</section>
+
+
+<!--Latest Posts-->
+<section class="mb-12 text-lg">
+  <h2 class="text-2xl font-semibold">Latest Posts</h2>
+  {% set blog = get_section(path="posts/_index.md") %}
+  <ul class="mt-4 space-y-2">
+    {% for page in blog.pages | slice(end=3) %}
+      <li>
+        <a class="underline" href="{{ page.permalink }}">{{ page.title }}</a>
+        <span class="text-sm text-gray-500">({{ page.date | date(format="%Y-%m-%d") }})</span>
+      </li>
+    {% endfor %}
+  </ul>
+  <p class="mt-4"><a class="underline" href="{{ get_url(path="posts") }}">View more posts →</a></p>
+</section>
+
+<!--Get In Touch-->
+<section class="text-lg">
+  <h2 class="text-2xl font-semibold">Get In Touch</h2>
+    <ul>
+      <li>Email: <a href="mailto:john.schmanski@gmail.com">john.schmanski@gmail.com</a></li>
+      <li>LinkedIn: <a href="https://linkedin.com/in/jwschman">linkedin.com/in/jwschman</a></li>
+    </ul>
+</section>

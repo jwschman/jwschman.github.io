@@ -2,6 +2,14 @@
 {% block main %}
 <!-- Section Title -->
 <h1 class="mb-16">{{ section.title }}</h1>
+<!-- Header Post Link-->
+ {% if section.extra.archive_link %}
+<p class="text-lg"><a href="archive/">See all posts in the archive →</a></p>
+{% endif %}
+<!-- Tags Link-->
+ {% if section.extra.tags_link %}
+<p class="text-lg"><a href="tags/">Browse posts by tag →</a></p>
+{% endif %}
 <!-- Pages -->
 {% include "partials/page_list.html" %}<!---->
 {% endblock main %}

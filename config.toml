@@ -95,7 +95,7 @@ url = "https://github.com/jwschman"
 
 [[extra.profile.social]]
 name = "linkedin"
-url = "https://www.linkedin.com/in/john-s-95240b2bb/"
+url = "https://www.linkedin.com/in/jwschman/"
 
 #[[extra.profile.social]]
 #name = "rss"
@@ -104,24 +104,24 @@ url = "https://www.linkedin.com/in/john-s-95240b2bb/"
 # The top menu.
 
 [[extra.menu]]
-name = "tags"
-url = "$BASE_URL/tags"
-
-#[[extra.menu]]
-#name = "posts"
-#url = "$BASE_URL/posts"
-
-#[[extra.menu]]
-#name = "guides"
-#url = "$BASE_URL/guides"
+name = "home"
+url = "$BASE_URL"
 
 [[extra.menu]]
-name = "archive"
-url = "$BASE_URL/archive"
+name = "posts"
+url = "$BASE_URL/posts"
 
 [[extra.menu]]
-name = "HomeLabo"
-url = "https://github.com/jwschman/homelabo"
+name = "projects"
+url = "$BASE_URL/projects"
+
+# [[extra.menu]]
+# name = "tags"
+# url = "$BASE_URL/tags"
+
+# [[extra.menu]]
+# name = "archive"
+# url = "$BASE_URL/archive"
 
 [[extra.menu]]
 name = "about"

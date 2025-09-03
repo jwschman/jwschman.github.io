@@ -4,7 +4,7 @@ path = "projects"
 +++
 
 <div class="projects-list">
-<div class="project-card" style="--bg: hsl(200,70%,45%); --accent: hsl(225,70%,50%)">
+<div class="project-card" style="--bg: hsl(200,70%,45%); --accent: hsl(225,70%,50%)" id="homelab">
   <figure>
       <figcaption>
         <h3>Homelab</h3>
@@ -30,7 +30,7 @@ path = "projects"
     </figure>
   </div>
 
-  <div class="project-card" style="--bg: hsl(280,70%,50%); --accent: hsl(340,90%,55%)">
+  <div class="project-card" style="--bg: hsl(280,70%,50%); --accent: hsl(340,90%,55%)" id="cloud-resume-challenge">
     <figure>
       <figcaption>
         <h3>The Cloud Resume Challenge</h3>
@@ -59,7 +59,7 @@ path = "projects"
     </figure>
   </div>
 
-<div class="project-card" style="--bg: hsl(160,50%,40%); --accent: hsl(90,50%,55%)">
+<div class="project-card" style="--bg: hsl(160,50%,40%); --accent: hsl(90,50%,55%)" id="truenas-gotify-adapter">
   <figure>
       <figcaption>
         <h3>TrueNAS Gotify Adapter</h3>
@@ -79,7 +79,7 @@ path = "projects"
     </figure>
   </div>
 
-  <div class="project-card" style="--bg: hsl(20,70%,50%); --accent: hsl(350,90%,55%)">
+  <div class="project-card" style="--bg: hsl(20,70%,50%); --accent: hsl(350,90%,55%)" id="simple-shelly-exporter">
     <figure>
       <figcaption>
         <h3>Simple Shelly Exporter</h3>

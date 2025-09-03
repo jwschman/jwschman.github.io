@@ -309,3 +309,8 @@
   border: 1px solid rgba(255,255,255,0.3);
   backdrop-filter: blur(4px);
 }
+
+/* for links from home page project cards to the project page */
+.project-card {
+    scroll-margin-top: 70px;
+}

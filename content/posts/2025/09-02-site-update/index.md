@@ -10,7 +10,7 @@ tags = ["portfolio", "site update", "ai assistance", "personal"]
 cover_image="cover-image.png"
 +++
 
-It was a long time coming, but I finally changed this site to be more of a personal portfolio rather than just a blog.  I have a new landing page, new top navigation sections, and, most importantly, a projects page.  The projects page is still a little simple and needs more work, but I think it looks pretty good so far.
+It was a long time coming, but I finally changed this site to be more of a personal portfolio rather than just a blog.  I have a new landing page, new top navigation sections, and, most importantly, a projects page.  The projects page is still a little simple and needs more work, specifically images for each of the projects, but I think it looks pretty good so far.
 
 I've mentioned before that I'm not a frontend developer and have very little experience with CSS, so to make things easier for me I tried out GitHub Copilot for help with the styling.  Fortunately I had already done some work with the badges on my about page, and I was able to build off of those for the new landing and projects pages.  It really didn't take too much work to get close to what I wanted.  Tweaking things myself got me to where I am now.
 

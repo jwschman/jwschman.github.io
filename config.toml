@@ -123,9 +123,9 @@ url = "$BASE_URL/projects"
 # name = "archive"
 # url = "$BASE_URL/archive"
 
-[[extra.menu]]
-name = "about"
-url = "$BASE_URL/about"
+# [[extra.menu]]
+# name = "about"
+# url = "$BASE_URL/about"
 
 [[extra.menu]]
 name = "contact"

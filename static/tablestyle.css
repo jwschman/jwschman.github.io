@@ -57,8 +57,8 @@
 .card-container figure {
   width: 100%;
   aspect-ratio: 8 / 5;
-  --bg: hsl(220, 50%, calc(25% + (var(--hover) * 10%)));   
-  --accent: hsl(210, 10%, calc(50% + (var(--hover) * 10%)));
+  --bg: hsl(210, 60%, calc(45% + (var(--hover) * 10%)));
+  --accent: hsl(200, 50%, calc(65% + (var(--hover) * 10%)));
   transition: background 0.4s ease;
   background:
     radial-gradient(circle at top left, var(--accent), transparent 75%),
@@ -339,4 +339,18 @@ a.contact-button:hover {
   --bg: hsl(210, 60%, calc(45% + (var(--hover) * 10%)));
   --accent: hsl(200, 50%, calc(65% + (var(--hover) * 10%)));
   transform: scale(1.1);
+}
+
+/* Landing Page Section Titles */
+.section-title {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* spacing for homepage sections */
+.page-section {
+  margin-top: 2em;
+  margin-bottom: 2em;
 }

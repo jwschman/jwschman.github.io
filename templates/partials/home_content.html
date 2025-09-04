@@ -1,5 +1,5 @@
 <!--Salutation-->
-<section class="mb-12 text-lg">
+<section class="mb-12 text-lg page-section">
   <p>
     Hey there!  I'm John, a Certified Linux and Kubernetes Administrator transitioning from 15 years in education to DevOps.  I love building and maintaining automated, production-like infrastructure in my homelab and documenting the journey through my <a href="{{ get_url(path="projects") }}">projects</a> and <a href="{{ get_url(path="projects") }}">posts</a>.  You can explore them below, and feel free to reach out if you'd like to connect.
   </p>
@@ -12,8 +12,8 @@
 </section>
 
 <!--Projects-->
-<section class="mb-12 text-lg">
-  <h2 class="text-2xl font-semibold">Featured Projects</h2>
+<section class="mb-12 text-lg page-section">
+  <h2 class="section-title">Featured Projects</h2>
 
   <div class="project-container">
     
@@ -95,8 +95,8 @@
 </section>
 
 <!--Toolbox-->
-<section>
-    <h2 class="text-2xl font-semibold">My Toolbox</h2>
+<section class="page-section">
+    <h2 class="section-title">My Toolbox</h2>
     <p class="mt-2">Since starting my homelab journey I've grown to know and rely on different technologies. Here is a list of some that I use regularly:</p>
 
     <div class="toolbox">
@@ -187,8 +187,8 @@
 </section>
 
 <!--Certifications-->
-<section>
-  <h2 class="text-2xl font-semibold">Certifications</h2>
+<section class="page-section">
+  <h2 class="section-title">Certifications</h2>
 
   <p class="mt-2">Since summer 2024 I've been actively pursuing different certifications to build and demonstrate my skills. Here is what I've earned so far: </p>
   <div class="card-container">
@@ -228,23 +228,40 @@
 
 
 <!--Latest Posts-->
-<section class="mb-12 text-lg">
-  <h2 class="text-2xl font-semibold">Latest Posts</h2>
+<section style="margin-bottom: 3em; font-size: 1rem;" class="page-section">
+  <h2 class="section-title">Latest Posts</h2>
+
   {% set blog = get_section(path="posts/_index.md") %}
-  <ul class="mt-4 space-y-2">
-    {% for page in blog.pages | slice(end=3) %}
-      <li>
-        <a class="underline" href="{{ page.permalink }}">{{ page.title }}</a>
-        <span class="text-sm text-gray-500">({{ page.date | date(format="%Y-%m-%d") }})</span>
-      </li>
+  <div style="display: flex; gap: 1em; flex-wrap: wrap; margin: 0;">
+    {% for page in blog.pages | slice(end=2) %}
+      <div style="flex: 1 1 calc(50% - 1em); box-sizing: border-box; overflow: hidden;">
+        <a href="{{ page.permalink }}" style="text-decoration: none; color: inherit; display: block;">
+          {% if page.extra.cover_image %}
+            <img 
+              src="{{ get_url(path=page.colocated_path, trailing_slash=true) }}{{ page.extra.cover_image }}" 
+              alt="{{ page.title }}" 
+              style="width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; margin: 0;"
+            />
+          {% endif %}
+          <div style="padding: 0.3em 0.6em;">
+            <h3 style="font-size: 1.1em; font-weight: bold; margin: 0.2em 0 0.1em; text-decoration: underline;">
+              {{ page.title }}
+            </h3>
+            <p style="font-size: 0.9em; color: #666; margin: 0;">{{ page.date | date(format="%Y-%m-%d") }}</p>
+          </div>
+        </a>
+      </div>
     {% endfor %}
-  </ul>
-  <p class="mt-4"><a class="underline" href="{{ get_url(path="posts") }}">View more posts →</a></p>
+  </div>
+  <p class="mt-2">
+    <a class="underline" href="{{ get_url(path="posts") }}">View more posts →</a>
+  </p>
 </section>
 
+
 <!--Get In Touch-->
-<section class="text-lg">
-  <h2 class="text-2xl font-semibold">Get In Touch</h2>
+<section class="text-lg page-section">
+  <h2 class="section-title">Get In Touch</h2>
     <ul>
       <li>Email: <a href="mailto:john.schmanski@gmail.com">john.schmanski@gmail.com</a></li>
       <li>LinkedIn: <a href="https://linkedin.com/in/jwschman">linkedin.com/in/jwschman</a></li>

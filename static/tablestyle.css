@@ -317,10 +317,16 @@
 
 /* contact button */
 a.contact-button {
+  --bg: hsl(210, 60%, 45%);
+  --accent: hsl(200, 50%, 65%);
+  --hover: 0;
+
   display: inline-block;
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
-  background: linear-gradient(90deg, hsl(220, 60%, 50%), hsl(280, 60%, 50%));
+  background:
+    radial-gradient(circle at top left, var(--accent), transparent 75%),
+    var(--bg);
   color: white;
   font-weight: 600;
   text-align: center;
@@ -329,6 +335,8 @@ a.contact-button {
 }
 
 a.contact-button:hover {
-  background: linear-gradient(90deg, hsl(220, 70%, 45%), hsl(280, 70%, 45%));
+  --hover: 1;
+  --bg: hsl(210, 60%, calc(45% + (var(--hover) * 10%)));
+  --accent: hsl(200, 50%, calc(65% + (var(--hover) * 10%)));
   transform: scale(1.1);
 }

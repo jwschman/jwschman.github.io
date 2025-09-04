@@ -127,6 +127,10 @@ url = "$BASE_URL/projects"
 name = "about"
 url = "$BASE_URL/about"
 
+[[extra.menu]]
+name = "contact"
+url = "$BASE_URL/contact"
+
 # The page footer options.
 [extra.footer]
 since = 2024

@@ -38,7 +38,7 @@ path = "projects"
         <p class="project-desc">Implemented Infrastructure-as-Code and CI/CD pipelines for automated deployments</p>
         <div class="project-links">
           <a href="https://github.com/jwschman/cloud-resume-challenge">GitHub: github.com/jwschman/cloud-resume-challenge</a>
-          <a href="https:jwschman.click">Live Site: jwschman.click</a>
+          <a href="https://jwschman.click">Live Site: jwschman.click</a>
         </div>
         <div class="project-tech">
           <span>Terraform</span>

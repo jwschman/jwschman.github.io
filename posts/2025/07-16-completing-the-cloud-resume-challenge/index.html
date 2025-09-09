@@ -1,0 +1,445 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    I did the Cloud Resume Challenge - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="My three week journey completing the Cloud Resume Challenge" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="I did the Cloud Resume Challenge" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="My three week journey completing the Cloud Resume Challenge" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;07-16-completing-the-cloud-resume-challenge&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;07-16-completing-the-cloud-resume-challenge&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">I did the Cloud Resume Challenge</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2025-07-16</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2025/07-16-completing-the-cloud-resume-challenge/cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><blockquote>
+<p><em><strong>TLDR</strong></em>: I completed the <a href="https://cloudresumechallenge.dev/">Cloud Resume Challenge</a>.  <a href="https://jwschman.click">Check out my live site here</a> or <a href="https://github.com/jwschman/cloud-resume-challenge">explore the github repo for all the resources here</a>.</p>
+</blockquote>
+<p>Last month while looking for jobs I stumbled upon the <a href="https://cloudresumechallenge.dev/">Cloud Resume Challenge</a> and thought that it was perfect for me.  The idea of building something concrete to showcase my skills while working with the technologies I've been actively learning was exactly what I needed.  So I gave it a shot and three weeks later here we are.</p>
+<h2 id="what-it-is">What It Is</h2>
+<p>The Cloud Resume Challenge is a number of steps and requirements with the end goal of building a static website hosting your resume.</p>
+<p>The challenge asks you to:</p>
+<ul>
+<li>Host a static HTML/CSS resume with AWS S3 and Cloudfront</li>
+<li>Build a hit counter with a lambda function and DynamoDB</li>
+<li>Tie everything together with an API gateway and JavaScript</li>
+<li>Implement a CI/CD pipeline for all of these resources</li>
+<li>Write a blog post about the process</li>
+</ul>
+<p>It doesn't tell you how to do any of these steps, but instead is more of a set of guiderails to get you to the final goal.</p>
+<h2 id="how-i-completed-it">How I Completed It</h2>
+<p>I decided to go with the suggested &quot;chunks&quot; in the book which provides a little bit of structure by grouping some of the steps together.  I also decided to go with the AWS version as I already had the AWS Cloud Practitioner Certificate.  I completed all of the chunks in about 20 hours spread over three weeks aside from the final chunk, which is writing this blog post.</p>
+<p>I also set up a couple ground rules when I started.  I wanted this work to be all my own, and I also wanted to actually both learn new things and apply my knowledge as I went.</p>
+<p>These are the rules that I set up:</p>
+<ul>
+<li>Zero GenAI:  If I had a question or wanted suggestions, I had to search for it rather than just ask for the answer.  I know that using GenAI would have made several portions of this challenge simpler and quicker, and it is also certainly used by people actually working with these technologies professionally, but I wanted hands on experience doing it the hard way first.</li>
+<li>No Full Guides:  I actually didn't check, but I assume there are full guides for prebuilt Cloud Resume Challenge projects.  That seems like it would completely defeat the purpose of this challenge.  Specific guides such as &quot;How to setup cloudfront in Terraform&quot; are OK, but &quot;Full Cloud Resume Challenge&quot; guides aren't.</li>
+</ul>
+<h2 id="making-the-challenge-my-own">Making the Challenge My Own</h2>
+<p>Because the challenge is a set of goals rather than a guide, it encourages you to modify it to your needs.  Here are some of the things I did a little bit differently than the guide suggested:</p>
+<ul>
+<li>Terraform Everything:  From the first step I took I wanted everything I did to be done with IaC, and I have also been learning Terraform lately so the timing worked out perfectly.  This definitely upped the difficulty because I couldn't just go into the AWS Management Console and click my way to what I wanted, but it gave me real experience with IaC and specifically Terraform.</li>
+<li>Golang instead of Python:  Since I began seriously pursuing tech as a career last year, one of my focuses has been getting comfortable with Golang so I saw this as another chance to use it.  The challenge asks you to make a Python script for your lambda function but I decided to write it in Go instead.</li>
+</ul>
+<h2 id="final-product">Final Product</h2>
+<p>The actual site is at <a href="https://jwschman.click">jwschman.click</a>.  And here's a cool little diagram I made on <a href="https://draw.io">draw.io</a> that shows most of the services I used for the project and how they're connected.</p>
+<p><img src="https://jwschman.github.io/posts/2025/07-16-completing-the-cloud-resume-challenge/diagram.png" alt="infrastructure diagram" /></p>
+<p>If you're interested in learning about how I completed the challenge, I'll explain it chunk by chunk next.</p>
+<h2 id="chunk-1-frontend">Chunk 1: Frontend</h2>
+<p>I've enjoyed building little html websites since high school so this chunk was fun.  I did have to do various searches for &quot;css a attributes&quot; or &quot;centering text in div&quot; or whatever, but I wound up with something that I think looks simple but also pretty good.  Recently I've really liked the <a href="https://draculatheme.com">Dracula Theme</a> so I went with that for my colors.</p>
+<p><img src="https://jwschman.github.io/posts/2025/07-16-completing-the-cloud-resume-challenge/website.png" alt="screenshot of the website" /></p>
+<p>Setting up the actual infrastructure on AWS was a little more difficult, specifically the cloudfront distribution and DNS, but I managed to get them working with terraform without too much trouble.  Permissions were probably the hardest point here because a guide had used <code>PrincipalArn</code> not <code>SourceArn</code> in the IAM policy for the bucket, but once I got that sorted out things worked perfectly and I was feeling pretty good.</p>
+<h3 id="time-spent-on-this-chunk-8-hours">Time Spent on this Chunk: 8 hours</h3>
+<h3 id="resources-used">Resources Used</h3>
+<ul>
+<li><a href="https://codepen.io/emzarts/pen/OXzmym">https://codepen.io/emzarts/pen/OXzmym</a></li>
+<li><a href="http://lospec.com/palette-list/dracula-standard">http://lospec.com/palette-list/dracula-standard</a></li>
+<li><a href="https://denisgulev.com/static-website-with-aws-s3-cloudfront-and-terraform/">https://denisgulev.com/static-website-with-aws-s3-cloudfront-and-terraform/</a></li>
+<li><a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution">https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution</a></li>
+<li><a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs">Terraform AWS Provider Documentation</a></li>
+</ul>
+<h2 id="chunk-2-api">Chunk 2: API</h2>
+<p>This is where I made my big departure from the original directions and went with Golang rather than Python.  There are a lot of resources that I found for writing Golang functions that could communicate with AWS resources, but it seems to be a pretty complicated process that isn't super beginner friendly.  After a bit of trial and error I had a working Lambda function, deployed with Terraform, communicating with a DynamoDB database.</p>
+<p>&quot;Communicating&quot; was a little bit of a hard part, not because I didn't understand how to get it to work, but because of something that should have been obvious.  I spent an hour debugging what I thought were complex IAM permission issues.  I checked policies and recreated resources.  The actual problem?  A typo: <code>dynamodb:GetItme</code> instead of <code>dynamodb:GetItem</code> in my Terraform file.  Oops... a humbling mistake.</p>
+<h3 id="time-spent-on-this-chunk-6-hours">Time Spent on this Chunk: 6 hours</h3>
+<h3 id="resources-used-1">Resources Used</h3>
+<ul>
+<li><a href="https://www.thedevbook.com/deploy-go-aws-lambda-function-using-terraform/">https://www.thedevbook.com/deploy-go-aws-lambda-function-using-terraform/</a></li>
+<li><a href="https://hevodata.com/learn/lambda-dynamodb/">https://hevodata.com/learn/lambda-dynamodb/</a></li>
+<li><a href="https://medium.com/@jamesscarr6/how-to-deploy-an-aws-go-lambda-function-via-terraform-in-under-5-mins-2025-be9d9b2decfa">https://medium.com/@jamesscarr6/how-to-deploy-an-aws-go-lambda-function-via-terraform-in-under-5-mins-2025-be9d9b2decfa</a></li>
+<li><a href="https://www.geeksforgeeks.org/devops/create-aws-api-gateway-with-terraform/">https://www.geeksforgeeks.org/devops/create-aws-api-gateway-with-terraform/</a></li>
+</ul>
+<h2 id="chunk-3-front-end-back-end-integration">Chunk 3: Front-end / Back-end Integration</h2>
+<p>At first this chunk seemed pretty easy.  I don't know any JavaScript but doing a simple API call didn't seem like it would be hard, and it wasn't.  Getting that API call to work in a web browser, however, was more than I expected.  I had never even heard of CORS until I saw the error message in the console of Firefox.</p>
+<p><img src="https://jwschman.github.io/posts/2025/07-16-completing-the-cloud-resume-challenge/cors.png" alt="CORS error message" /></p>
+<p>CORS took me by surprise, but I found a couple guides online that helped me through fixing it, and once I understood what I needed to implement it actually wasn't so bad.</p>
+<p>Mostly I just needed to change the way I handled the Lambda function and add some return headers for it.</p>
+<pre data-lang="go" style="background-color:#282a36;color:#f8f8f2;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#ff79c6;">return </span><span style="color:#ffffff;">events</span><span style="color:#ff79c6;">.</span><span style="color:#ffffff;">APIGatewayProxyResponse</span><span>{
+</span><span>    </span><span style="color:#ffffff;">StatusCode</span><span>: </span><span style="color:#bd93f9;">200</span><span>,
+</span><span>    </span><span style="color:#ffffff;">Headers</span><span>: </span><span style="font-style:italic;color:#8be9fd;">map</span><span>[</span><span style="font-style:italic;color:#66d9ef;">string</span><span>]</span><span style="font-style:italic;color:#66d9ef;">string</span><span>{
+</span><span>        </span><span style="color:#f1fa8c;">&quot;Content-Type&quot;</span><span>:                 </span><span style="color:#f1fa8c;">&quot;application/json&quot;</span><span>,
+</span><span>        </span><span style="color:#f1fa8c;">&quot;Access-Control-Allow-Origin&quot;</span><span>:  </span><span style="color:#f1fa8c;">&quot;*&quot;</span><span>,                          </span><span style="color:#6272a4;">// FOR CORS
+</span><span>        </span><span style="color:#f1fa8c;">&quot;Access-Control-Allow-Methods&quot;</span><span>: </span><span style="color:#f1fa8c;">&quot;POST,OPTIONS&quot;</span><span>,               </span><span style="color:#6272a4;">// FOR CORS
+</span><span>        </span><span style="color:#f1fa8c;">&quot;Access-Control-Allow-Headers&quot;</span><span>: </span><span style="color:#f1fa8c;">&quot;Content-Type,Authorization&quot;</span><span>, </span><span style="color:#6272a4;">// FOR CORS
+</span><span>    },
+</span><span>    </span><span style="color:#ffffff;">Body</span><span>: </span><span style="font-style:italic;color:#66d9ef;">string</span><span>(</span><span style="color:#ffffff;">responseBody</span><span>),
+</span><span>}, </span><span style="color:#bd93f9;">nil
+</span></code></pre>
+<p>As for testing, I just did a couple simple tests using Cypress Tests as recommended by the Cloud Challenge Guidebook.  Because the hit counter function is so small I didn't want to take a lot of time finding and writing tests for it, so I kept this part extremely simple.  I know there was a lot more I could have done here but I decided to move on from this after just a little bit of work.</p>
+<h3 id="time-spent-on-this-chunk-3-hours">Time Spent on this Chunk: 3 hours</h3>
+<h3 id="resources-used-2">Resources Used</h3>
+<ul>
+<li><a href="https://www.reddit.com/r/javascript/comments/5blh60/displaying_json_content_in_html/">https://www.reddit.com/r/javascript/comments/5blh60/displaying_json_content_in_html/</a></li>
+<li><a href="https://basescripts.com/how-to-fetch-and-display-api-data-on-your-website">https://basescripts.com/how-to-fetch-and-display-api-data-on-your-website</a></li>
+<li><a href="https://itsyndicate.org/blog/configuring-cors-and-integration-on-aws-api-gateway-using-terraform/">https://itsyndicate.org/blog/configuring-cors-and-integration-on-aws-api-gateway-using-terraform/</a></li>
+</ul>
+<h2 id="chunk-4-automation-ci">Chunk 4: Automation / CI</h2>
+<p>This was probably the easiest chunk for me to do since I had built everything in Terraform from the start.  The biggest part of this step was reorganizing everything I had set up into modules, and cleaning up unused and redundant variables and locals.  I'm sure things could be cleaner, but it all works and is fairly clean.</p>
+<p>This is also the chunk where I decided to switch to a remote state for Terraform which I also set up on AWS using a separate terraform root.  Nothing fancy, but it cleaned things up and helped with the automation.</p>
+<p>So now whenever I push changes to either the frontend website or lambda function in my github repo, those changes are automatically applied to the AWS resources through github actions.  I could also have it apply if I were to make any changes to the main Terraform resources, but at the moment I think it's best to keep it isolated to those things, and manage the rest of the resources locally.  Because of the remote state both GitHub and my local machine can manage it, which is exactly what I wanted.</p>
+<h3 id="time-spent-on-this-chunk-3-hours-mostly-cleanup">Time Spent on this Chunk: 3 hours (mostly cleanup)</h3>
+<h3 id="resources-used-3">Resources Used</h3>
+<ul>
+<li>Just some Google searches for doing Terraform apply as github actions</li>
+</ul>
+<h2 id="chunk-5-the-blog-final-thoughts-and-reflection">Chunk 5: The Blog, Final Thoughts, and Reflection</h2>
+<h3 id="total-time-spent-20-hours-over-about-3-weeks">Total Time Spent: 20 hours over about 3 weeks</h3>
+<p>Here I am now writing the blog post about how I felt the challenge went and my experience during it.  Overall the difficulty level was about what I expected.  Some parts such as setting up the actual AWS infrastructure in Terraform were quite straightforward, and some parts such as writing the Lambda function in Go and dealing with CORS took me by surprise.</p>
+<h3 id="what-i-d-do-differently">What I'd do Differently</h3>
+<p>If I wanted to spend more time on this project I would have done several of the additional mods, specifically the DevOps and security focused modules.  I would have also spent more time at the start planning the structure of the Terraform modules, but I think that may just be something that comes with experience.  I also wish I had taken some more screenshots of problems and errors that I could have used for this post, like the permission errors for my Lambda function.</p>
+<h3 id="the-real-value">The Real Value</h3>
+<p>This challenge really gave me a chance to tie together a lot of the things that I've learned in the last year.  Instead of just having isolated knowledge of cloud basics and terraform syntax I now know how they can be used together in a real system.  And even better, I have something concrete to show to potential employers with both the public website and the GitHub repo for it.</p>
+<h3 id="if-you-re-considering-it">If You're Considering It</h3>
+<p>If you're interested in doing the Cloud Resume Challenge yourself, I definitely recommend it.  There's a learning curve, but that's the point.  It gives you a structured framework and lets you find the resources necessary to do it.  Also it's satisfying being able to see your website and know that you built every part of it.</p>
+<p>Check it out at <a href="https://cloudresumechallenge.dev/">The Cloud Resume Challenge</a>.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/cloud-resume-challenge/"
+      >cloud resume challenge</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/aws/"
+      >aws</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/terraform/"
+      >terraform</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/go/"
+      >go</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;05-22-truenas-gotify-adapter-in-golang&#x2F;"
+    ><span class="mr-1.5">←</span><span>TrueNAS Gotify Adapter in Golang</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-02-site-update&#x2F;"
+    ><span>Site update</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

@@ -1,0 +1,765 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Installing Paperless-NGX on Kubernetes with automated document ingestion from Nextcloud - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Installing Paperless-NGX on my Kubernetes cluster" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Installing Paperless-NGX on Kubernetes with automated document ingestion from Nextcloud" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="Installing Paperless-NGX on my Kubernetes cluster" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;04-29-paperless-ngx-on-kubernetes-with-nextcloud-integration&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/paperless-cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;04-29-paperless-ngx-on-kubernetes-with-nextcloud-integration&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Installing Paperless-NGX on Kubernetes with automated document ingestion from Nextcloud</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2025-04-29</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2025/04-29-paperless-ngx-on-kubernetes-with-nextcloud-integration/paperless-cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><blockquote>
+<p><strong>TL;DR</strong>: This post walks through deploying Paperless-NGX on Kubernetes with a PostgreSQL + Redis backend and automatic document consumption from a Nextcloud folder using a CronJob + rclone.</p>
+</blockquote>
+<h2 id="background">Background</h2>
+<p>I did my American taxes this week.  Even though I live in Japan, and all my income is in yen, I still get to have the joy of dealing with American taxes.  Doing them isn't too much of a hassle, and this time it gave me the idea that I should finally get Paperless-NGX installed to keep track of the many documents that I have scattered here and there.</p>
+<p>Recently I've seen several videos on YouTube of people setting Paperless-NGX up in Docker, which means it should be pretty easy to convert to a Kubernetes deployment.  And since I also run Nextcloud I thought it would be a neat integration to be able to automatically consume documents from a Nextcloud folder directly.  That part wound up being a little trickier than anticipated, but I think I figured out a nice way to handle it.</p>
+<h2 id="deployments">Deployments</h2>
+<p>My deployment of Paperless-NGX runs three pods in the paperless namespace: The actual Paperless-NGX app, a database, and redis.  Since I've been working with PostgreSQL a lot lately I decided to go with that for the database this time, but there are <a href="https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose">examples on the Paperless-NGX github with other database backends</a>.  Actually I based my kubernetes deployments on <a href="https://github.com/paperless-ngx/paperless-ngx/blob/main/docker/compose/docker-compose.postgres.yml">this docker compose file</a> that includes Postgres.</p>
+<p>Here's a list of the environment variables I used in the deployments.  Variables marked with a 🔐 emoji are stored in a secret pulled from Hashicorp Vault.</p>
+<h3 id="paperless-environment-variables">Paperless Environment Variables</h3>
+<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<tr><td>🔐 <code>PAPERLESS_ADMIN_USER</code></td><td>Admin username</td></tr>
+<tr><td>🔐 <code>PAPERLESS_ADMIN_PASSWORD</code></td><td>Admin password</td></tr>
+<tr><td><code>PAPERLESS_URL</code></td><td>FQDN of the Paperless instance</td></tr>
+<tr><td><code>PAPERLESS_CSRF_TRUSTED_ORIGINS</code></td><td>CSRF origin check bypass for the UI</td></tr>
+<tr><td><code>PAPERLESS_DBHOST</code></td><td>Paperless database host</td></tr>
+<tr><td><code>PAPERLESS_DBNAME</code></td><td>Paperless database name in Postgres</td></tr>
+<tr><td><code>PAPERLESS_DBUSER</code></td><td>Paperless database user in Postgres</td></tr>
+<tr><td>🔐 <code>PAPERLESS_DBPASS</code></td><td>Password for Paperless DB in Postgres</td></tr>
+<tr><td><code>PAPERLESS_REDIS</code></td><td>Redis host</td></tr>
+<tr><td><code>PAPERLESS_OCR_LANGUAGES</code></td><td>Additional languages to install for OCR</td></tr>
+<tr><td><code>PAPERLESS_OCR_LANGUAGE</code></td><td>Languages used for OCR</td></tr>
+</tbody></table>
+<h3 id="postgresql-environment-variables">PostgreSQL Environment Variables</h3>
+<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>POSTGRES_DB</code></td><td>Paperless database name in Postgres</td></tr>
+<tr><td><code>POSTGRES_USER</code></td><td>Paperless database user in Postgres</td></tr>
+<tr><td>🔐  <code>POSTGRES_PASSWORD</code></td><td>Password for Paperless DB in Postgres</td></tr>
+<tr><td><code>PGDATA</code></td><td>Directory to use for postgres data</td></tr>
+</tbody></table>
+<p>And here are the Deployments used in the cluster.</p>
+<h3 id="paperless-deployment">Paperless Deployment</h3>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">apps/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Deployment
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">replicas</span><span>: </span><span style="color:#bd93f9;">1
+</span><span>  </span><span style="color:#ff79c6;">revisionHistoryLimit</span><span>: </span><span style="color:#bd93f9;">5
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">matchLabels</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>  </span><span style="color:#ff79c6;">template</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">labels</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>    </span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">initContainers</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wait-for-db
+</span><span>        </span><span style="color:#ff79c6;">image</span><span>: </span><span style="color:#f1fa8c;">busybox:1.37
+</span><span>        </span><span style="color:#ff79c6;">command</span><span>: [</span><span style="color:#f1fa8c;">&#39;sh&#39;</span><span>, </span><span style="color:#f1fa8c;">&#39;-c&#39;</span><span>, </span><span style="color:#f1fa8c;">&#39;until nc -z db 5432; do echo &quot;Waiting for Postgres...&quot;; sleep 5; done&#39;</span><span>]
+</span><span>        </span><span style="color:#ff79c6;">imagePullPolicy</span><span>: </span><span style="color:#f1fa8c;">IfNotPresent
+</span><span>      </span><span style="color:#ff79c6;">containers</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>        </span><span style="color:#ff79c6;">image</span><span>: </span><span style="color:#f1fa8c;">ghcr.io/paperless-ngx/paperless-ngx:latest
+</span><span>        </span><span style="color:#ff79c6;">imagePullPolicy</span><span>: </span><span style="color:#f1fa8c;">IfNotPresent
+</span><span>        </span><span style="color:#ff79c6;">env</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_OCR_LANGUAGES
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">jpn
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_OCR_LANGUAGE
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">eng+jpn
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_REDIS
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">redis://redis:6379
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_DBHOST
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">db
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_DBNAME
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_DBUSER
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_URL
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">https://paperless.pawked.com
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_CSRF_TRUSTED_ORIGINS
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">https://paperless.pawked.com
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_DBPASS
+</span><span>          </span><span style="color:#ff79c6;">valueFrom</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">secretKeyRef</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-secrets
+</span><span>              </span><span style="color:#ff79c6;">key</span><span>: </span><span style="color:#f1fa8c;">POSTGRES_PASSWORD
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_ADMIN_USER
+</span><span>          </span><span style="color:#ff79c6;">valueFrom</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">secretKeyRef</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-secrets
+</span><span>              </span><span style="color:#ff79c6;">key</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_ADMIN_USER
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_ADMIN_PASSWORD
+</span><span>          </span><span style="color:#ff79c6;">valueFrom</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">secretKeyRef</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-secrets
+</span><span>              </span><span style="color:#ff79c6;">key</span><span>: </span><span style="color:#f1fa8c;">PAPERLESS_ADMIN_PASSWORD
+</span><span>        </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">containerPort</span><span>: </span><span style="color:#bd93f9;">8000
+</span><span>        </span><span style="color:#ff79c6;">volumeMounts</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">media
+</span><span>          </span><span style="color:#ff79c6;">mountPath</span><span>: </span><span style="color:#f1fa8c;">/usr/src/paperless/media
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">consume
+</span><span>          </span><span style="color:#ff79c6;">mountPath</span><span>: </span><span style="color:#f1fa8c;">/usr/src/paperless/consume
+</span><span>        </span><span style="color:#ff79c6;">startupProbe</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">tcpSocket</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">8000
+</span><span>          </span><span style="color:#ff79c6;">initialDelaySeconds</span><span>: </span><span style="color:#bd93f9;">30
+</span><span>          </span><span style="color:#ff79c6;">periodSeconds</span><span>: </span><span style="color:#bd93f9;">10
+</span><span>          </span><span style="color:#ff79c6;">failureThreshold</span><span>: </span><span style="color:#bd93f9;">6
+</span><span>        </span><span style="color:#ff79c6;">livenessProbe</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">tcpSocket</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">8000
+</span><span>        </span><span style="color:#ff79c6;">readinessProbe</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">tcpSocket</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">8000
+</span><span>        </span><span style="color:#ff79c6;">resources</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">requests</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">memory</span><span>: </span><span style="color:#f1fa8c;">&quot;512Mi&quot;
+</span><span>            </span><span style="color:#ff79c6;">cpu</span><span>: </span><span style="color:#f1fa8c;">&quot;500m&quot;
+</span><span>          </span><span style="color:#ff79c6;">limits</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">memory</span><span>: </span><span style="color:#f1fa8c;">&quot;4Gi&quot;
+</span><span>            </span><span style="color:#ff79c6;">cpu</span><span>: </span><span style="color:#f1fa8c;">&quot;2&quot;
+</span><span>      </span><span style="color:#ff79c6;">volumes</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">media
+</span><span>        </span><span style="color:#ff79c6;">persistentVolumeClaim</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">claimName</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-media
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">consume
+</span><span>        </span><span style="color:#ff79c6;">persistentVolumeClaim</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">claimName</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-consume
+</span></code></pre>
+<h3 id="postgresql-deployment">PostgreSQL Deployment</h3>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">apps/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Deployment
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">db
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">replicas</span><span>: </span><span style="color:#bd93f9;">1
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">matchLabels</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">db
+</span><span>  </span><span style="color:#ff79c6;">template</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">labels</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">db
+</span><span>    </span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">containers</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">db
+</span><span>        </span><span style="color:#ff79c6;">image</span><span>: </span><span style="color:#f1fa8c;">postgres:17.4
+</span><span>        </span><span style="color:#ff79c6;">env</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">POSTGRES_DB
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">POSTGRES_USER
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">PGDATA
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">/var/lib/postgresql/data/pgdata
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">POSTGRES_PASSWORD
+</span><span>          </span><span style="color:#ff79c6;">valueFrom</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">secretKeyRef</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-secrets
+</span><span>              </span><span style="color:#ff79c6;">key</span><span>: </span><span style="color:#f1fa8c;">POSTGRES_PASSWORD
+</span><span>        </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">containerPort</span><span>: </span><span style="color:#bd93f9;">5432
+</span><span>        </span><span style="color:#ff79c6;">volumeMounts</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">postgres-data
+</span><span>          </span><span style="color:#ff79c6;">mountPath</span><span>: </span><span style="color:#f1fa8c;">/var/lib/postgresql/data
+</span><span>        </span><span style="color:#ff79c6;">readinessProbe</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">exec</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">command</span><span>:
+</span><span>              - </span><span style="color:#f1fa8c;">sh
+</span><span>              - </span><span style="color:#f1fa8c;">-c
+</span><span>              - </span><span style="color:#f1fa8c;">pg_isready -U postgres
+</span><span>          </span><span style="color:#ff79c6;">initialDelaySeconds</span><span>: </span><span style="color:#bd93f9;">5
+</span><span>          </span><span style="color:#ff79c6;">periodSeconds</span><span>: </span><span style="color:#bd93f9;">10
+</span><span>        </span><span style="color:#ff79c6;">resources</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">requests</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">memory</span><span>: </span><span style="color:#f1fa8c;">&quot;256Mi&quot;
+</span><span>            </span><span style="color:#ff79c6;">cpu</span><span>: </span><span style="color:#f1fa8c;">&quot;250m&quot;
+</span><span>          </span><span style="color:#ff79c6;">limits</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">memory</span><span>: </span><span style="color:#f1fa8c;">&quot;1Gi&quot;
+</span><span>            </span><span style="color:#ff79c6;">cpu</span><span>: </span><span style="color:#f1fa8c;">&quot;500m&quot;
+</span><span>      </span><span style="color:#ff79c6;">volumes</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">postgres-data
+</span><span>        </span><span style="color:#ff79c6;">persistentVolumeClaim</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">claimName</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-postgres
+</span></code></pre>
+<h3 id="redis-deployment">Redis Deployment</h3>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">apps/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Deployment
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">redis
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">replicas</span><span>: </span><span style="color:#bd93f9;">1
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">matchLabels</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">redis
+</span><span>  </span><span style="color:#ff79c6;">template</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">labels</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">redis
+</span><span>    </span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">containers</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">redis
+</span><span>        </span><span style="color:#ff79c6;">image</span><span>: </span><span style="color:#f1fa8c;">redis:8
+</span><span>        </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">containerPort</span><span>: </span><span style="color:#bd93f9;">6379
+</span><span>        </span><span style="color:#ff79c6;">resources</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">requests</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">memory</span><span>: </span><span style="color:#f1fa8c;">&quot;128Mi&quot;
+</span><span>            </span><span style="color:#ff79c6;">cpu</span><span>: </span><span style="color:#f1fa8c;">&quot;100m&quot;
+</span><span>          </span><span style="color:#ff79c6;">limits</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">memory</span><span>: </span><span style="color:#f1fa8c;">&quot;512Mi&quot;
+</span><span>            </span><span style="color:#ff79c6;">cpu</span><span>: </span><span style="color:#f1fa8c;">&quot;250m&quot;
+</span></code></pre>
+<h2 id="networks">Networks</h2>
+<p>Networking is all pretty standard.  The only thing that would really need changing in a different setup is the ingress.</p>
+<h3 id="network-yaml"><code>network.yaml</code></h3>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#6272a4;"># paperles-ngx service
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Service
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>  - </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">8000
+</span><span>    </span><span style="color:#ff79c6;">targetPort</span><span>: </span><span style="color:#bd93f9;">8000
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>---
+</span><span style="color:#6272a4;"># paperless-ngx ingress
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">networking.k8s.io/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Ingress
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">ingressClassName</span><span>: </span><span style="color:#f1fa8c;">internal
+</span><span>  </span><span style="color:#ff79c6;">tls</span><span>:
+</span><span>  - </span><span style="color:#ff79c6;">hosts</span><span>:
+</span><span>    - </span><span style="color:#f1fa8c;">paperless.pawked.com
+</span><span>  </span><span style="color:#ff79c6;">rules</span><span>:
+</span><span>  - </span><span style="color:#ff79c6;">host</span><span>: </span><span style="color:#f1fa8c;">paperless.pawked.com
+</span><span>    </span><span style="color:#ff79c6;">http</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">paths</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">path</span><span>: </span><span style="color:#f1fa8c;">/
+</span><span>        </span><span style="color:#ff79c6;">pathType</span><span>: </span><span style="color:#f1fa8c;">Prefix
+</span><span>        </span><span style="color:#ff79c6;">backend</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">service</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>            </span><span style="color:#ff79c6;">port</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">number</span><span>: </span><span style="color:#bd93f9;">8000
+</span><span>---
+</span><span style="color:#6272a4;"># redis service
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Service
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">redis
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>  - </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">6379
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">redis
+</span><span>---
+</span><span style="color:#6272a4;"># postgres service
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Service
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">db
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>  - </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">5432
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">db
+</span></code></pre>
+<h2 id="persistent-storage">Persistent Storage</h2>
+<p>All of my storage for Paperless-NGX is handled by <a href="https://github.com/longhorn/longhorn">Longhorn</a> PVCs.  I do things a little bit strange and declare the longhorn volumes directly.  This helps me keep things GitOps friendly which is one of the primary goals of my homelab.</p>
+<p>To create volumes, PVs and PVCs I copied my <code>longhorn-storage.yaml</code> boilerplate and edited it to set up storage for the PostgreSQL database and paperless-ngx media and consume directories.  These volumes are backed up nightly by Longhorn to my TrueNAS server.</p>
+<h3 id="postgres-storage-yaml"><code>postgres-storage.yaml</code></h3>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">longhorn.io/v1beta2
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Volume
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">labels</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">longhornvolume</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-postgres
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-postgres
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">longhorn-system
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">numberOfReplicas</span><span>: </span><span style="color:#bd93f9;">2
+</span><span>  </span><span style="color:#ff79c6;">disableFrontend</span><span>: </span><span style="color:#bd93f9;">false
+</span><span>  </span><span style="color:#ff79c6;">engineImage</span><span>: </span><span style="color:#f1fa8c;">longhornio/longhorn-engine:v1.8.1
+</span><span>  </span><span style="color:#ff79c6;">frontend</span><span>: </span><span style="color:#f1fa8c;">blockdev
+</span><span>  </span><span style="color:#ff79c6;">size</span><span>: </span><span style="color:#f1fa8c;">&quot;3221225472&quot;
+</span><span>  </span><span style="color:#ff79c6;">staleReplicaTimeout</span><span>: </span><span style="color:#bd93f9;">30
+</span><span>---
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">PersistentVolume
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-postgres
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">capacity</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">storage</span><span>: </span><span style="color:#f1fa8c;">3Gi
+</span><span>  </span><span style="color:#ff79c6;">volumeMode</span><span>: </span><span style="color:#f1fa8c;">Filesystem
+</span><span>  </span><span style="color:#ff79c6;">accessModes</span><span>:
+</span><span>    - </span><span style="color:#f1fa8c;">ReadWriteOnce
+</span><span>  </span><span style="color:#ff79c6;">persistentVolumeReclaimPolicy</span><span>: </span><span style="color:#f1fa8c;">Retain
+</span><span>  </span><span style="color:#ff79c6;">storageClassName</span><span>: </span><span style="color:#f1fa8c;">longhorn
+</span><span>  </span><span style="color:#ff79c6;">csi</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">driver</span><span>: </span><span style="color:#f1fa8c;">driver.longhorn.io
+</span><span>    </span><span style="color:#ff79c6;">fsType</span><span>: </span><span style="color:#f1fa8c;">ext4
+</span><span>    </span><span style="color:#ff79c6;">volumeAttributes</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">numberOfReplicas</span><span>: </span><span style="color:#f1fa8c;">&#39;2&#39;
+</span><span>      </span><span style="color:#ff79c6;">staleReplicaTimeout</span><span>: </span><span style="color:#f1fa8c;">&#39;30&#39;
+</span><span>    </span><span style="color:#ff79c6;">volumeHandle</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-postgres
+</span><span>---
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">PersistentVolumeClaim
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-postgres
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">accessModes</span><span>:
+</span><span>    - </span><span style="color:#f1fa8c;">ReadWriteOnce
+</span><span>  </span><span style="color:#ff79c6;">resources</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">requests</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">storage</span><span>: </span><span style="color:#f1fa8c;">3Gi
+</span><span>  </span><span style="color:#ff79c6;">volumeName</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-postgres
+</span><span>  </span><span style="color:#ff79c6;">storageClassName</span><span>: </span><span style="color:#f1fa8c;">longhorn
+</span></code></pre>
+<p><code>media-storage.yaml</code> and <code>consume-storage.yaml</code> are exactly the same with different names and sizes.</p>
+<p>Because these are Longhorn volumes they aren't technically empty directories which Postgres doesn't really like.  But this can be fixed by setting the <code>PGDATA</code> environment variable to a subpath in the mount.</p>
+<h2 id="secrets">Secrets</h2>
+<p>I use <a href="https://github.com/hashicorp/vault">Hashicorp Vault</a> for secret management and pull them in to Kubernetes with <a href="https://github.com/external-secrets/external-secrets">External Secrets Operator</a>.  The secrets I'm pulling from Vault are set as the environmet variables in the Paperless-NGX and Postgres pods as mentioned above.</p>
+<h2 id="integrating-nextcloud-with-paperless-ngx-consume">Integrating Nextcloud with Paperless-NGX Consume</h2>
+<p>I spent more time than I'd like to admit figuring out a good way to do this.  First I thought that I'd just run a rclone sidecar container with Paperless-NGX and have them share a volume, but becauese <code>rclone mount</code> uses FUSE for its filesystem, I wasn't able to easily get the files from one container to the other.</p>
+<p>So I decided to do a Kubernetes CronJob that would execute an rclone move from the specified Nextcloud folder into a PVC mounted inside the Paperless-NGX pod.  I'm pretty sure using an emptyDir here would be fine, but the PVC gives me a little more comfort that no data will be lost in case something goes wrong.</p>
+<p>The CronJob also pulls environemt variables from Vault.  Specifically, <code>RCLONE_CONFIG_NEXTCLOUD_URL</code>, <code>RCLONE_CONFIG_NEXTCLOUD_USER</code>, and <code>RCLONE_CONFIG_NEXTCLOUD_PASS</code>.  The <code>RCLONE_CONFIG_NEXTCLOUD_PASS</code> needs to be rclone encrypted before being saved as a secret in Vault, so on my Docker host I just ran <code>docker run --rm -it rclone/rclone obscure '&lt;NEXTCLOUD-PASSWORD&gt;'</code> and pasted the output into Vault.</p>
+<p>Finally, because my PVCs are RWO I needed to run the job on the same node as Paperless-NGX which was solved with a simple PodAffinity.</p>
+<h3 id="cronjob-yaml"><code>cronjob.yaml</code></h3>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">batch/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">CronJob
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-rclone-move
+</span><span>  </span><span style="color:#ff79c6;">namespace</span><span>: </span><span style="color:#f1fa8c;">paperless
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">schedule</span><span>: </span><span style="color:#f1fa8c;">&quot;*/5 * * * *&quot; </span><span style="color:#6272a4;"># every 5 minutes
+</span><span>  </span><span style="color:#ff79c6;">jobTemplate</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">template</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">restartPolicy</span><span>: </span><span style="color:#f1fa8c;">Never
+</span><span>          </span><span style="color:#ff79c6;">affinity</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">podAffinity</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">requiredDuringSchedulingIgnoredDuringExecution</span><span>:
+</span><span>                - </span><span style="color:#ff79c6;">labelSelector</span><span>:
+</span><span>                    </span><span style="color:#ff79c6;">matchLabels</span><span>:
+</span><span>                      </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx
+</span><span>                  </span><span style="color:#ff79c6;">topologyKey</span><span>: </span><span style="color:#f1fa8c;">kubernetes.io/hostname 
+</span><span>          </span><span style="color:#ff79c6;">containers</span><span>:
+</span><span>            - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">rclone-move
+</span><span>              </span><span style="color:#ff79c6;">image</span><span>: </span><span style="color:#f1fa8c;">rclone/rclone:1.69.1
+</span><span>              </span><span style="color:#ff79c6;">imagePullPolicy</span><span>: </span><span style="color:#f1fa8c;">IfNotPresent
+</span><span>              </span><span style="color:#ff79c6;">args</span><span>:
+</span><span>                - </span><span style="color:#f1fa8c;">move
+</span><span>                - </span><span style="color:#f1fa8c;">nextcloud:/Paperless/
+</span><span>                - </span><span style="color:#f1fa8c;">/consume/
+</span><span>                - </span><span style="color:#f1fa8c;">--transfers=1
+</span><span>                - </span><span style="color:#f1fa8c;">--checkers=1
+</span><span>                - </span><span style="color:#f1fa8c;">--no-traverse
+</span><span>                - </span><span style="color:#f1fa8c;">--retries=3
+</span><span>                - </span><span style="color:#f1fa8c;">--log-level=INFO
+</span><span>              </span><span style="color:#ff79c6;">env</span><span>:
+</span><span>                - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">RCLONE_CONFIG_NEXTCLOUD_TYPE
+</span><span>                  </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">webdav
+</span><span>                - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">RCLONE_CONFIG_NEXTCLOUD_URL
+</span><span>                  </span><span style="color:#ff79c6;">valueFrom</span><span>:
+</span><span>                    </span><span style="color:#ff79c6;">secretKeyRef</span><span>:
+</span><span>                      </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-rclone-secrets
+</span><span>                      </span><span style="color:#ff79c6;">key</span><span>: </span><span style="color:#f1fa8c;">NEXTCLOUD_URL
+</span><span>                - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">RCLONE_CONFIG_NEXTCLOUD_VENDOR
+</span><span>                  </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">nextcloud
+</span><span>                - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">RCLONE_CONFIG_NEXTCLOUD_USER
+</span><span>                  </span><span style="color:#ff79c6;">valueFrom</span><span>:
+</span><span>                    </span><span style="color:#ff79c6;">secretKeyRef</span><span>:
+</span><span>                      </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-rclone-secrets
+</span><span>                      </span><span style="color:#ff79c6;">key</span><span>: </span><span style="color:#f1fa8c;">NEXTCLOUD_USER
+</span><span>                - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">RCLONE_CONFIG_NEXTCLOUD_PASS
+</span><span>                  </span><span style="color:#ff79c6;">valueFrom</span><span>:
+</span><span>                    </span><span style="color:#ff79c6;">secretKeyRef</span><span>:
+</span><span>                      </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">paperless-rclone-secrets
+</span><span>                      </span><span style="color:#ff79c6;">key</span><span>: </span><span style="color:#f1fa8c;">NEXTCLOUD_PASS
+</span><span>              </span><span style="color:#ff79c6;">volumeMounts</span><span>:
+</span><span>                - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">consume
+</span><span>                  </span><span style="color:#ff79c6;">mountPath</span><span>: </span><span style="color:#f1fa8c;">/consume
+</span><span>          </span><span style="color:#ff79c6;">volumes</span><span>:
+</span><span>            - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">consume
+</span><span>              </span><span style="color:#ff79c6;">persistentVolumeClaim</span><span>:
+</span><span>                </span><span style="color:#ff79c6;">claimName</span><span>: </span><span style="color:#f1fa8c;">paperless-ngx-consume
+</span><span>
+</span></code></pre>
+<p>And with that Paperless-NGX is able to grab scanned documents from a folder in my Nextcloud called Paperless directly into Paperless-NGX.  I currently use an app called ClearScanner to take photos of documents which are auto-synced into the Paperless folder for consumption.  I'm not super happy with ClearScanner and am open to switching to a different app if I find one that works better.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>I'm feeling pretty good about things came together here with the Nextcloud integration and automatically ingesting documents from my phone couldn't be easier.  Also, everything else ties together nicely using GitOps, Vault, and Longhorn which keeps things clean and manageable.  I've already started moving a lot of my documents to Paperless and being able to just snap a shot with my phone removes a lot of friction that would make me not feel like doing it.</p>
+<p>As I mentioned, I'm not in love with the ClearScanner app and would gladly switch to a different scanner app if I found one.</p>
+<p>I'm also open to any comments or feedback about how I approached this.  If you know a better or simpler way of handling any part of it please feel free to let me know your thoughts.</p>
+<h2 id="links-and-resources">Links and Resources</h2>
+<ul>
+<li><a href="https://docs.paperless-ngx.com/">Paperless-NGX Homepage</a></li>
+<li><a href="https://github.com/paperless-ngx/paperless-ngx/tree/main/docker/compose">Paperless-NGX Docker-Compose Examples</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/">Kubernetes CronJob Documentation</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity">Kubernetes Pod Affinity Documentation</a></li>
+<li><a href="https://play.google.com/store/apps/details?id=com.indymobileapp.document.scanner&amp;hl=en&amp;pli=1">Clear Scan on Google Play</a></li>
+</ul>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/kubernetes/"
+      >kubernetes</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/paperless-ngx/"
+      >paperless-ngx</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/guides/"
+      >guides</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/nextcloud/"
+      >nextcloud</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;04-27-new-about-page&#x2F;"
+    ><span class="mr-1.5">←</span><span>New About Page</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;05-09-introducing-homelabo-my-open-homelab-environment&#x2F;"
+    ><span>Introducing HomeLabo: My Open Homelab Environment</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

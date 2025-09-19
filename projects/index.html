@@ -1,0 +1,366 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Projects - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Projects" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Projects" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="Projects" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;projects&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;projects&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Projects</h1>
+  </header>
+
+  <section><div class="projects-list">
+<div class="project-card" style="--bg: hsl(200,70%,45%); --accent: hsl(225,70%,50%)" id="homelab">
+  <figure>
+      <figcaption>
+        <h3>Homelab</h3>
+        <p class="project-subtitle">Self-hosted Multi-node Bare-metal Kubernetes Cluster</p>
+        <p class="project-desc">Production-like environment built entirely with Infrasture-as-Code, from initial node provisioning to application deployment via GitOps</p>
+        <div class="project-links">
+          <a href="https://github.com/jwschman/homelabo">GitHub: https://github.com/jwschman/homelabo</a>
+        </div>
+        <div class="project-tech">
+          <span>Kubernetes</span>
+          <span>Ubuntu Server</span>
+          <span>Cloud-init</span>
+          <span>Ansible</span>
+          <span>ArgoCD</span>
+          <span>Helm</span>
+          <span>Prometheus</span>
+          <span>Grafana</span>
+          <span>MetalLB</span>
+          <span>Ingress-NGINX</span>
+          <span>Hashicorp Vault</span>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+<div class="project-card" style="--bg: hsl(280,70%,50%); --accent: hsl(340,90%,55%)" id="cloud-resume-challenge">
+    <figure>
+      <figcaption>
+        <h3>The Cloud Resume Challenge</h3>
+        <p class="project-subtitle">Serverless Cloud-Hosted Static Website</p>
+        <p class="project-desc">Implemented Infrastructure-as-Code and CI/CD pipelines for automated deployments</p>
+        <div class="project-links">
+          <a href="https://github.com/jwschman/cloud-resume-challenge">GitHub: github.com/jwschman/cloud-resume-challenge</a>
+          <a href="https://jwschman.click">Live Site: jwschman.click</a>
+        </div>
+        <div class="project-tech">
+          <span>Terraform</span>
+          <span>AWS</span>
+          <span>Lambda</span>
+          <span>DynamoDB</span>
+          <span>CloudFront</span>
+          <span>Route 53</span>
+          <span>S3</span>
+          <span>API Gateway</span>
+          <span>Certificate Manager</span>
+          <span>Github Actions</span>
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>Javascript</span>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+<div class="project-card" style="--bg: hsl(160,50%,40%); --accent: hsl(90,50%,55%)" id="truenas-gotify-adapter">
+  <figure>
+      <figcaption>
+        <h3>TrueNAS Gotify Adapter</h3>
+        <p class="project-subtitle">Go Application for Centralized Alert Management</p>
+        <p class="project-desc">A Go port of a Python script to implement a fake Slack webhook endpoint using Gin to capture TrueNAS alert webhooks and forward them to a Gotify instance. Built and deployed via GitHub Actions as a Docker image.</p>
+        <div class="project-links">
+          <a href="https://github.com/jwschman/truenas-gotify-adapter-golang">GitHub: https://github.com/jwschman/truenas-gotify-adapter-golang</a>
+        </div>
+        <div class="project-tech">
+          <span>Go</span>
+          <span>Gin Framework</span>
+          <span>Docker</span>
+          <span>Kubernetes</span>
+          <span>GitHub Actions</span>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+<div class="project-card" style="--bg: hsl(20,70%,50%); --accent: hsl(350,90%,55%)" id="simple-shelly-exporter">
+    <figure>
+      <figcaption>
+        <h3>Simple Shelly Exporter</h3>
+        <p class="project-subtitle">Minimal Prometheus Exporter for Shelly Plug US</p>
+        <p class="project-desc">Lightweight Go-based exporter exposing only the active power (watts) from a single Shelly Plug US via Prometheus metrics, intended as a coding exercise with minimal dependencies.  Built and published as a Docker image to Docker Hub using GitHub Actions</p>
+        <div class="project-links">
+          <a href="https://github.com/jwschman/simple-shelly-exporter">GitHub: github.com/jwschman/simple-shelly-exporter</a>
+        </div>
+        <div class="project-tech">
+          <span>Go</span>
+          <span>Docker</span>
+          <span>Prometheus</span>
+          <span>Docker</span>
+          <span>GitHub Actions</span>
+          <span>REST API</span>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+<div class="project-card" style="--bg: hsl(320,70%,50%); --accent: hsl(260,90%,55%)">
+    <figure>
+      <figcaption>
+        <h3>Jailhouse Roll Call</h3>
+        <p class="project-subtitle">Go Application for Displaying TrueNAS Jail Information</p>
+        <p class="project-desc">Fetches jail details from a TrueNAS server via API and renders them as an HTML table on a local web server using Go.</p>
+        <div class="project-links">
+          <a href="https://github.com/jwschman/jrc">GitHub: github.com/jwschman/jrc</a>
+        </div>
+        <div class="project-tech">
+          <span>Go</span>
+          <span>HTML</span>
+          <span>TrueNAS API</span>
+          <span>Gin Framework</span>
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+</div>
+</section>
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

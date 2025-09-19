@@ -7,7 +7,7 @@ date = "2025-09-19"
 tags = ["nextcloud", "bitnami", "postgres", "homelab"]
 
 [extra]
-cover_image=""
+cover_image="cover-image.png"
 +++
 
 Bitnami Helm Charts have moved to a subscription model that is significantly out of my budget so I had to do some cleanup in my Homelab cluster to get rid of any Bitnami images that I was using.

@@ -1,0 +1,677 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Migrating WordPress from Bitnami Helm Charts to Official Images - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="A step-by-step guide to migrating from Bitnami WordPress Helm Chart to Official Images" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Migrating WordPress from Bitnami Helm Charts to Official Images" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="A step-by-step guide to migrating from Bitnami WordPress Helm Chart to Official Images" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Migrating WordPress from Bitnami Helm Charts to Official Images</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2025-09-24</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2025/09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests/cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><p>This is a continuation of my previous post about <a href="/posts/2025/09-19-migrating-from-bitnami-databases-using-the-nextcloud-community-chart/">migrating from the Bitnami Postgres image</a>.  In that post I modified the helm values for a Nextcloud instance to point to a freshly deployed Postgres database.</p>
+<p>This post will explain how I moved away from the Bitnami Helm chart for WordPress and went with official images and straight manifests defining all of the infrastructure.  Like with my Postgres database for nextcloud, the reason for migrating away from the Bitnami images was Bitnami's recent shift to a paid model.</p>
+<p>Here's a step by step guide on how I did the migration and defined my Kubernetes infrastructure.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Ability to execute into pods with <code>kubectl</code></li>
+<li>WordPress and MariaDB instances from the Bitnami Helm chart running in the <code>wordpress</code> namespace (you can modify commands to match your namespace if it's different)</li>
+<li>Once again a backup of all WordPress data before starting would be nice to also have</li>
+<li>Secrets containing the credentials for MariaDB and Wordpress.  These can be created with:</li>
+</ul>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#50fa7b;">kubectl</span><span> create secret generic wordpress-mariadb-secrets \
+</span><span style="font-style:italic;color:#ffb86c;">  --from-literal</span><span style="color:#ff79c6;">=</span><span>MARIADB_ROOT_PASSWORD=</span><span style="color:#f1fa8c;">&#39;MyRootPassword&#39; </span><span>\
+</span><span style="font-style:italic;color:#ffb86c;">  --from-literal</span><span style="color:#ff79c6;">=</span><span>MARIADB_REPLICATION_PASSWORD=</span><span style="color:#f1fa8c;">&#39;MyReplicationPassword&#39; </span><span>\
+</span><span style="font-style:italic;color:#ffb86c;">  --from-literal</span><span style="color:#ff79c6;">=</span><span>MARIADB_PASSWORD=</span><span style="color:#f1fa8c;">&#39;MyUserPassword&#39; </span><span>\
+</span><span style="font-style:italic;color:#ffb86c;">  -n</span><span> wordpress-new
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#50fa7b;">kubectl</span><span> create secret generic wordpress-secrets \
+</span><span style="font-style:italic;color:#ffb86c;">  --from-literal</span><span style="color:#ff79c6;">=</span><span>WORDPRESS_DB_PASSWORD=</span><span style="color:#f1fa8c;">&#39;MyUserPassword&#39; </span><span>\
+</span><span style="font-style:italic;color:#ffb86c;">  -n</span><span> wordpress-new
+</span></code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>Namespace Info</strong></span>
+  </div>
+  <div class="pl-4"><p>My original WordPress was deployed into the <code>wordpress</code> namespace.  Due to pod naming conventions I decided to create a new namespace called <code>wordpress-new</code>, and after everything was migrated and the old resources removed, I moved the new resources from <code>wordpress-new</code> to <code>wordpress</code></p>
+</div>
+</div>
+<h2 id="step-1-deploy-mariadb">Step 1: Deploy MariaDB</h2>
+<p>First I created a simple StatefulSet in the <code>wordpress-new</code> namespace using this manifest:</p>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#6272a4;">## MariaDB StatefulSet for WordPress
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">apps/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">StatefulSet
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">matchLabels</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb
+</span><span>  </span><span style="color:#ff79c6;">serviceName</span><span>: </span><span style="color:#f1fa8c;">&quot;wordpress-mariadb-svc&quot;
+</span><span>  </span><span style="color:#ff79c6;">replicas</span><span>: </span><span style="color:#bd93f9;">1
+</span><span>  </span><span style="color:#ff79c6;">minReadySeconds</span><span>: </span><span style="color:#bd93f9;">10
+</span><span>  </span><span style="color:#ff79c6;">template</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">labels</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb
+</span><span>    </span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">containers</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">mariadb
+</span><span>        </span><span style="color:#ff79c6;">image</span><span>: </span><span style="color:#f1fa8c;">mariadb:11.8 </span><span style="color:#6272a4;"># Match whatever version you want
+</span><span>        </span><span style="color:#ff79c6;">envFrom</span><span>:
+</span><span>          - </span><span style="color:#ff79c6;">secretRef</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb-secrets
+</span><span>        </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">containerPort</span><span>: </span><span style="color:#bd93f9;">3306
+</span><span>          </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">tcp-mariadb
+</span><span>
+</span><span>        </span><span style="color:#ff79c6;">volumeMounts</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb-data
+</span><span>          </span><span style="color:#ff79c6;">mountPath</span><span>: </span><span style="color:#f1fa8c;">/var/lib/mysql
+</span><span>
+</span><span>      </span><span style="color:#ff79c6;">volumes</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb-data
+</span><span>          </span><span style="color:#ff79c6;">persistentVolumeClaim</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">claimName</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb-data
+</span><span>---
+</span><span style="color:#6272a4;"># MariaDB service
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Service
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb-svc
+</span><span>    </span><span style="color:#ff79c6;">labels</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>    - </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">3306
+</span><span>      </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">tcp-mariadb
+</span><span>    </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb
+</span></code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>PVC Info</strong></span>
+  </div>
+  <div class="pl-4"><p>Storage is handled with a previously created PVC in the same namespace named <code>wordpress-mariadb-data</code>.</p>
+<p>The ReclaimPolicy for this PVC will need to be set to <code>Retain</code> if you intend to move it to a new namespace</p>
+</div>
+</div>
+<p>Once that's up and running we're ready for step 2:</p>
+<h2 id="step-2-prepare-mariadb-for-migration">Step 2: Prepare MariaDB for Migration</h2>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(68, 138, 255, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/note.svg)"
+    >
+      note
+    </div>
+    <span><strong>Note</strong></span>
+  </div>
+  <div class="pl-4"><p>For this migration I'm going to be shelling into the pods and performing commands directly.  It's not the best approach, but in this case I wanted ease and simplicity.</p>
+</div>
+</div>
+<h3 id="shell-into-the-bitnami-mariadb-pod-inside-the-wordpress-namespace">Shell into the Bitnami MariaDB pod inside the <code>wordpress</code> namespace</h3>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># Find out the name of the pod.  It&#39;ll likely be wordpress-mariadb-0
+</span><span style="color:#50fa7b;">kubectl</span><span> get pods</span><span style="font-style:italic;color:#ffb86c;"> -n</span><span> wordpress
+</span><span style="color:#6272a4;"># Shell into the pod
+</span><span style="color:#50fa7b;">kubectl</span><span style="font-style:italic;color:#ffb86c;"> -n</span><span> wordpress exec</span><span style="font-style:italic;color:#ffb86c;"> -it </span><span style="color:#ff79c6;">&lt;</span><span>wordpress-mariadb-pod</span><span style="color:#ff79c6;">&gt; </span><span>-- bash
+</span></code></pre>
+<h3 id="dump-the-mariadb-database-inside-the-pod">Dump the MariaDB database inside the pod</h3>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#50fa7b;">mysqldump</span><span style="font-style:italic;color:#ffb86c;"> -u</span><span> root</span><span style="font-style:italic;color:#ffb86c;"> -p</span><span> bitnami_wordpress </span><span style="color:#ff79c6;">&gt;</span><span> /tmp/backup.sql
+</span></code></pre>
+<p>Enter the password for the database and it should dump without any problems.</p>
+<h3 id="copy-the-dumped-database-to-local-machine">Copy the dumped database to local machine</h3>
+<p>Exit out of the pod and copy the database</p>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># don&#39;t forget to exit the pod
+</span><span style="color:#8be9fd;">exit
+</span><span style="color:#6272a4;"># copy the database
+</span><span style="color:#50fa7b;">kubectl</span><span> cp wordpress/</span><span style="color:#ff79c6;">&lt;</span><span>wordpress-mariadb-pod</span><span style="color:#ff79c6;">&gt;</span><span>:/tmp/backup.sql ./backup.sql
+</span></code></pre>
+<h3 id="copy-the-dumped-database-to-the-new-mariadb-pod-in-the-wordpress-new-namespace">Copy the dumped database to the new mariadb pod in the <code>wordpress-new</code> namespace</h3>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># Get the name of the new mariadb pod
+</span><span style="color:#50fa7b;">kubectl</span><span> get pods</span><span style="font-style:italic;color:#ffb86c;"> -n</span><span> wordpress-new
+</span><span style="color:#6272a4;"># copy the database
+</span><span style="color:#50fa7b;">kubectl</span><span> cp ./backup.sql wordpress-new/</span><span style="color:#ff79c6;">&lt;</span><span>new-wordpress-mariadb-pod</span><span style="color:#ff79c6;">&gt;</span><span>:/tmp/backup.sql
+</span></code></pre>
+<h3 id="shell-into-the-new-mariadb-pod-and-login-to-mariadb">Shell into the new MariaDB pod and login to MariaDB</h3>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># Shell into the new MariaDB pod
+</span><span style="color:#50fa7b;">kubectl</span><span style="font-style:italic;color:#ffb86c;"> -n</span><span> wordpress-new exec</span><span style="font-style:italic;color:#ffb86c;"> -it </span><span style="color:#ff79c6;">&lt;</span><span>new-wordpress-mariadb-pod</span><span style="color:#ff79c6;">&gt;</span><span> bash
+</span><span style="color:#6272a4;"># login to mariadb
+</span><span style="color:#50fa7b;">mariadb</span><span style="font-style:italic;color:#ffb86c;"> -u</span><span> root</span><span style="font-style:italic;color:#ffb86c;"> -p
+</span></code></pre>
+<p>It will prompt you for the root password you set with <code>MARIADB_ROOT_PASSWORD</code></p>
+<h3 id="create-the-new-database">Create the new Database</h3>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># Create the WordPress DB, USER, and grant privileges to new user
+</span><span style="color:#50fa7b;">CREATE</span><span> DATABASE wordpress</span><span style="color:#ff79c6;">;
+</span><span style="color:#50fa7b;">CREATE</span><span> USER </span><span style="color:#f1fa8c;">&#39;wordpress&#39;</span><span>@</span><span style="color:#f1fa8c;">&#39;%&#39;</span><span> IDENTIFIED BY </span><span style="color:#f1fa8c;">&#39;MySuperSecurePassword&#39;</span><span style="color:#ff79c6;">;
+</span><span style="color:#50fa7b;">GRANT</span><span> ALL PRIVILEGES ON wordpress.</span><span style="color:#ff79c6;">*</span><span> TO </span><span style="color:#f1fa8c;">&#39;wordpress&#39;</span><span>@</span><span style="color:#f1fa8c;">&#39;%&#39;</span><span style="color:#ff79c6;">;
+</span><span style="color:#50fa7b;">FLUSH</span><span> PRIVILEGES</span><span style="color:#ff79c6;">;
+</span></code></pre>
+<h3 id="import-the-dumped-database-and-exit-out-of-the-pod">Import the dumped database and exit out of the pod</h3>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># import the database
+</span><span style="color:#50fa7b;">mariadb</span><span style="font-style:italic;color:#ffb86c;"> -u</span><span> root</span><span style="font-style:italic;color:#ffb86c;"> -p</span><span> wordpress </span><span style="color:#ff79c6;">&lt;</span><span> /tmp/backup.sql
+</span><span style="color:#6272a4;"># get out of the pod
+</span><span style="color:#8be9fd;">exit
+</span></code></pre>
+<p>The database is now good to go and we can get WordPress up and running</p>
+<h2 id="step-3-deploy-wordpress-in-the-wordpress-new-namespace">Step 3: Deploy WordPress in the <code>wordpress-new</code> namespace</h2>
+<p>Here is a simple manifest I used for the WordPress deployment.  It includes the deployment, service, and an ingress using my internal ingressclass.</p>
+<pre data-lang="yaml" style="background-color:#282a36;color:#f8f8f2;" class="language-yaml "><code class="language-yaml" data-lang="yaml"><span>---
+</span><span style="color:#6272a4;">## WordPress Deployment
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">apps/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Deployment
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">replicas</span><span>: </span><span style="color:#bd93f9;">1
+</span><span>  </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">matchLabels</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span>  </span><span style="color:#ff79c6;">template</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">labels</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span>    </span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">containers</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span>        </span><span style="color:#ff79c6;">image</span><span>: </span><span style="color:#f1fa8c;">wordpress:6.8.2-apache </span><span style="color:#6272a4;"># Use whichever image version you want
+</span><span>        </span><span style="color:#ff79c6;">imagePullPolicy</span><span>: </span><span style="color:#f1fa8c;">IfNotPresent
+</span><span>      
+</span><span>        </span><span style="color:#ff79c6;">env</span><span>:
+</span><span>        </span><span style="color:#6272a4;"># DB ENV
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">WORDPRESS_DB_HOST
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">wordpress-mariadb-svc:3306
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">WORDPRESS_DB_NAME
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span>        - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">WORDPRESS_DB_USER
+</span><span>          </span><span style="color:#ff79c6;">value</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span>       
+</span><span>        </span><span style="color:#6272a4;"># Pull all other env from external secret (DB Password)
+</span><span>        </span><span style="color:#ff79c6;">envFrom</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">secretRef</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-secrets
+</span><span>
+</span><span>        </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">containerPort</span><span>: </span><span style="color:#bd93f9;">80
+</span><span>          </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">http
+</span><span>          </span><span style="color:#ff79c6;">protocol</span><span>: </span><span style="color:#f1fa8c;">TCP
+</span><span>        - </span><span style="color:#ff79c6;">containerPort</span><span>: </span><span style="color:#bd93f9;">443
+</span><span>          </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">https
+</span><span>          </span><span style="color:#ff79c6;">protocol</span><span>: </span><span style="color:#f1fa8c;">TCP
+</span><span>        </span><span style="color:#ff79c6;">readinessProbe</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">failureThreshold</span><span>: </span><span style="color:#bd93f9;">6
+</span><span>          </span><span style="color:#ff79c6;">httpGet</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">path</span><span>: </span><span style="color:#f1fa8c;">/wp-login.php
+</span><span>            </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#f1fa8c;">http
+</span><span>            </span><span style="color:#ff79c6;">scheme</span><span>: </span><span style="color:#f1fa8c;">HTTP
+</span><span>          </span><span style="color:#ff79c6;">initialDelaySeconds</span><span>: </span><span style="color:#bd93f9;">60
+</span><span>          </span><span style="color:#ff79c6;">periodSeconds</span><span>: </span><span style="color:#bd93f9;">10
+</span><span>          </span><span style="color:#ff79c6;">successThreshold</span><span>: </span><span style="color:#bd93f9;">1
+</span><span>          </span><span style="color:#ff79c6;">timeoutSeconds</span><span>: </span><span style="color:#bd93f9;">5
+</span><span>        </span><span style="color:#ff79c6;">volumeMounts</span><span>:
+</span><span>        - </span><span style="color:#ff79c6;">mountPath</span><span>: </span><span style="color:#f1fa8c;">/var/www/html/wp-content
+</span><span>          </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-data
+</span><span>
+</span><span>      </span><span style="color:#ff79c6;">volumes</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-data
+</span><span>        </span><span style="color:#ff79c6;">persistentVolumeClaim</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">claimName</span><span>: </span><span style="color:#f1fa8c;">wordpress-wordpress-data
+</span><span>---
+</span><span style="color:#6272a4;"># WordPress service
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Service
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-wordpress-svc
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>    </span><span style="color:#ff79c6;">selector</span><span>:
+</span><span>        </span><span style="color:#ff79c6;">app</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span>    </span><span style="color:#ff79c6;">ports</span><span>:
+</span><span>    - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">http
+</span><span>      </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">80
+</span><span>      </span><span style="color:#ff79c6;">targetPort</span><span>: </span><span style="color:#bd93f9;">80
+</span><span>    - </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">https
+</span><span>      </span><span style="color:#ff79c6;">port</span><span>: </span><span style="color:#bd93f9;">443
+</span><span>      </span><span style="color:#ff79c6;">targetPort</span><span>: </span><span style="color:#bd93f9;">443
+</span><span>---
+</span><span style="color:#6272a4;"># WordPress Ingress
+</span><span style="color:#ff79c6;">apiVersion</span><span>: </span><span style="color:#f1fa8c;">networking.k8s.io/v1
+</span><span style="color:#ff79c6;">kind</span><span>: </span><span style="color:#f1fa8c;">Ingress
+</span><span style="color:#ff79c6;">metadata</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress
+</span><span style="color:#ff79c6;">spec</span><span>:
+</span><span>  </span><span style="color:#ff79c6;">ingressClassName</span><span>: </span><span style="color:#f1fa8c;">internal
+</span><span>  </span><span style="color:#ff79c6;">tls</span><span>:
+</span><span>  - </span><span style="color:#ff79c6;">hosts</span><span>:
+</span><span>    - </span><span style="color:#f1fa8c;">wordpress.pawked.com
+</span><span>  </span><span style="color:#ff79c6;">rules</span><span>:
+</span><span>  - </span><span style="color:#ff79c6;">host</span><span>: </span><span style="color:#f1fa8c;">wordpress.pawked.com
+</span><span>    </span><span style="color:#ff79c6;">http</span><span>:
+</span><span>      </span><span style="color:#ff79c6;">paths</span><span>:
+</span><span>      - </span><span style="color:#ff79c6;">path</span><span>: </span><span style="color:#f1fa8c;">/
+</span><span>        </span><span style="color:#ff79c6;">pathType</span><span>: </span><span style="color:#f1fa8c;">Prefix
+</span><span>        </span><span style="color:#ff79c6;">backend</span><span>:
+</span><span>          </span><span style="color:#ff79c6;">service</span><span>:
+</span><span>            </span><span style="color:#ff79c6;">name</span><span>: </span><span style="color:#f1fa8c;">wordpress-wordpress-svc
+</span><span>            </span><span style="color:#ff79c6;">port</span><span>:
+</span><span>              </span><span style="color:#ff79c6;">number</span><span>: </span><span style="color:#bd93f9;">80
+</span></code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>PVC Info</strong></span>
+  </div>
+  <div class="pl-4"><p>Again, storage is handled with a previously created PVC in the same namespace named <code>wordpress-wordpress-data</code>.</p>
+<p>The ReclaimPolicy for this PVC will need to be set to <code>Retain</code> if you intend to move it to a new namespace</p>
+</div>
+</div>
+<h2 id="step-4-import-uploaded-content-from-old-instance">Step 4: Import Uploaded Content from old instance</h2>
+<h3 id="copy-the-uploads-from-the-old-pod">Copy the uploads from the old pod</h3>
+<p>We'll need to get the name of the old WordPress pod first</p>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># Get the name of the old WordPress pod
+</span><span style="color:#50fa7b;">kubectl</span><span> get pods</span><span style="font-style:italic;color:#ffb86c;"> -n</span><span> wordpress
+</span><span style="color:#6272a4;"># copy the uploads folder to the local machine
+</span><span style="color:#50fa7b;">kubectl</span><span> cp wordpress/</span><span style="color:#ff79c6;">&lt;</span><span>old-wordpress-pod</span><span style="color:#ff79c6;">&gt;</span><span>:/bitnami/wordpress/wp-content/uploads ./uploads
+</span></code></pre>
+<h3 id="copy-the-uploads-into-the-new-pod">Copy the uploads into the new pod</h3>
+<p>We need to get the new pod name as well</p>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#6272a4;"># Get the name of the new WordPress pod
+</span><span style="color:#50fa7b;">kubectl</span><span> get pods</span><span style="font-style:italic;color:#ffb86c;"> -n</span><span> wordpress-new
+</span><span style="color:#6272a4;"># copy the uploads folder to the new WordPress pod
+</span><span style="color:#50fa7b;">kubectl</span><span> cp ./uploads/. wordpress-new/</span><span style="color:#ff79c6;">&lt;</span><span>new-wordpress-pod</span><span style="color:#ff79c6;">&gt;</span><span>:/var/www/html/wp-content/uploads/
+</span></code></pre>
+<h3 id="set-the-permissions-on-the-uploads-content">Set the permissions on the uploads content</h3>
+<pre data-lang="bash" style="background-color:#282a36;color:#f8f8f2;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#50fa7b;">kubectl</span><span> exec</span><span style="font-style:italic;color:#ffb86c;"> -n</span><span> wordpress-new </span><span style="color:#ff79c6;">&lt;</span><span>new wordpress-pod</span><span style="color:#ff79c6;">&gt; </span><span>-- chown</span><span style="font-style:italic;color:#ffb86c;"> -R</span><span> www-data:www-data /var/www/html/wp-content/uploads
+</span></code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(255, 145, 0, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/warning.svg)"
+    >
+      warning
+    </div>
+    <span><strong>Warning</strong></span>
+  </div>
+  <div class="pl-4"><p>If you edited any themes or plugins in your original instance it might be better to copy the entire <code>/bitnami/wordpress/wp-content/</code> (minus the wp-config.php) using the same commands.</p>
+</div>
+</div>
+<h2 id="conclusion">Conclusion</h2>
+<p>And now you should be able to navigate to your WordPress instance and be ready to go.  If you want you can change the namespace from <code>wordpress-new</code> to something else.  I went with <code>wordpress</code> because I'm creative.</p>
+<p>This migration was slightly more difficult than the Postgres one I did last week because of needing to shell in to the pods and creating the database, as well as moving the uploaded content over, but it was still fairly simple and worth doing to get away from the Bitnami images.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/wordpress/"
+      >wordpress</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/bitnami/"
+      >bitnami</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/mariadb/"
+      >mariadb</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-19-migrating-from-bitnami-databases-using-the-nextcloud-community-chart&#x2F;"
+    ><span class="mr-1.5">←</span><span>Migrating from Bitnami to Official PostgreSQL Images with the Nextcloud Community Chart</span></a
+  >
+  <!---->
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

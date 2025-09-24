@@ -1,0 +1,392 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    I Got My CKA - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="How I prepared for and passed the Certified Kubernetes Administrator exam" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="I Got My CKA" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="How I prepared for and passed the Certified Kubernetes Administrator exam" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;05-16-i-got-my-cka&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cka.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;05-16-i-got-my-cka&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">I Got My CKA</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2025-05-16</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2025/05-16-i-got-my-cka/cka.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><p>Ever since I decided to shift into IT about a year ago, passing the CKA was my primary goal and I finally did it a couple weeks ago.  It's extremely refreshing to have actually achieved it, and now I feel like I have a number of new things that I can focus on.  This post will describe how I prepared for the test, the detours that I took while preparing, and finally the actual exam itself.</p>
+<h2 id="prep-for-the-cka">Prep for the CKA</h2>
+<h3 id="kodekloud-cka-linux-foundation-lfs258">KodeKloud CKA &amp; Linux Foundation (LFS258)</h3>
+<p>I've mentioned in <a href="/tags/kodekloud/">previous posts</a> that I like to use KodeKloud for online courses.  Specifically I like the hands-on labs they provide.  Learning from reading documentation and watching videos is helpful, but getting real experience is the best way for me to learn a new technology.  It's actually how I teach my classes at school.  KodeKloud's CKA course seems to be widely recommended online and was a great resource overall, though I did find the labs a bit on the easy side this time around.</p>
+<p>In addition to the KodeKloud course I also worked through the <a href="https://trainingportal.linuxfoundation.org/courses/kubernetes-fundamentals-lfs258">Linux Foundation Kubernetes Fundamentals (LFS258)</a> course, which a friend generously gifted me.  This course dives deeper into how Kubernetes works and covers the exam materials more thoroughly.  It also approaches hands-on learning in a different way.</p>
+<p>With the KodeKloud course you are able to get going right away with their prebuilt labs.  You can start running <code>kubectl</code> commands immediately without worrying about setting up your own cluster.  One of the best implementations of this is that they are able to provide intentionally broken clusters, which is great practice for troubleshooting.  I felt that this was probably the biggest advantage of the KodeKloud labs.  Being able to go in and fix something (without actually messing up your own setup) is a great experience.</p>
+<p>In contrast, LFS258 takes a deeper, more DIY approach by having you build your own cluster at the beginning of the course.  It's a great way to learn but may be difficult for someone without much Linux experience.  Actually, for both of these courses (and the CKA in general) experience with Linux is essential.  I'm very glad that I decided to do the <a href="/posts/2024/10-03-completing-the-lfcs/">LFCS</a> beforehand as it gave me a solid foundation to build on.</p>
+<h3 id="anki">Anki</h3>
+<p>Once again I used Anki flash cards to remember a lot of the concepts and commands.  One piece of advice that I got early on was to use imperative commands while actually taking the CKA test and the flash cards helped out with that a lot.  It is often much simpler to run an imperative command and output it into a .yaml file than look up how to write the manifest in the <a href="https://kubernetes.io">kubernetes.io</a> documentation.  Every morning I went through my anki deck while drinking my coffee and it became a little ritual.  Having a good routine for this is extremely helpful so the cards don't just pile up.</p>
+<h3 id="study-schedule-and-timeline">Study Schedule and Timeline</h3>
+<p>I usually spent between one and three hours every weeknight working on these courses and it took me about 5 months to get through.  This would have been made shorter if I had been able to spend more time studying each day and also hadn't gotten distracted by my homelab.  Speaking of which...</p>
+<h2 id="distractions-and-detours">Distractions and Detours</h2>
+<p>About a month in to studying Kubernetes I got antsy and decided to start moving all of my homelab over from FreeBSD jails on my TrueNAS to an actual Kubernetes cluster.  And since the point of this cluster was also for learning Kubernetes and more Linux experience I wanted to do things correctly rather than bumbling through them.  I actually wrote a few articles about it already on this page <a href="/tags/kubernetes/">(tags for some of the posts here)</a> and definitely learned a lot.  At the end I had a fully built three node Kubernetes cluster set up with <code>kubeadm</code> and managed by ArgoCD.  When I came back to the courses I found that I had moved past them in experience but I still needed the foundational knowledge to reinforce my skills.  I definitely wouldn't have been able to pass the courses with just my practical experience.</p>
+<h2 id="practice-for-the-exam">Practice for the Exam</h2>
+<h3 id="killer-shell-exam-simulator">Killer Shell Exam Simulator</h3>
+<p>Registering to take the CKA gives you access to two Killer Shell exam simulators and it would be ridiculous not to use them.  Everything I've heard online and from a friend about Killer Shell is that the practice tests are noticeably harder than the actual tests.  So when I completed the first Killer Shell simulator and got a high score I was feeling pretty confident and booked my actual exam pretty much right away.  The questions were definitely on the tough side but not anything I couldn't do after completing the CKA prep courses.</p>
+<p>The second simulator, however, felt much more difficult and made me feel a bit worried about the actual test.  It also didn't help that about 15 minutes into starting the simulator we had a pretty sizeable earthquake here with several large aftershocks and I became distracted with things around the house.</p>
+<h3 id="kodekloud-practice-tests">KodeKloud Practice Tests</h3>
+<p>The KodeKloud CKA course offered a few practice tests at the end of the course and they were also quite helpful, though not nearly as difficult or thorough as the Killer Shell tests.  They were also great for making Anki flash cards from.  Having a large list of possible questions and scenarios let me really fill out the deck at the end.</p>
+<h3 id="alta3-research-cka-exam-questions-solutions-youtube-videos">Alta3 Research CKA Exam Questions &amp; Solutions Youtube Videos</h3>
+<p>I stumbled on these videos about a week before I took the test and they were very helpful giving me more of an idea of what to expect, as well as quick ways of completing the tasks.  He runs through all of the tasks that he prepared and shows you exactly what to do for them.  Great resource right before taking the test.</p>
+<h2 id="test-day">Test Day</h2>
+<p>From previous experience taking Linux Foundation test I knew to prepare my room and clean out pretty much everything in sight of the camera.  I didn't want to get called out for anything and have to reschedule.  It also meant my room was really clean after the test which was nice.</p>
+<p>As for the test itself, most questions were straightforward and aligned with what I had studied.  The only problem was that there were a <em><strong>LOT</strong></em> of tasks and only two hours to complete them.  You really need to know your way around the Kubernetes documentation pages as well as how to do those imperative <code>kubectl</code> commands to get everything done in time.  I was very glad I got that advice about knowing how to do things imperatively because without it I don't think I would have gotten a passing score.  All of the Kubernetes content on the test was covered in both of the prep courses I took so I felt prepared but if someone were to go in knowing minimal Linux they would definitely have troubles with some of the tasks.  Simple things like output redirection and knowing how to use <code>grep</code> are pretty important.</p>
+<p>The test allows you to flag difficult questions to come back to and that was very helpful for going through and completing the quick and tasks first and coming back to the ones that would require more thought later.  As I was finishing my final task, troubleshooting a node that was down, I fixed the problem and ran <code>kubectl get nodes</code> and right as I saw that the node was listed as Ready my screen changed and I was informed that I had reached the time limit.  Things couldn't have possibly been closer, and I didn't have any time to go back and check my answers like I did on the LFCS, but I was finished and awaiting the results.  Almost exactly 24 (very long) hours later I got an email saying that I had passed the exam along with links to my certification details.</p>
+<h2 id="advice-for-passing">Advice for Passing</h2>
+<p>I did this for my <a href="/posts/2024/10-03-completing-the-lfcs/">LFCS post</a> so I probably should here as well.  Actually my advice here is very similar to the advice on that post.</p>
+<p>Do the KodeKloud and killer.sh labs and practice tests.  They'll get you prepared for how the test will actually go.  Also, Anki for remembering commands will help with your speed on test day.</p>
+<p>The big difference between the LFCS and CKA is that you are allowed access to the Kubernetes website during the CKA so you need to be able to quickly navigate it and know where to look for things that you want.  Knowing what page to be on and doing ctrl+f to look for &quot;kind: pod&quot; will help significantly.</p>
+<p>Also, as I mentioned before, knowing how to do the imperative commands also helps a lot.  Being able to run something like <code>kubectl run podname --image=whatever --dry-run=client -oyaml &gt;&gt; pod1.yaml</code> to quickly create a pod manifest for editing or <code>kubectl create serviceaccount my-service-account</code> is faster and less prone to errors than copying it from the documentation.  Again, anki helps here.</p>
+<h2 id="final-thoughts-and-what-s-next">Final Thoughts and What's Next</h2>
+<p>It's a great feeling to complete a goal that you set for yourself a year ago.  I had to take other steps to get here, such as completing the LFCS and migrating my homelab to Kubernetes, but I did it.</p>
+<p>Like I mentioned before, the actual test was tough.  The content itself wasn't surprising or especially difficult, but completing all of the tasks within the time limit definitely made things difficult.</p>
+<p>As for what's next, I haven't really decided.  After passing I just took a week off of everything and enjoyed not needing to study for anything.  Then I spent some time on the homelab which you can see in my previous and upcoming posts here.  But now that I've had that little bit of time off I'm ready to get back into the habit of studying.  KubeCon Tokyo is also coming up in less than a month...</p>
+<h2 id="resources-and-links">Resources and Links</h2>
+<ul>
+<li><a href="https://learn.kodekloud.com/courses/cka-certification-course-certified-kubernetes-administrator">KodeKloud CKA Certification Course - Certified Kubernetes Administrator</a></li>
+<li><a href="https://trainingportal.linuxfoundation.org/courses/kubernetes-fundamentals-lfs258">Linux Foundation Kubernetes Fundamentals (LFS258)</a></li>
+<li><a href="https://killer.sh/cka">Killer Shell CKA Simulator</a></li>
+<li><a href="https://www.youtube.com/watch?v=rP-W3Tv3plw">Alta3 Research CKA YouTube Series</a></li>
+</ul>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/cka/"
+      >cka</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/kubernetes/"
+      >kubernetes</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/study/"
+      >study</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/certifications/"
+      >certifications</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/kodekloud/"
+      >kodekloud</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;05-09-introducing-homelabo-my-open-homelab-environment&#x2F;"
+    ><span class="mr-1.5">←</span><span>Introducing HomeLabo: My Open Homelab Environment</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;05-22-truenas-gotify-adapter-in-golang&#x2F;"
+    ><span>TrueNAS Gotify Adapter in Golang</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

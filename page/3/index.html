@@ -1,0 +1,606 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  <meta name="description" content="A personal website for John Schmanski" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="JWSCHMAN" />
+  <meta property="og:description" content="A personal website for John Schmanski" />
+  <meta property="og:url" content="https://jwschman.github.io" />
+  
+  <meta property="og:image" content="https://jwschman.github.io/icons/github.svg" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+  <!-- Avatar -->
+  
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/avatar.jpg" />
+  
+
+  <!-- Social List -->
+  
+  <!---->
+  
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/github.svg" />
+  
+  <link rel="preload" as="image" href="https://cdn.jsdelivr.net/npm/simple-icons/icons/linkedin.svg" />
+  
+  <!---->
+  
+  <!---->
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+        
+<div class="mb-16 flex items-start">
+  
+  <div
+    class="not-prose mr-5 shrink-0 rounded-full border-[0.5px] border-black/10 bg-white/50 p-3 shadow dark:bg-white/[15%]"
+  >
+    <img
+      class=" my-0 aspect-square w-16 rounded-full !bg-black/5 hover:animate-spin"
+      src="https://jwschman.github.io/icons/avatar.jpg"
+      alt="JWSCHMAN"
+    />
+  </div>
+  <!---->
+
+  
+  <div>
+    <h1 class="mb-2 text-3xl font-bold">JWSCHMAN</h1>
+    <div class="mb-2 break-words">
+      Learning as I go.
+    </div>
+
+    
+    <nav class="flex justify-start space-x-3 dark:invert">
+      
+      <a
+        class="primary-link h-8 w-8 text-[0] [background:var(--url)_center_center/cover_no-repeat]"
+        style="--url: url(https://jwschman.github.io/icons/github.svg)"
+        href="https://github.com/jwschman"
+        target="_blank"
+        rel="me"
+      >
+        github
+      </a>
+      
+      <a
+        class="primary-link h-8 w-8 text-[0] [background:var(--url)_center_center/cover_no-repeat]"
+        style="--url: url(https://cdn.jsdelivr.net/npm/simple-icons/icons/linkedin.svg)"
+        href="https://www.linkedin.com/in/jwschman/"
+        target="_blank"
+        rel="me"
+      >
+        linkedin
+      </a>
+      
+    </nav>
+    
+  </div>
+  
+</div>
+
+
+        <!--Salutation-->
+<section class="mb-12 text-lg page-section">
+  <p>
+    Hey there!  I'm John, a Certified Linux and Kubernetes Administrator transitioning from 15 years in education to DevOps.  I love building and maintaining automated, production-like infrastructure in my homelab and documenting the journey through my <a href="https://jwschman.github.io/projects">projects</a> and <a href="https://jwschman.github.io/projects">posts</a>.  You can explore them below, and feel free to reach out if you'd like to connect.
+  </p>
+  <!--Contact Button-->
+  <div class="mt-8" style="text-align:center;">
+    <a href="https://jwschman.github.io/contact" class="contact-button">
+      Get in touch
+    </a>
+  </div>
+</section>
+
+<!--Projects-->
+<section class="mb-12 text-lg page-section">
+  <h2 class="section-title">Featured Projects</h2>
+
+  <div class="project-container">
+    
+    <article>
+      <a href="https://jwschman.github.io/projects/#homelab">
+        <figure>
+          <img src="/assets/project-icons/kubernetes.png" alt="Homelab">
+          <figcaption>
+            <h3>HomeLabo</h3>
+            <p>Automated & Open Kubernetes Homelab</p>
+              <div class="tech-tags">
+                <span>Kubernetes</span>
+                <span>ArgoCD</span>
+                <span>Automation</span>
+              </div>
+          </figcaption>
+        </figure>
+      </a>
+    </article>
+
+    <article>
+      <a href="https://jwschman.github.io/projects/#cloud-resume-challenge">
+      <figure>
+        <img src="/assets/project-icons/aws.png" alt="Cloud Resume Challenge Site">
+        <figcaption>
+          <h3>Cloud Resume Challenge</h3>
+          <p>Serverless static site built entirely with IaC</p>
+            <div class="tech-tags">
+              <span>Terraform</span>
+              <span>AWS</span>
+              <span>CI/CD</span>
+            </div>
+        </figcaption>
+      </figure>
+    </a>
+    </article>
+  </div>
+  
+  <div class="project-container">
+  
+    <article>
+      <a href="https://jwschman.github.io/projects/#truenas-gotify-adapter">
+      <figure>
+        <img src="/assets/project-icons/gotify.svg" alt="TrueNAS Gotify Adapter">
+        <figcaption>
+          <h3>TrueNAS Gotify Adapter</h3>
+          <p>Get TrueNAS Notifications in Gotify</p>
+            <div class="tech-tags">
+              <span>Go</span>
+              <span>Docker</span>
+              <span>Github Actions</span>
+            </div>
+        </figcaption>
+      </figure>
+    </a>
+    </article>
+  
+    <article>
+      <a href="https://jwschman.github.io/projects/#simple-shelly-exporter">
+      <figure>
+        <img src="/assets/project-icons/prometheus.svg" alt="Simple Shelly Exporter">
+        <figcaption>
+          <h3>Simple Shelly Exporter</h3>
+          <p>Prometheus Exporter for Shelly Plug US</p>
+            <div class="tech-tags">
+              <span>Go</span>
+              <span>Prometheus</span>
+              <span>API Integration</span>
+            </div>
+        </figcaption>
+      </figure>
+    </a>
+    </article>
+
+  </div>
+
+  <p class="mt-2"><a class="underline" href="https://jwschman.github.io/projects">See all of my projects →</a></p>
+
+</section>
+
+<!--Certifications-->
+<section class="page-section">
+  <h2 class="section-title">Certifications</h2>
+
+  <p class="mt-2">Since summer 2024 I've been actively pursuing different certifications to build and demonstrate my skills. Here is what I've earned so far: </p>
+
+  <div class="card-container">
+
+    <article>
+      <figure>
+        <img src="/assets/cert-icons/cka.png" alt="CKA">
+        <figcaption>
+          <h3>CKA</h3>
+          <p>Certified Kubernetes Administrator</p>
+        </figcaption>
+      </figure>
+    </article>
+
+    <article>
+      <figure>
+        <img src="/assets/cert-icons/lfcs.png" alt="LFCS">
+        <figcaption>
+          <h3>LFCS</h3>
+          <p>Linux Foundation Certified System Administrator</p>
+        </figcaption>
+      </figure>
+
+    </article>
+
+  </div>
+  <div class="card-container">
+
+    <article>
+      <figure>
+        <img src="/assets/cert-icons/terraform-associate.png" alt="Terraform Associate">
+        <figcaption>
+          <h3>HCTA0-003</h3>
+          <p>HashiCorp Certified: Terraform Associate</p>
+        </figcaption>
+      </figure>
+    </article>
+
+    <article>
+      <figure>
+        <img src="/assets/cert-icons/clf-c02.png" alt="CLF-C02">
+        <figcaption>
+          <h3>CLF-C02</h3>
+          <p>AWS Certified Cloud Practitioner</p>
+        </figcaption>
+      </figure>
+    </article>
+
+  </div>
+
+</section>
+
+
+
+<!--Toolbox-->
+<section class="page-section">
+    <h2 class="section-title">My Toolbox</h2>
+    <p class="mt-2">Since starting my homelab journey I've grown to know and rely on different technologies. Here is a list of some that I use regularly:</p>
+
+    <div class="toolbox">
+      <table>
+        <tr>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/kubernetes.svg" alt="Kubernetes">
+              <div>Kubernetes</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/argocd.svg" alt="ArgoCD">
+              <div>ArgoCD</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/helm.svg" alt="Helm">
+              <div>Helm</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/metallb.svg" alt="MetalLB">
+              <div>MetalLB</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/nginx.svg" alt="Ingress-NGINX">
+              <div>Ingress-NGINX</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/cert-manager.png" alt="cert-manager">
+              <div>Cert Manager</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/prometheus.svg" alt="prometheus">
+              <div>Prometheus</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/grafana.svg" alt="grafana">
+              <div>Grafana</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/github.svg" alt="github">
+              <div>GitHub</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/truenas-core.svg" alt="truenas-core">
+              <div>TrueNAS Core</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/docker.svg" alt="docker">
+              <div>Docker</div>
+            </div>
+          </td>
+          <td>
+            <div class="toolbox-entry">
+              <img src="/assets/stack-icons/nextcloud.svg" alt="nextcloud">
+              <div>Nextcloud</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+</section>
+
+
+
+<!--Latest Posts-->
+<section style="margin-bottom: 3em; font-size: 1rem;" class="page-section">
+  <h2 class="section-title">Latest Posts</h2>
+
+  
+  <div style="display: flex; gap: 1em; flex-wrap: wrap; margin: 0;">
+    
+      <div style="flex: 1 1 calc(50% - 1em); box-sizing: border-box; overflow: hidden;">
+        <a href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests&#x2F;" style="text-decoration: none; color: inherit; display: block;">
+          
+            <img 
+              src="https://jwschman.github.io/posts/2025/09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests/cover-image.png" 
+              alt="Migrating WordPress from Bitnami Helm Charts to Official Images" 
+              style="width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; margin: 0;"
+            />
+          
+          <div style="padding: 0.3em 0.6em;">
+            <h3 style="font-size: 1.1em; font-weight: bold; margin: 0.2em 0 0.1em; text-decoration: underline;">
+              Migrating WordPress from Bitnami Helm Charts to Official Images
+            </h3>
+            <p style="font-size: 0.9em; color: #666; margin: 0;">2025-09-24</p>
+          </div>
+        </a>
+      </div>
+    
+      <div style="flex: 1 1 calc(50% - 1em); box-sizing: border-box; overflow: hidden;">
+        <a href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-19-migrating-from-bitnami-databases-using-the-nextcloud-community-chart&#x2F;" style="text-decoration: none; color: inherit; display: block;">
+          
+            <img 
+              src="https://jwschman.github.io/posts/2025/09-19-migrating-from-bitnami-databases-using-the-nextcloud-community-chart/cover-image.png" 
+              alt="Migrating from Bitnami to Official PostgreSQL Images with the Nextcloud Community Chart" 
+              style="width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; margin: 0;"
+            />
+          
+          <div style="padding: 0.3em 0.6em;">
+            <h3 style="font-size: 1.1em; font-weight: bold; margin: 0.2em 0 0.1em; text-decoration: underline;">
+              Migrating from Bitnami to Official PostgreSQL Images with the Nextcloud Community Chart
+            </h3>
+            <p style="font-size: 0.9em; color: #666; margin: 0;">2025-09-19</p>
+          </div>
+        </a>
+      </div>
+    
+  </div>
+  <p class="mt-2">
+    <a class="underline" href="https://jwschman.github.io/posts">View more posts →</a>
+  </p>
+</section>
+
+
+<!--Get In Touch-->
+<section class="text-lg page-section">
+  <h2 class="section-title">Get In Touch</h2>
+    <ul>
+      <li>Email: <a href="mailto:john.schmanski@gmail.com">john.schmanski@gmail.com</a></li>
+      <li>LinkedIn: <a href="https://linkedin.com/in/jwschman">linkedin.com/in/jwschman</a></li>
+    </ul>
+</section>
+    
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2025<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

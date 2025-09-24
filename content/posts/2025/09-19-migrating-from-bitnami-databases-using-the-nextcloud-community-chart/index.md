@@ -1,6 +1,6 @@
 +++
 title = "Migrating from Bitnami to Official PostgreSQL Images with the Nextcloud Community Chart"
-description = "A step-by-step guide to migrating from Bitnami PostgreSQL images to official PostgreSQL when using the Nextcloud Community Helm Chart."
+description = "A step-by-step guide to migrating from Bitnami PostgreSQL images to official PostgreSQL"
 date = "2025-09-19"
 
 [taxonomies] 
@@ -217,4 +217,8 @@ kubectl -n nextcloud exec -it <nextcloud-pod> -- less /var/www/html/data/nextclo
 kubectl -n nextcloud exec -it <nextcloud-pod> -- php occ maintenance:mode --off
 ```
 
+## Conclusion
+
 And with that you should be set up with your new Postgres instance that isn't using a Bitnami image.
+
+Next week I'll likely write a post about migrating my Bitnami WordPress Helm chart deployment to native Kubernetes manifests also using Official Images.

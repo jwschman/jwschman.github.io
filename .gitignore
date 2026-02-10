@@ -1,0 +1,6 @@
+# Zola build output
+public/
+
+# Claude Code
+CLAUDE.md
+.claude/

@@ -11,6 +11,11 @@ YEAR="$(date +"%Y")"
 if [ ! -d './content/posts/'$YEAR ]; then
     echo "Directory for $YEAR doesn't exist.  Creating now..."
     mkdir ./content/posts/$YEAR
+    cat > ./content/posts/$YEAR/_index.md << 'EOF'
++++
+transparent = true
++++
+EOF
 fi
 
 # build the variables to be used

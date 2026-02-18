@@ -7,7 +7,6 @@ date = "2025-05-09"
 tags = ["homelabo", "homelab", "github", "kubernetes", "open-source"]
 
 [extra]
-cover_image=""
 +++
 
 > **TL;DR**: I made my homelab config repo public.  You can find it [here](http://github.com/jwschman/homelabo).

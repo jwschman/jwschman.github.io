@@ -23,7 +23,7 @@ path = "projects"
           <span>Prometheus</span>
           <span>Grafana</span>
           <span>MetalLB</span>
-          <span>Ingress-NGINX</span>
+          <span>Traefik Proxy</span>
           <span>Hashicorp Vault</span>
         </div>
       </figcaption>
@@ -92,7 +92,6 @@ path = "projects"
           <span>Go</span>
           <span>Docker</span>
           <span>Prometheus</span>
-          <span>Docker</span>
           <span>GitHub Actions</span>
           <span>REST API</span>
         </div>

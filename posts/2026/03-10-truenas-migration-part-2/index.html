@@ -1,0 +1,390 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Truenas Migration Part 2 - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="The actual migration from TrueNAS CORE to Community Edition.  Here&#x27;s how it went, including fixing a pool import error, migrating Plex from a jail to a Docker container, and sorting out VM networking" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Truenas Migration Part 2" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="The actual migration from TrueNAS CORE to Community Edition.  Here&#x27;s how it went, including fixing a pool import error, migrating Plex from a jail to a Docker container, and sorting out VM networking" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-10-truenas-migration-part-2&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-10-truenas-migration-part-2&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Truenas Migration Part 2</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2026-03-10</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2026/03-10-truenas-migration-part-2/cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><blockquote>
+<p>This is part 2 of a 3-part series. Part 1 covered an initial offsite backup, and part 3 covers the permanent backup solution.</p>
+</blockquote>
+<p>In <a href="https://jwschman.github.io/posts/2026/02-27-truenas-migration-part-1/">my previous post about this topic</a>, I talked about how I backed up all the data from my TrueNAS server to an offsite server with the intent of migrating from the FreeBSD-backed TrueNAS CORE to the Linux-backed TrueNAS  Community Edition.  The data was all successfully sent off to my friend's server and I was ready for the migration.</p>
+<h2 id="preparation">Preparation</h2>
+<p>To actually do the migration I had to update my TrueNAS CORE to the latest version.  I was only one version behind so this was a quick update.  Even with a small update, though, it's always a good idea to download the latest version of your TrueNAS config.</p>
+<p>Before actually beginning I went through <a href="https://www.truenas.com/docs/scale/24.04/gettingstarted/migrate/migrateprep/">the checklist provided in the TrueNAS documentation</a>.  After checking the things that related to me I also made sure to screenshot the configurations for my network, VMs and a few other things just in case.</p>
+<h2 id="upgrade-options">Upgrade Options</h2>
+<p>Before performing the migration I made sure to check the <a href="https://www.truenas.com/docs/scale/24.04/gettingstarted/migrate/migratingfromcore/">official TrueNAS Migrating CORE to SCALE guide</a> to see the correct way to do it.</p>
+<p>There were two options for the Community Edition install.  Just fresh installing the latest version or upgrading to 24.04 and stepping through the updates one by one to the latest version.  Since my TrueNAS server lives in a crawlspace with no monitor, and I didn't want to dig it out from under the house, I opted for the second option.  And if something went wrong I could always pull the server out if necessary.</p>
+<h2 id="the-actual-migration">The Actual Migration</h2>
+<p>Honestly the upgrade went as smoothly as one could have hoped for.</p>
+<p>In the TrueNAS GUI I just set the release train to TrueNAS SCALE 24.04 and let it do its thing (after downloading my latest config again).  After a few minutes I refreshed the page and was treated with the TrueNAS Scale login page.  It looked strange and different and I kind of didn't like it since I've been on the FreeBSD version since 2020, but I was glad to see it.</p>
+<p>And then when I logged in I was greeted with a big scary error message that one of my pools hadn't imported.  I'm not sure what caused it, but the fix was straightforward.  I found the pool import option in the GUI, imported it, and everything came back exactly as it was.  All my data was there and safe, all my settings were as I left them, and things were working.  Then I just stepped through the updates in the GUI again (I think it was 3) to get to the latest version of TrueNAS.</p>
+<h2 id="the-vm-situation">The VM Situation</h2>
+<p>The way TrueNAS Community Edition handles networking is different than CORE, so I had to change the networks on my VMs.  It was a pretty simple process:</p>
+<ul>
+<li>Create a bridge interface in the TrueNAS GUI with the server's physical network interface as a bridge member</li>
+<li>Move the IP configuration from the physical interface to the bridge</li>
+<li>Change the VMs NIC to the new bridge interface</li>
+<li>Log in to the VMs and update netplan to use the new bridge (both were Ubuntu Server VMs)</li>
+</ul>
+<blockquote>
+<p>One thing to make sure is that you set the bridge's IP to be different than the old interface's IP or you will get very weird and very annoying network issues that you'll spend 15 minutes fighting with.</p>
+</blockquote>
+<h2 id="plex-from-a-jail-to-a-container">Plex: From a Jail to a Container</h2>
+<p>As I mentioned before, I still used Plex in a Jail on TrueNAS Core and would need to migrate that to a container.  This was actually quite simple because past me was smart and set the Plex config directory to a dataset on one of my pools.</p>
+<p>I didn't really want to use the Plex app from the &quot;Discover&quot; apps page because it's very outdated, so I wrote a very simple Docker compose myself and used that.</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">services:
+  plex:
+    container_name: plex
+    environment:
+      - PUID=972
+      - PGID=972
+      - PLEX_CLAIM=YOUR-CLAIM-CODE # use https:&#x2F;&#x2F;account.plex.tv&#x2F;claim to get a new claim code
+    image: plexinc&#x2F;pms-docker:latest
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - &#x2F;mnt&#x2F;tank&#x2F;apps&#x2F;plex&#x2F;config:&#x2F;config
+      - &#x2F;mnt&#x2F;tank&#x2F;media&#x2F;:&#x2F;mnt&#x2F;media:ro
+</code></pre>
+<p>The only small problem I had with this was that config directory for the container version wasn't the same as the config directory I had installed on TrueNAS CORE.  It was nested two directories deeper, so I had to do a little bit of shuffling.</p>
+<p>I just had to move the contents of <code>/mnt/tank/apps/plex/config/Plex Media Server</code> to <code>/mnt/tank/apps/plex/config/Library/Application Support/Plex Media Server</code> and then all my settings, libraries, and watched titles were available in the new instance.</p>
+<h2 id="nfs-hiccup">NFS Hiccup</h2>
+<p>I use NFS CSI in my Kubernetes homelab for backing up Kubernetes data to my TrueNAS. After the migration I noticed some of my NFS mounts seemed to have gone stale, and pods that depended on them were hanging and unable to read or write. Rather than dig into the root cause, I just restarted the Kubernetes nodes one by one. It worked, so I didn't investigate further. Not the most elegant solution but it was quick and easy and I didn't mind the (very short) downtime in my cluster.</p>
+<p>All the NFS shares that I had set up previously on TrueNAS CORE were all preserved in the new version and I didn't actually have to change any settings.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>I probably didn't need to wait as long to perform this migration as I did, but I'm glad that I've finally done it.  But, I am a little sad to no longer be running FreeBSD on any of my machines anymore.  It's really where I learned self-hosting and Unix fundamentals.  I also loved my jails and am sad that I don't have any running anymore.  Containers are cool and all... but jails were special.</p>
+<p>I'm also glad that I didn't have any data issues with the upgrade.  And even if I had, the offsite backup had me covered.</p>
+<p>In the next part of this series I'll write about my actual offsite backup solution that I went with to make sure that the data I'm saving is up to date.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/truenas/"
+      >truenas</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/backup/"
+      >backup</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/plex/"
+      >plex</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-04-de-awsing-my-cloud-resume-challenge&#x2F;"
+    ><span class="mr-1.5">←</span><span>De-AWSing My Cloud Resume Challenge</span></a
+  >
+  <!---->
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2026<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

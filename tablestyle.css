@@ -1,0 +1,356 @@
+/* Reset box-sizing globally */
+* {
+  box-sizing: border-box;
+}
+
+/* Toolbox table styles */
+.toolbox table {
+  width: 100%;
+  text-align: center;
+  table-layout: fixed;
+}
+
+.toolbox td {
+  vertical-align: middle;
+}
+
+.toolbox .toolbox-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.toolbox .toolbox-entry img {
+  width: 75px;
+  height: auto;
+}
+
+.toolbox .toolbox-entry div {
+  font-size: 1.25rem;
+}
+
+/* Cert card container styles for about page*/
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-container article {
+  flex: 1 1 calc(45% - 1rem);
+  max-width: 500px;
+  --hover: 0;
+  transition: --hover 0.2s;
+}
+
+.card-container article:hover {
+  --hover: 1;
+}
+
+/* Card figures */
+.card-container figure {
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  --bg: hsl(210, 60%, calc(45% + (var(--hover) * 10%)));
+  --accent: hsl(200, 50%, calc(65% + (var(--hover) * 10%)));
+  transition: background 0.4s ease;
+  background:
+    radial-gradient(circle at top left, var(--accent), transparent 75%),
+    var(--bg);
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.card-container img {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 30%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-container article:hover img {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.card-container article:active img {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+
+.card-container figcaption {
+  position: absolute;
+  top: 7rem;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+  padding: 0 0.1rem;
+}
+
+.card-container figcaption h3 {
+  margin: 0;
+  font-size: 1.65rem;
+  color: white;
+}
+
+.card-container figcaption p {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+  opacity: 0.8;
+}
+
+/* Project cards for projects page*/
+.project-card figure {
+  width: 100%;
+  min-height: 100px;
+  --hover: 0;
+  background:
+    radial-gradient(circle at top left, var(--accent), transparent 75%),
+    var(--bg);
+  transition: background 0.4s ease;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  padding: 1.25rem; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card figure:hover {
+  --hover: 1;
+}
+
+.project-card figcaption {
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; 
+}
+
+.project-card figcaption h3 {
+  font-size: 1.5rem;
+  margin: 0; 
+  color: white;
+}
+
+.project-card figcaption p {
+  margin: 0.25rem 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.project-card .project-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; 
+  margin-bottom: 0.75rem;
+}
+
+.project-card .project-links a {
+  color: #fffacd;
+  text-decoration: underline;
+}
+
+
+.project-card .project-tech {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.project-card .project-tech span {
+  background-color: rgba(255,255,255,0.3);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.project-card .project-subtitle {
+  font-size: 1.375rem;
+  font-weight: 500;
+  margin: 0.25rem 0 0.5rem 0;
+}
+
+.project-card .project-desc {
+  font-size: 1.15rem;
+  opacity: 0.85;
+  margin-bottom: 1rem;
+}
+
+/* For Homepage Project Cards */
+/* container grid */
+.project-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Each card is a link */
+.project-container a {
+  display: block;
+  max-width: 500px;
+  text-decoration: none;
+  color: inherit;
+  --hover: 0;
+  transition: --hover 0.2s;
+}
+
+.project-container a:hover {
+  --hover: 1;
+}
+
+.project-container a:active {
+  --hover: 1;
+  transform: scale(0.99);
+}
+
+/* Card figures */
+.project-container figure {
+  width: 100%;
+  aspect-ratio: 8 / 6.5;
+--bg: hsl(210, 60%, calc(45% + (var(--hover) * 10%)));
+--accent: hsl(200, 50%, calc(65% + (var(--hover) * 10%)));
+
+
+  transition: background 0.4s ease;
+  background:
+    radial-gradient(circle at top left, var(--accent), transparent 75%),
+    var(--bg);
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Card image */
+.project-container img {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 30%;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-container a:hover img {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.project-container a:active img {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+/* Figcaption text */
+.project-container figcaption {
+  position: absolute;
+  top: 8rem;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+  padding: 0 0.5rem;
+}
+
+.project-container figcaption h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: white;
+}
+
+.project-container figcaption p {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  color: white;
+  opacity: 0.85;
+}
+
+/* Tech tags */
+.project-container .tech-tags {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.project-container .tech-tags span {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(4px);
+}
+
+/* for links from home page project cards to the project page */
+.project-card {
+    scroll-margin-top: 70px;
+}
+
+/* contact button */
+a.contact-button {
+  --bg: hsl(210, 60%, 45%);
+  --accent: hsl(200, 50%, 65%);
+  --hover: 0;
+
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at top left, var(--accent), transparent 75%),
+    var(--bg);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+a.contact-button:hover {
+  --hover: 1;
+  --bg: hsl(210, 60%, calc(45% + (var(--hover) * 10%)));
+  --accent: hsl(200, 50%, calc(65% + (var(--hover) * 10%)));
+  transform: scale(1.1);
+}
+
+/* Landing Page Section Titles */
+.section-title {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* spacing for homepage sections */
+.page-section {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}

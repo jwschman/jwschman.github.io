@@ -10,6 +10,8 @@ tags = ["kubernetes", "wordpress", "homelab", "portfolio", "self-hosting"]
 cover_image="hero.png"
 +++
 
+>This page is also available as a [Wordpress post here](https://wordpress.jwschman.com/production-grade-wordpress-on-kubernetes/).
+
 I've run WordPress internally for years as a personal journal.  It's just a way for me to keep track of my thoughts and look back at the things I've done throughout the years.  I like to document things like homelab hardware upgrades, my favorite TV shows of the year, and personal projects that don't deserve a full write-up on my actual blog.  I find it's more structured than just using a note-taking app for this use.
 
 I also often see neglected WordPress instances in the wild, but I've never tried to run a public production ready WordPress.  The reputation is that they're hard to manage and riddled with vulnerabilities.  I actually had a friend sort of sneer when he found that I run that private one in my own network, saying that hosting that was a security nightmare.  And honestly, the reputation is a little bit deserved, but it doesn't have to be.

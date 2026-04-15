@@ -1,6 +1,6 @@
 +++
-title = "Truenas Migration Part 2"
-description = "The actual migration from TrueNAS CORE to Community Edition.  Here's how it went, including fixing a pool import error, migrating Plex from a jail to a Docker container, and sorting out VM networking"
+title = "Truenas Migration Part 2: The Actual Migration and Post-Migration Tasks"
+description = "My migration from TrueNAS CORE to Community Edition.  Here's how it went, including fixing a pool import error, migrating Plex from a jail to a Docker container, and sorting out VM networking"
 date = "2026-03-10"
 
 [taxonomies] 

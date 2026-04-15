@@ -1,0 +1,370 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Now Live: Homelab Public Metrics - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Exposing a public Grafana dashboard for my homelab using Prometheus, ArgoCD, and Cloudflare" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Now Live: Homelab Public Metrics" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="Exposing a public Grafana dashboard for my homelab using Prometheus, ArgoCD, and Cloudflare" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;10-07-now-live-homelabo-public-metrics&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;10-07-now-live-homelabo-public-metrics&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Now Live: Homelab Public Metrics</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2025-10-07</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2025/10-07-now-live-homelabo-public-metrics/cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><blockquote>
+<p><strong>TL;DR</strong>: I made a public metrics dashboard for my Kubernetes homelab.  You can find it <a href="https://monitoring.jwschman.com">here</a>.</p>
+</blockquote>
+<p>In order to provide a small window into the status of my homelab, I decided to make a public Grafana dashboard with a few key metrics available.  Here's how I made it available.</p>
+<h2 id="what-i-wanted">What I wanted</h2>
+<p>Like with most of my projects I wanted this one to be as simple as possible.  I just wanted a public dashboard available that could be reached at <a href="https://monitoring.jwschman.com">https://monitoring.jwschman.com</a>.  I also wanted to keep the number of metrics low but also informative.  I specifically wanted node status, number of pods, and a couple of node system metrics.  I may add a few at a later date, but for now I like what I went with.</p>
+<h2 id="provisioning-and-gitops">Provisioning and GitOps</h2>
+<p>I wanted the Grafana instance for the public dashboard to run statelessly, without persistent storage, so I can tear it down and rebuild it at any time without losing the dashboard.  To achieve this, I provisioned the dashboard through a ConfigMap containing its JSON definition, and let ArgoCD apply any updates automatically.  This GitOps approach means the entire dashboard configuration lives in my git repository and any changes are automatically synchronized with the cluster.</p>
+<h2 id="diagram">Diagram</h2>
+<p><img src="https://jwschman.github.io/posts/2025/10-07-now-live-homelabo-public-metrics/diagram.png" alt="diagram" /></p>
+<h2 id="security-concerns">Security concerns</h2>
+<p>Obviously with making something like this public there are a lot of things to worry about.  A Grafana Cloud dashboard would have been the easy solution to these, but with the free account I wouldn't have been able to have it hosted at the site I wanted.  It also kind of goes against the &quot;self-hosted&quot; nature of what I wanted to do.</p>
+<p>Sensitive data being exposed was a concern I wanted to address.  To mitigate this I went with a federated instance of Prometheus that only scraped certain metrics.  That way if someone was able to make arbitrary queries through the Grafana dashboard, they'll only have access to a predefined small set of metrics with no sensitive data included.</p>
+<p>Also, a DDoS attack is unlikely, but possible.  Fortunately this is handled at the Cloudflare level, which provides basic filtering and mitigation before traffic ever reaches my cluster.</p>
+<p>As for the Grafana instance itself, I disabled the admin user as well as signup and login.  I also set a default home dashboard to be automatically displayed, and configured my NGINX ingress to redirect all traffic to the default dashboard in kiosk mode.</p>
+<h2 id="future-plans">Future plans</h2>
+<p>There are a few things I'd like to add to this setup in the future.</p>
+<h3 id="power-consumption-panel">Power consumption panel</h3>
+<p>I'd like to add a panel for total power consumption by the entire cluster.  I'll be able to do this using my <a href="https://github.com/jwschman/simple-shelly-exporter">Simple Shelly Exporter</a>, but at the moment I don't have an unused Shelly Plug to use for this.</p>
+<h3 id="fewer-federated-metrics">Fewer federated metrics</h3>
+<p>I want the federated Prometheus to scrape as few metrics as possible.  One way to reduce this further is by using recording rules for aggregated metrics.  For example, instead of exposing memory and CPU limits for every pod, I could create pre-aggregated metrics and federate just those, reducing dozens of metrics to a single one.</p>
+<h3 id="custom-branding">Custom branding</h3>
+<p>While Grafana's default branding works fine, I'd eventually like to customize it.  Specifically a little custom branding and page title.  I found that this can be done by building a custom Grafana image and running that.  It doesn't seem like much work, but it's more than I wanted to do before publishing this.</p>
+<h2 id="public-config">Public config</h2>
+<p>All of the configurations for this setup are available inside my <a href="https://github.com/jwschman/homelabo/tree/main/apps/external-monitoring">HomeLabo github repo here</a>.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/monitoring/"
+      >monitoring</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/prometheus/"
+      >prometheus</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/grafana/"
+      >grafana</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests&#x2F;"
+    ><span class="mr-1.5">←</span><span>Migrating WordPress from Bitnami Helm Charts to Official Images</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;02-06-migrating-from-ingress-nginx-to-traefik-and-gateway-api&#x2F;"
+    ><span>Migrating from Ingress-NGINX to Traefik and Gateway API</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2026<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

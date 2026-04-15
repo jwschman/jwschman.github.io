@@ -1,0 +1,491 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Truenas Migration Part 3: An Automated and Permanent Offsite Backup Solution - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Setting up an automated nightly offsite backup with restic, Tailscale, and a Rocky Linux VM on TrueNAS." />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Truenas Migration Part 3: An Automated and Permanent Offsite Backup Solution" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="Setting up an automated nightly offsite backup with restic, Tailscale, and a Rocky Linux VM on TrueNAS." />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;04-08-truenas-migration-part-3&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;04-08-truenas-migration-part-3&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Truenas Migration Part 3: An Automated and Permanent Offsite Backup Solution</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2026-04-08</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2026/04-08-truenas-migration-part-3/cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><p>Now that I've <a href="https://jwschman.github.io/posts/2026/03-10-truenas-migration-part-2/">migrated to TrueNAS Community Edition</a> and have an idea for <a href="https://jwschman.github.io/posts/2026/03-03-truenas-migration-part-1/">how to handle my offsite backups</a> it's time to set up my automated permanent solution.</p>
+<h2 id="the-infrastructure">The Infrastructure</h2>
+<p>As I hinted in part 1, I'm going with a VM for this rather than a TrueNAS cloud sync task because I'll be sending the data through Tailscale.  Rather than putting my entire TrueNAS box on the Tailscale network I just wanted a small isolated VM that would handle sending the data, and only that.</p>
+<p>The first real decision I had to make was which Linux distribution I'd be running in the VM.  In the end I went with Rocky Linux.  Ubuntu was out because I'm actively trying to move away from it in my personal setup, and Arch didn't make sense for a server I want to set up once and mostly forget about... rolling releases and an infrequently accessed VM are a bad combination.  Rocky made the most sense since I'm likely pursuing RHEL certification in the next few months, and this seemed like a good place to start getting hands-on time with a RHEL-based system.</p>
+<p>Once I chose my flavor I just did a minimal installation of Rocky Linux on a VM in Truenas and got to adding the tools I needed, specifically tailscale and restic.</p>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>restic on Rocky Linux</strong></span>
+  </div>
+  <div class="pl-4"><p>Note: restic is not included in the default repo, so first I had to install Extra Packages for Enterprise Linux with <code>dnf install epel-release</code></p>
+</div>
+</div>
+<p>I did need a few other utilities that weren't included in the minimal installation like <code>nfs-utils</code> to actually do my nfs mounts, and also <code>tmux</code> and <code>vim</code> for setup and testing.</p>
+<h2 id="what-i-wanted">What I Wanted</h2>
+<p>I'm backing up to two different remote restic repositories: one for data and one for media.  I needed the script to run <code>restic backup</code> twice, once for each repository.</p>
+<p>I also wanted the VM to not be running all the time.  It's not large, but it is a waste of resources to leave running 24/7 when it's usually only going to be running the script for just a few minutes.  So my TrueNAS cron job will need to start the VM, and then when the script completes successfully it will power the VM off.</p>
+<p>These backups will generally be pretty quick, but I didn't want them to be running forever if I somehow got some new very large data, so I also want the backups to timeout after two hours.  If a backup doesn't finish within the time limit, it will pick up the following day.</p>
+<p>I also wanted notifications sent to Gotify on success or failure.  Once I'm more certain the script is regularly running I'll go back in and remove the notifications on success.</p>
+<h2 id="the-workflow">The Workflow</h2>
+<p>Before I set up my automation I wanted to do a manual run first to make sure everything worked as intended on the new VM. The steps were:</p>
+<ul>
+<li>mount all my nfs shares from TrueNAS</li>
+<li>connect to the tailscale network</li>
+<li>source my restic environment variables</li>
+<li>run restic backup</li>
+<li>purge old snapshots</li>
+<li>unmount and cleanup</li>
+</ul>
+<p>Once I verified that it all worked smoothly I was able to start writing my script.</p>
+<h2 id="the-script">The Script</h2>
+<p>I initially wrote a simple bash script that just did everything from the workflow that I mentioned above.  I have some common functions that I use in scripts for logging and sending notifications to Gotify.  Then I went in and added the extra touches.</p>
+<p>The first real thing I had to figure out was error handling.  I wanted to make sure that if anything went wrong I'd get a Gotify notification regardless of where the script failed.  The standard bash way to handle this is with a trap, which lets you run something on any exit.  I set up a cleanup function that unmounts all the NFS shares and sends the notification, and then a trap_handler that calls cleanup and notify on any unexpected exit.</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">trap_handler() {
+    cleanup
+    notify
+}
+
+trap trap_handler EXIT
+</code></pre>
+<p>I also wanted to make sure that if the script crashed before it even got to set a meaningful message, I'd still get something useful in Gotify.  The way I handled this was initializing <code>BACKUP_MESSAGE</code> to an empty string, and then in the notify function I check if it's still empty and set it to &quot;Script failed unexpectedly&quot; if that's the case.</p>
+<p>One thing that came up during testing was that I was getting three Gotify notifications per run instead of one.  I fixed it by separating cleanup (unmounting only) from notify (sending the notification).  On a clean run cleanup is called after each backup, notify is called once at the end, and then <code>trap - EXIT</code> disarms the trap so it doesn't fire again on exit.  On an unexpected exit the trap calls both and you still get exactly one notification.</p>
+<p>Finally, I redirected all output through <code>tee</code> so everything gets written to <code>/tmp/backup-script.log</code> while still printing to the console:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">exec &gt; &gt;(tee &#x2F;tmp&#x2F;backup-script.log) 2&gt;&amp;1
+</code></pre>
+<p>This wound up being really useful for debugging because I could check the log after the fact even if I wasn't watching the script run.</p>
+<h2 id="systemd-vs-tmux">systemd vs tmux</h2>
+<p>My original plan was to run this script as a systemd service that TrueNAS would trigger over SSH in a cron job.  The idea was that if the SSH connection dropped out unexpectedly the job would continue running.  After a little more thought it seemed a little too extra for a one-shot script on a single purpose VM.</p>
+<p>The simpler solution turned out to be having TrueNAS SSH in and start a detached TMUX session running the script:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">ssh $BACKUP_USER@$VM_IP &quot;sudo tmux new-session -d -s backup -- sudo &#x2F;opt&#x2F;backup&#x2F;backup-all.sh&quot;
+</code></pre>
+<p>The tmux part isn't strictly necessary, but I wanted to be able to attach to the session to check up on it as it was running, especially during initial testing.</p>
+<p>To run the script without entering a password I had to edit sudoers to let <code>$BACKUP_USER</code> run sudo without a password, otherwise that command would just hang there forever waiting for a password that would never come.</p>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(255, 145, 0, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/warning.svg)"
+    >
+      warning
+    </div>
+    <span><strong>tmux and sudo</strong></span>
+  </div>
+  <div class="pl-4"><p>If you start a tmux session with <code>sudo</code>, you also need to attach to it with <code>sudo</code>.  Otherwise you'll see that there are no tmux sessions available and wonder why the session never actually started even though you're pretty certain it did.  The session belongs to root and your regular user can't see it.  Obvious in retrospect...</p>
+</div>
+</div>
+<h3 id="automation-from-truenas">Automation from TrueNAS</h3>
+<p>On TrueNAS I just have a short script that runs nightly as a cron job:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">#!&#x2F;bin&#x2F;bash
+VM_ID=11
+VM_IP=192.168.1.64
+BACKUP_USER=john
+
+VM_STATE=$(midclt call vm.status $VM_ID | jq -r &#x27;.state&#x27;)
+
+if [ &quot;$VM_STATE&quot; != &quot;RUNNING&quot; ]; then
+    midclt call vm.start $VM_ID
+fi
+
+until ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no $BACKUP_USER@$VM_IP &quot;echo ready&quot; 2&gt;&#x2F;dev&#x2F;null; do
+    sleep 10
+done
+
+ssh $BACKUP_USER@$VM_IP &quot;sudo tmux new-session -d -s backup -- sudo &#x2F;opt&#x2F;backup&#x2F;backup-all.sh&quot;
+</code></pre>
+<p>It starts the VM, waits for it to be available, launches the backup script in a detached tmux session, and exits.  The actual backup script handles everything from there and powers off the VM when it's finished.  The VM is otherwise off, which keeps resource usage low and also means the VM isn't sitting on the network any longer than it needs to be.</p>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>Getting the VM ID</strong></span>
+  </div>
+  <div class="pl-4"><p>To get the ID of the VM I had to run <code>midclt call vm.query | jq '.[] | {id: .id, name: .name}'</code> from inside TrueNAS.</p>
+</div>
+</div>
+<h2 id="a-few-things-that-tripped-me-up">A Few Things That Tripped Me Up</h2>
+<h3 id="newlines-in-notifications">Newlines in Notifications</h3>
+<p>I wanted the Gotify notification to show each backup result on its own line.  I was using $'\n' to add newlines when building the message string, but I was putting it inside double quotes:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">BACKUP_MESSAGE=&quot;$BACKUP_MESSAGE$&#x27;\n&#x27;$label: completed successfully&quot;
+</code></pre>
+<p>That sent the literal string $'\n' to Gotify instead of a newline. It needed to be outside the quotes:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">BACKUP_MESSAGE=&quot;$BACKUP_MESSAGE&quot;$&#x27;\n&#x27;&quot;$label: completed successfully&quot;
+</code></pre>
+<h3 id="nfs-mounts-and-cleanup">NFS Mounts and Cleanup</h3>
+<p>I initially had a cleanup loop that unmounted each share individually and removed the directory from <code>/mnt/</code>.  But, since this is a single-purpose VM that will never have anything mounted under <code>/mnt/</code> other than the backup shares, I simplified it to <code>umount -a -t nfs4</code> followed by a check that nothing is still mounted there before doing <code>rm -rf /mnt/*</code>.  It's much simpler, and the safety check means I won't accidentally delete data if something didn't unmount properly.  I'd also get a notification in Gotify if there were troubles unmounting.</p>
+<h2 id="the-full-script">The Full Script</h2>
+<p>The complete script along with the TrueNAS cron script and example .envs is available on <a href="https://github.com/jwschman/offsite-backup-script">GitHub</a>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>It took me a while to get to part three of this series because I wanted to make sure that my workflow and script were actually fully functional and running for a while before presenting them to the world.</p>
+<p>I used Claude to help work through some of the trickier parts of the script, particularly around the trap logic and error handling.  If you're not using AI to help with this kind of thing yet I'd recommend giving it a shot.  It's pretty good at finding edge cases and pointing out things you haven't thought of yet.  You don't have to use all the suggestions it makes, but it's pretty handy and can save lots of time debugging.</p>
+<p>I had a few little trip ups with the redundant notifications and nfs mounts, but a little bit of tweaking got things working quite well.</p>
+<p>Now that I have this script set up and running nightly on TrueNAS I'm feeling pretty confident that I won't lose my data even if something catastrophic happened.</p>
+<p>So now my TrueNAS migration is complete, and my data is safely backed up offsite every night.  I may do a followup with improvements to this script down the line as I use it more, but for now I'm just glad that I have a solid backup solution in place and am running the newest version of TrueNAS Community Edition.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/truenas/"
+      >truenas</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/backup/"
+      >backup</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/ai-assistance/"
+      >ai assistance</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/self-hosting/"
+      >self-hosting</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/automation/"
+      >automation</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-25-production-grade-wordpress-on-kubernetes&#x2F;"
+    ><span class="mr-1.5">←</span><span>Production-Grade WordPress on Kubernetes: Doing it Correctly</span></a
+  >
+  <!---->
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2026<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

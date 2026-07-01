@@ -1,0 +1,683 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Migrating WordPress from Bitnami Helm Charts to Official Images - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="A step-by-step guide to migrating from Bitnami WordPress Helm Chart to Official Images" />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Migrating WordPress from Bitnami Helm Charts to Official Images" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="A step-by-step guide to migrating from Bitnami WordPress Helm Chart to Official Images" />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Migrating WordPress from Bitnami Helm Charts to Official Images</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2025-09-24</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2025/09-24-migrating-wordpress-from-the-bitnami-helm-chart-to-kubernetes-manifests/cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><p>This is a continuation of my previous post about <a href="/posts/2025/09-19-migrating-from-bitnami-databases-using-the-nextcloud-community-chart/">migrating from the Bitnami Postgres image</a>.  In that post I modified the helm values for a Nextcloud instance to point to a freshly deployed Postgres database.</p>
+<p>This post will explain how I moved away from the Bitnami Helm chart for WordPress and went with official images and straight manifests defining all of the infrastructure.  Like with my Postgres database for nextcloud, the reason for migrating away from the Bitnami images was Bitnami's recent shift to a paid model.</p>
+<p>Here's a step by step guide on how I did the migration and defined my Kubernetes infrastructure.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Ability to execute into pods with <code>kubectl</code></li>
+<li>WordPress and MariaDB instances from the Bitnami Helm chart running in the <code>wordpress</code> namespace (you can modify commands to match your namespace if it's different)</li>
+<li>Once again a backup of all WordPress data before starting would be nice to also have</li>
+<li>Secrets containing the credentials for MariaDB and Wordpress.  These can be created with:</li>
+</ul>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">kubectl create secret generic wordpress-mariadb-secrets \
+  --from-literal=MARIADB_ROOT_PASSWORD=&#x27;MyRootPassword&#x27; \
+  --from-literal=MARIADB_REPLICATION_PASSWORD=&#x27;MyReplicationPassword&#x27; \
+  --from-literal=MARIADB_PASSWORD=&#x27;MyUserPassword&#x27; \
+  -n wordpress-new
+</code></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">kubectl create secret generic wordpress-secrets \
+  --from-literal=WORDPRESS_DB_PASSWORD=&#x27;MyUserPassword&#x27; \
+  -n wordpress-new
+</code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>Namespace Info</strong></span>
+  </div>
+  <div class="pl-4"><p>My original WordPress was deployed into the <code>wordpress</code> namespace.  Due to pod naming conventions I decided to create a new namespace called <code>wordpress-new</code>, and after everything was migrated and the old resources removed, I moved the new resources from <code>wordpress-new</code> to <code>wordpress</code></p>
+</div>
+</div>
+<h2 id="step-1-deploy-mariadb">Step 1: Deploy MariaDB</h2>
+<p>First I created a simple StatefulSet in the <code>wordpress-new</code> namespace using this manifest:</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">---
+## MariaDB StatefulSet for WordPress
+apiVersion: apps&#x2F;v1
+kind: StatefulSet
+metadata:
+  name: wordpress-mariadb
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-mariadb
+  serviceName: &quot;wordpress-mariadb-svc&quot;
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: wordpress-mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:11.8 # Match whatever version you want
+        envFrom:
+          - secretRef:
+              name: wordpress-mariadb-secrets
+        ports:
+        - containerPort: 3306
+          name: tcp-mariadb
+
+        volumeMounts:
+        - name: wordpress-mariadb-data
+          mountPath: &#x2F;var&#x2F;lib&#x2F;mysql
+
+      volumes:
+        - name: wordpress-mariadb-data
+          persistentVolumeClaim:
+            claimName: wordpress-mariadb-data
+---
+# MariaDB service
+apiVersion: v1
+kind: Service
+metadata:
+    name: wordpress-mariadb-svc
+    labels:
+        app: wordpress-mariadb
+spec:
+    ports:
+    - port: 3306
+      name: tcp-mariadb
+    selector:
+        app: wordpress-mariadb
+</code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>PVC Info</strong></span>
+  </div>
+  <div class="pl-4"><p>Storage is handled with a previously created PVC in the same namespace named <code>wordpress-mariadb-data</code>.</p>
+<p>The ReclaimPolicy for this PVC will need to be set to <code>Retain</code> if you intend to move it to a new namespace</p>
+</div>
+</div>
+<p>Once that's up and running we're ready for step 2:</p>
+<h2 id="step-2-prepare-mariadb-for-migration">Step 2: Prepare MariaDB for Migration</h2>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(68, 138, 255, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/note.svg)"
+    >
+      note
+    </div>
+    <span><strong>Note</strong></span>
+  </div>
+  <div class="pl-4"><p>For this migration I'm going to be shelling into the pods and performing commands directly.  It's not the best approach, but in this case I wanted ease and simplicity.</p>
+</div>
+</div>
+<h3 id="shell-into-the-bitnami-mariadb-pod-inside-the-wordpress-namespace">Shell into the Bitnami MariaDB pod inside the <code>wordpress</code> namespace</h3>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Find out the name of the pod.  It&#x27;ll likely be wordpress-mariadb-0
+kubectl get pods -n wordpress
+# Shell into the pod
+kubectl -n wordpress exec -it &lt;wordpress-mariadb-pod&gt; -- bash
+</code></pre>
+<h3 id="dump-the-mariadb-database-inside-the-pod">Dump the MariaDB database inside the pod</h3>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">mysqldump -u root -p bitnami_wordpress &gt; &#x2F;tmp&#x2F;backup.sql
+</code></pre>
+<p>Enter the password for the database and it should dump without any problems.</p>
+<h3 id="copy-the-dumped-database-to-local-machine">Copy the dumped database to local machine</h3>
+<p>Exit out of the pod and copy the database</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># don&#x27;t forget to exit the pod
+exit
+# copy the database
+kubectl cp wordpress&#x2F;&lt;wordpress-mariadb-pod&gt;:&#x2F;tmp&#x2F;backup.sql .&#x2F;backup.sql
+</code></pre>
+<h3 id="copy-the-dumped-database-to-the-new-mariadb-pod-in-the-wordpress-new-namespace">Copy the dumped database to the new mariadb pod in the <code>wordpress-new</code> namespace</h3>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Get the name of the new mariadb pod
+kubectl get pods -n wordpress-new
+# copy the database
+kubectl cp .&#x2F;backup.sql wordpress-new&#x2F;&lt;new-wordpress-mariadb-pod&gt;:&#x2F;tmp&#x2F;backup.sql
+</code></pre>
+<h3 id="shell-into-the-new-mariadb-pod-and-login-to-mariadb">Shell into the new MariaDB pod and login to MariaDB</h3>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Shell into the new MariaDB pod
+kubectl -n wordpress-new exec -it &lt;new-wordpress-mariadb-pod&gt; bash
+# login to mariadb
+mariadb -u root -p
+</code></pre>
+<p>It will prompt you for the root password you set with <code>MARIADB_ROOT_PASSWORD</code></p>
+<h3 id="create-the-new-database">Create the new Database</h3>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Create the WordPress DB, USER, and grant privileges to new user
+CREATE DATABASE wordpress;
+CREATE USER &#x27;wordpress&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;MySuperSecurePassword&#x27;;
+GRANT ALL PRIVILEGES ON wordpress.* TO &#x27;wordpress&#x27;@&#x27;%&#x27;;
+FLUSH PRIVILEGES;
+</code></pre>
+<h3 id="import-the-dumped-database-and-exit-out-of-the-pod">Import the dumped database and exit out of the pod</h3>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># import the database
+mariadb -u root -p wordpress &lt; &#x2F;tmp&#x2F;backup.sql
+# get out of the pod
+exit
+</code></pre>
+<p>The database is now good to go and we can get WordPress up and running</p>
+<h2 id="step-3-deploy-wordpress-in-the-wordpress-new-namespace">Step 3: Deploy WordPress in the <code>wordpress-new</code> namespace</h2>
+<p>Here is a simple manifest I used for the WordPress deployment.  It includes the deployment, service, and an ingress using my internal ingressclass.</p>
+<pre data-lang="yaml" class="language-yaml "><code class="language-yaml" data-lang="yaml">---
+## WordPress Deployment
+apiVersion: apps&#x2F;v1
+kind: Deployment
+metadata:
+  name: wordpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - name: wordpress
+        image: wordpress:6.8.2-apache # Use whichever image version you want
+        imagePullPolicy: IfNotPresent
+      
+        env:
+        # DB ENV
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-mariadb-svc:3306
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
+        - name: WORDPRESS_DB_USER
+          value: wordpress
+       
+        # Pull all other env from external secret (DB Password)
+        envFrom:
+        - secretRef:
+            name: wordpress-secrets
+
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 6
+          httpGet:
+            path: &#x2F;wp-login.php
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: &#x2F;var&#x2F;www&#x2F;html&#x2F;wp-content
+          name: wordpress-data
+
+      volumes:
+      - name: wordpress-data
+        persistentVolumeClaim:
+          claimName: wordpress-wordpress-data
+---
+# WordPress service
+apiVersion: v1
+kind: Service
+metadata:
+    name: wordpress-wordpress-svc
+spec:
+    selector:
+        app: wordpress
+    ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443
+---
+# WordPress Ingress
+apiVersion: networking.k8s.io&#x2F;v1
+kind: Ingress
+metadata:
+  name: wordpress
+spec:
+  ingressClassName: internal
+  tls:
+  - hosts:
+    - wordpress.pawked.com
+  rules:
+  - host: wordpress.pawked.com
+    http:
+      paths:
+      - path: &#x2F;
+        pathType: Prefix
+        backend:
+          service:
+            name: wordpress-wordpress-svc
+            port:
+              number: 80
+</code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(83, 211, 230, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/info.svg)"
+    >
+      info
+    </div>
+    <span><strong>PVC Info</strong></span>
+  </div>
+  <div class="pl-4"><p>Again, storage is handled with a previously created PVC in the same namespace named <code>wordpress-wordpress-data</code>.</p>
+<p>The ReclaimPolicy for this PVC will need to be set to <code>Retain</code> if you intend to move it to a new namespace</p>
+</div>
+</div>
+<h2 id="step-4-import-uploaded-content-from-old-instance">Step 4: Import Uploaded Content from old instance</h2>
+<h3 id="copy-the-uploads-from-the-old-pod">Copy the uploads from the old pod</h3>
+<p>We'll need to get the name of the old WordPress pod first</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Get the name of the old WordPress pod
+kubectl get pods -n wordpress
+# copy the uploads folder to the local machine
+kubectl cp wordpress&#x2F;&lt;old-wordpress-pod&gt;:&#x2F;bitnami&#x2F;wordpress&#x2F;wp-content&#x2F;uploads .&#x2F;uploads
+</code></pre>
+<h3 id="copy-the-uploads-into-the-new-pod">Copy the uploads into the new pod</h3>
+<p>We need to get the new pod name as well</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash"># Get the name of the new WordPress pod
+kubectl get pods -n wordpress-new
+# copy the uploads folder to the new WordPress pod
+kubectl cp .&#x2F;uploads&#x2F;. wordpress-new&#x2F;&lt;new-wordpress-pod&gt;:&#x2F;var&#x2F;www&#x2F;html&#x2F;wp-content&#x2F;uploads&#x2F;
+</code></pre>
+<h3 id="set-the-permissions-on-the-uploads-content">Set the permissions on the uploads content</h3>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">kubectl exec -n wordpress-new &lt;new wordpress-pod&gt; -- chown -R www-data:www-data &#x2F;var&#x2F;www&#x2F;html&#x2F;wp-content&#x2F;uploads
+</code></pre>
+ <!---->
+
+
+<div
+  class="my-4 flex flex-col rounded-lg bg-[var(--admonition-bg)]"
+  style="--admonition-bg: rgba(255, 145, 0, 0.1)"
+>
+  <div class="flex items-center rounded-t-lg bg-[var(--admonition-bg)] p-1">
+    <div
+      class="mx-2 h-4 w-4 text-[0] [background:var(--url)_center_center_no-repeat] dark:invert"
+      style="--url: url(./icons/warning.svg)"
+    >
+      warning
+    </div>
+    <span><strong>Warning</strong></span>
+  </div>
+  <div class="pl-4"><p>If you edited any themes or plugins in your original instance it might be better to copy the entire <code>/bitnami/wordpress/wp-content/</code> (minus the wp-config.php) using the same commands.</p>
+</div>
+</div>
+<h2 id="conclusion">Conclusion</h2>
+<p>And now you should be able to navigate to your WordPress instance and be ready to go.  If you want you can change the namespace from <code>wordpress-new</code> to something else.  I went with <code>wordpress</code> because I'm creative.</p>
+<p>This migration was slightly more difficult than the Postgres one I did last week because of needing to shell in to the pods and creating the database, as well as moving the uploaded content over, but it was still fairly simple and worth doing to get away from the Bitnami images.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/wordpress/"
+      >wordpress</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/bitnami/"
+      >bitnami</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/mariadb/"
+      >mariadb</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;09-19-migrating-from-bitnami-databases-using-the-nextcloud-community-chart&#x2F;"
+    ><span class="mr-1.5">←</span><span>Migrating from Bitnami to Official PostgreSQL Images with the Nextcloud Community Chart</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2025&#x2F;10-07-now-live-homelabo-public-metrics&#x2F;"
+    ><span>Now Live: Homelab Public Metrics</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2026<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

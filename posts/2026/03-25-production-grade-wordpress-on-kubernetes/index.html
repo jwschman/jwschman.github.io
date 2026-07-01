@@ -1,0 +1,411 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    Production-Grade WordPress on Kubernetes: Doing it Correctly - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="I deployed a public facing Wordpress portfolio site." />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Production-Grade WordPress on Kubernetes: Doing it Correctly" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="I deployed a public facing Wordpress portfolio site." />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-25-production-grade-wordpress-on-kubernetes&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/hero.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-25-production-grade-wordpress-on-kubernetes&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">Production-Grade WordPress on Kubernetes: Doing it Correctly</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2026-03-25</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2026/03-25-production-grade-wordpress-on-kubernetes/hero.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><blockquote>
+<p>This page is also available as a <a href="https://wordpress.jwschman.com/production-grade-wordpress-on-kubernetes/">Wordpress post here</a>.</p>
+</blockquote>
+<p>I've run WordPress internally for years as a personal journal.  It's just a way for me to keep track of my thoughts and look back at the things I've done throughout the years.  I like to document things like homelab hardware upgrades, my favorite TV shows of the year, and personal projects that don't deserve a full write-up on my actual blog.  I find it's more structured than just using a note-taking app for this use.</p>
+<p>I also often see neglected WordPress instances in the wild, but I've never tried to run a public production ready WordPress.  The reputation is that they're hard to manage and riddled with vulnerabilities.  I actually had a friend sort of sneer when he found that I run that private one in my own network, saying that hosting that was a security nightmare.  And honestly, the reputation is a little bit deserved, but it doesn't have to be.</p>
+<p>So I decided to actually give setting up a self-hosted Production-grade hardened WordPress instance a shot.  There are a number of security concerns that I'll cover throughout this post.  Also, there is an endless supply of managed WordPress solutions, but I'll make the case for self-hosting over managed solutions, and why running it on Kubernetes is a great way to do it properly.</p>
+<h2 id="why-self-hosted">Why Self-Hosted?</h2>
+<p>Managed WordPress hosting is everywhere.  Sites like WP Engine, Kinsta, WordPress.com and many, many others are convenient, but you're trading control for simplicity.  You don't own the infrastructure, you can't audit the security configuration, and you're locked into their backup and migration tools.  This also means that if the site makes a major change, you're stuck with it whether you wanted it or not.  Running it yourself means you own the entire stack, you know exactly what's running and why, and the deployment is documented and repeatable, and for a portfolio piece that's the whole point.</p>
+<h2 id="the-stack">The Stack</h2>
+<p>There's actually quite a bit of infrastructure behind this deployment:</p>
+<ul>
+<li>Kubernetes - bare-metal homelab cluster</li>
+<li>MariaDB - database backend, deployed as a StatefulSet</li>
+<li>Longhorn - persistent storage with replicas for data redundancy</li>
+<li>ArgoCD - GitOps deployment with all manifests in my public GitHub repo</li>
+<li>Vault + External Secrets Operator - secrets management which lets me keep my credentials out of Git</li>
+<li>cert-manager + Let's Encrypt - automated TLS</li>
+<li>Cloudflare - DNS, CDN, and primary WAF layer</li>
+</ul>
+<h2 id="the-actual-deployment">The Actual Deployment</h2>
+<p><img src="https://jwschman.github.io/posts/2026/03-25-production-grade-wordpress-on-kubernetes/argo.png" alt="ArgoCD" /></p>
+<p>The full manifests are available in <a href="https://github.com/jwschman/homelabo/tree/main/apps/external-wordpress">the GitHub repo</a>, but the deployment consists of:</p>
+<ul>
+<li>A Deployment for WordPress with a Recreate strategy, resource limits, readiness and liveness probes, and the wp-content directory mounted from a PVC</li>
+<li>A StatefulSet for MariaDB with its data directory on a separate PVC</li>
+<li>ExternalSecret resources pulling credentials from Vault for both WordPress and MariaDB</li>
+<li>A ConfigMap for wp-config extras: site URL and any configuration that needs to survive pod restarts</li>
+<li>Services for internal cluster communication between WordPress and MariaDB</li>
+<li>A HTTPRoute for external access using my Traefik gateway</li>
+<li>A Longhorn Volume + PV + PVC for each persistent data directory</li>
+</ul>
+<h2 id="secrets-management">Secrets Management</h2>
+<p>I've made the manifests for this deployment public as part of my Homelab project, which means anyone can see how the deployment is structured, so secrets management is very important.  Fortunately I already have a system set up that I use for everything else, so I just used my normal workflow here.</p>
+<p>Inside Hashicorp Vault I created secrets for my MariaDB and WordPress passwords, and I use External Secrets Operator to create ExternalSecret resources inside my Kubernetes cluster.  This pulls in the secrets from Vault that I can just mount inside my pods as environment variables.</p>
+<h2 id="hardening">Hardening</h2>
+<p>Aside from just keeping WordPress and any plugins updated, there are also a few other precautions I took.</p>
+<p>The primary firewall for the site is handled by Cloudflare.  DNS is handled through Cloudflare, and connections to my server are sent through their proxy.  I have custom WAF rules blocking <code>xmlrpc.php</code>, which is a legacy WordPress endpoint that can be abused for brute force attacks and DDoS amplification.  I also block <code>readme.html</code> and <code>license.txt</code>, which expose your WordPress version and give attackers a free starting point for targeting known vulnerabilities.</p>
+<p>As a second measure, I also used a plugin called Wordfence to protect my site.  It also provides a WAF, brute force protection, version hiding, and uploads directory protection.  It's possibly unnecessary with Cloudflare already being in front of everything, but it does provide an extra layer of security.</p>
+<p>I also use another plugin called WPS Hide Login which does exactly what its name says.  I can just change the path for the login page to whatever I want to hide it from potential hackers crawling the internet for insecure WordPress login pages.  I was previously using the <code>/wp-login.php</code> page for my readiness probes in Kubernetes, but after switching to the hidden page, I just changed the probes to hit <code>/</code> which should also be available when WordPress is ready.</p>
+<p>I intentionally kept a small plugin footprint here.  First, other plugins are unnecessary for my use case on this site, but superfluous plugins just increase complexity and attack surface.</p>
+<h2 id="backups">Backups</h2>
+<p>For a proper production-ready deployment we'll need backups.  I already have data redundancy with Longhorn, which is backed up nightly to my TrueNAS server.</p>
+<p>But I also wanted to try a native WordPress solution, and I decided to go with UpdraftPlus.  One of the cool things about UpdraftPlus is that it's also a migration tool, so if I ever wanted to take my data to a different provider I could just use what I already have.  Most of their fancy services are behind a paywall, but everything I needed here was in the free tier.</p>
+<p>UpdraftPlus offers a number of backup targets, s3 being the most tempting choice for a production server.  Unfortunately the s3 endpoint I use for backups is not available on outside networks, so I decided to go simple here and linked my Dropbox account.  The first manual backup completed successfully and landed in Dropbox within minutes.  It works great, the backups don't take much space, and I can be sure the data is secure.  I could even set retention policies so that I didn't keep an unnecessary amount of backups.  In my situation I just went with weekly backups with only two retained.</p>
+<h2 id="things-that-are-different-on-kubernetes-docker">Things That Are Different on Kubernetes/Docker</h2>
+<p><img src="https://jwschman.github.io/posts/2026/03-25-production-grade-wordpress-on-kubernetes/k9s.png" alt="k9s screenshot" /></p>
+<p>One thing worth noting is that Wordfence's WAF optimization, which uses auto_prepend_file to load the firewall before any other PHP, doesn't persist in a containerized environment.  The optimization writes to <code>.htaccess</code> or <code>php.ini</code> in the container filesystem, which is ephemeral and lost on every pod restart.  I skipped the optimization entirely, which means Wordfence runs in basic mode.  This is fine for my use case because Cloudflare is the real perimeter defense and Wordfence is just an additional layer for scanning and brute force protection.</p>
+<p>Plugin config lives in the database, not Git, which goes against my Infrastructure-As-Code ethos, but that's more a WordPress thing than a Kubernetes thing.  Fortunately UpdraftPlus captures it and makes restoration of my configuration simple.</p>
+<p>The actual container filesystem is ephemeral and wp-content lives on a PVC.  Everything else rebuilds from the image whenever the pod restarts.  This makes keeping the pod up to date very simple, I just bump the version number in my Deployment manifest, and ArgoCD brings up the new version.</p>
+<p>If you look closely at my actual Deployment, you'll notice that I went with Recreate rather than RollingUpdate for the recreation strategy.  I do this because my Longhorn volumes are ReadWriteOnce, meaning they can only be mounted by a single node at a time, and scheduling the new pod on a different node would cause issues with Longhorn mounting it.  Other storage solutions wouldn't have this issue.</p>
+<h2 id="lessons-learned-gotchas">Lessons Learned / Gotchas</h2>
+<p>The first was discovering that add_filter() can't run inside <code>wp-config.php</code>.  I initially tried to disable XML-RPC there via a filter hook, but WordPress hasn't loaded its plugin functions yet at that point in the bootstrap process, and it failed with a fatal error.  The fix was to handle XML-RPC blocking at the Cloudflare WAF level instead as I mentioned previously, which is actually the better solution anyway.</p>
+<p>The second was WPS Hide Login breaking my readiness probe. My probe was hitting <code>/wp-login.php</code> to check if WordPress was ready, and the moment I changed the login URL the probe started failing and Kubernetes began restarting the pod.  The fix was just pointing the probe at <code>/</code> instead, but it's the kind of thing that can catch you off guard if you're not thinking about it.</p>
+<p>Memory limits also bit me. I had set fairly conservative limits that worked fine for normal traffic.  But the WordPress admin panel, especially the theme customizer, is quite resource intensive, and the pod kept getting killed mid-session until I bumped the memory limit up.</p>
+<p>Finally, Cloudflare's caching made it difficult to verify changes during development.  I'd update something, reload the page, and see the old cached version.  You could work around this by temporarily setting Cloudflare's caching level to bypass or purging the cache manually after each change, but I took a different approach.  I kept the site on my internal gateway during development so it was only accessible on my local network, bypassing Cloudflare entirely.  Once the site was ready, I switched to the external gateway to make it publicly available through Cloudflare.  This gave me a clean separation between development and production, and no cache headaches.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This was a genuinely fun project.  It gave me a chance to work with a technology I'd only ever run privately, apply my normal infrastructure workflow to it, and end up with something that's actually publicly useful as a portfolio piece.</p>
+<p>It also reminded me very quickly that I am not a designer.  Fortunately WordPress's theming took care of most of the heavy lifting, but I did spend an embarrassing amount of time on a few of the sections.</p>
+<p>If you've made it this far and are looking for someone to handle your infrastructure, Kubernetes deployments, or maybe even WordPress administration, feel free to reach out.  My contact info is all over the site.</p>
+<p>And now I get to deal with that friend being even more judgemental that I have a publicly accessible WordPress running on my private infrastructure.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/kubernetes/"
+      >kubernetes</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/wordpress/"
+      >wordpress</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/portfolio/"
+      >portfolio</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/self-hosting/"
+      >self-hosting</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-10-truenas-migration-part-2&#x2F;"
+    ><span class="mr-1.5">←</span><span>Truenas Migration Part 2: The Actual Migration and Post-Migration Tasks</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;04-08-truenas-migration-part-3&#x2F;"
+    ><span>Truenas Migration Part 3: An Automated and Permanent Offsite Backup Solution</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2026<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>

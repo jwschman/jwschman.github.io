@@ -1,0 +1,381 @@
+<!doctype html>
+<html class="not-ready lg:text-base" lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Title -->
+  <title>
+    TrueNAS CORE to Community Edition: Offsite Backups Before the Migration - JWSCHMAN
+  </title>
+
+  <!-- Meta -->
+  <meta name="theme-color" />
+
+  
+  <!-- Author -->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  <meta name="description" content="Before migrating from TrueNAS CORE to Community Edition (previously SCALE), I needed offsite backups. Here&#x27;s how I used restic, Tailscale, and a friend&#x27;s Ceph cluster to back up all my data including ZFS datasets and Zvols." />
+  <meta name="author" content="JW" />
+  <!-- The Open Graph protocol -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="TrueNAS CORE to Community Edition: Offsite Backups Before the Migration" />
+  <meta property="og:site_name" content="JWSCHMAN" />
+  <meta property="og:description" content="Before migrating from TrueNAS CORE to Community Edition (previously SCALE), I needed offsite backups. Here&#x27;s how I used restic, Tailscale, and a friend&#x27;s Ceph cluster to back up all my data including ZFS datasets and Zvols." />
+  <meta property="og:url" content="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;02-27-truenas-migration-part-1&#x2F;" />
+  
+  <!---->
+  
+  <!---->
+  
+  <!---->
+  
+  <meta property="og:image" content="https://jwschman.github.io/cover-image.png" />
+  
+  <!---->
+  
+
+  <!-- CSS & JS -->
+  <link rel="preload stylesheet" as="style" href="https://jwschman.github.io/main.css" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --bg-dark: #18181b;
+      --header: #e4e4e7;
+      --header-dark: #27272a;
+    }
+  </style>
+
+  <!-- Image Centering and Table Style Added by jwschman-->
+  
+  <link rel="stylesheet" href="https://jwschman.github.io/imagestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/tablestyle.css" />
+  <link rel="stylesheet" href="https://jwschman.github.io/style.css" />
+
+
+  
+
+  <!-- Dark Icon -->
+  <link rel="preload" as="image" href="https://jwschman.github.io/icons/theme.svg" />
+
+  <!-- Math -->
+  
+  <!---->
+
+  <!-- Mermaid -->
+  
+  <!---->
+
+  <!-- Favicon -->
+  <!-- Path changed by jwschman -->
+  <link rel="icon" href="https://jwschman.github.io/icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://jwschman.github.io/apple-touch-icon.png" />
+
+  <!-- Feeds -->
+  
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;02-27-truenas-migration-part-1&#x2F;" />
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header
+  class="header fixed top-0 z-40 mx-auto min-h-[3.5rem] w-full"
+>
+  <div class="mx-auto w-full max-w-4xl p-3 lg:flex lg:justify-between">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <a class="text-2xl font-semibold" href="https://jwschman.github.io">JWSCHMAN</a>
+        <div
+          class="btn-dark ml-4 h-6 w-6 shrink-0 cursor-pointer text-[0] [background:url(./icons/theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+          role="button"
+          aria-label="Dark"
+        ></div>
+      </div>
+      
+      <div
+        class="btn-menu relative z-50 flex h-8 w-8 shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+        role="button"
+        aria-label="Menu"
+      ></div>
+      
+    </div>
+    <script>
+      // base
+      const htmlClass = document.documentElement.classList;
+      setTimeout(() => {
+        htmlClass.remove("not-ready");
+      }, 10);
+
+      // mobile menu
+      const btnMenu = document.querySelector(".btn-menu");
+      btnMenu?.addEventListener("click", () => {
+        htmlClass.toggle("open");
+      });
+
+      // dark theme
+      const setDark = (isDark) => {
+        if (isDark) {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "dark" }));
+          htmlClass.add("dark");
+        } else {
+          document.body.dispatchEvent(new CustomEvent("set-theme", { detail: "light" }));
+          htmlClass.remove("dark");
+        }
+        localStorage.setItem("dark", isDark);
+      };
+
+      // init
+      const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+      if (htmlClass.contains("dark")) {
+        setDark(true);
+      } else {
+        const darkVal = localStorage.getItem("dark");
+        setDark(darkVal ? darkVal === "true" : darkScheme.matches);
+      }
+
+      // listen system
+      darkScheme.addEventListener("change", (event) => {
+        setDark(event.matches);
+      });
+
+      // manual switch
+      const btnDark = document.querySelector(".btn-dark");
+      btnDark.addEventListener("click", () => {
+        setDark(localStorage.getItem("dark") !== "true");
+      });
+    </script>
+    
+    <nav class="flex w-full items-center lg:w-auto">
+      <ul
+        class="nav-wrapper flex w-full flex-col py-2 lg:w-auto lg:flex-row lg:self-center lg:py-0"
+      >
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io"
+            >home</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/posts"
+            >posts</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/projects"
+            >projects</a
+          >
+        </li>
+        
+        <li>
+          <a
+            class="primary-link block py-2 text-center text-lg font-medium lg:px-3 lg:py-0"
+            href="https://jwschman.github.io/contact"
+            >contact</a
+          >
+        </li>
+        
+      </ul>
+      <!-- Header Nav inject -->
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <!-- Body Start inject -->
+    
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-9rem)] max-w-3xl break-words px-4 pb-16 pt-32 dark:prose-invert prose-pre:rounded-lg prose-img:rounded-lg"
+    >
+
+    
+<article>
+  <header class="mb-16">
+    <h1 class="!my-0 pb-2.5">TrueNAS CORE to Community Edition: Offsite Backups Before the Migration</h1>
+    <div class="text-sm antialiased opacity-60">
+  
+  <time>2026-02-26</time>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <span class="mx-1">&middot;</span>
+  <span>JW</span>
+  
+</div>
+
+  </header>
+
+  <!---->
+  <figure class="mb-12 mt-0">
+    <img
+      class="h-auto w-full rounded-lg"
+      src="https://jwschman.github.io/posts/2026/02-27-truenas-migration-part-1/cover-image.png"
+      alt="cover"
+    />
+  </figure>
+  
+
+  <!-- Content -->
+  <section><blockquote>
+<p>This is part 1 of a 3-part series. Part 2 covers the migration itself, and part 3 covers the permanent backup solution.</p>
+</blockquote>
+<p>The writing has been on the wall for TrueNAS CORE for several years now.  The introduction of SCALE obviously meant that less attention would be given to CORE, but when jails were no longer officially supported, I knew it was time to leave.  That was two years ago, and I'm finally making the migration now that I have access to offsite backups.  Actually, all development for CORE seems to have ended and SCALE has been renamed to just TrueNAS, with Community Edition being their free offering.</p>
+<h2 id="why-i-made-the-switch">Why I made the switch</h2>
+<p>There were actually a number of reasons for me to change from CORE.  As much as I love them, I actually stopped using jails when I built <a href="https://github.com/jwschman/homelabo">my Kubernetes homelab</a>.  I did technically still have a single jail remaining for Plex since the TrueNAS machine was built with Plex in mind, and has a nice GPU in it.  But, that wouldn't be too hard to say goodbye to.</p>
+<p>I also liked the idea of being able to natively run docker containers without relying on a VM.  That was also the remedy to my Plex situation.  And it will let me run my HashiCorp vault image on TrueNAS rather than another computer drawing power from the wall just as a docker host.</p>
+<h2 id="preparation">Preparation</h2>
+<p>I knew there was little chance of data loss during this migration, but it did make me a little nervous.  If something went horribly wrong and one of my pools became damaged, that could possibly be years of data lost.  So I used this migration as a chance to finally do offsite backups.</p>
+<p>Fortunately, and the reason I'm doing this now rather than two years ago, is because I have a friend who just recently got fiber internet at home and a homelab significantly larger than mine, and he was glad to put some of his ridiculous amount of storage to use.  Finding the ideal way to backup all my data was a little bit tricky, but I think what I settled on worked very well.</p>
+<h3 id="planning-the-offsite-migration">Planning the Offsite Migration</h3>
+<p>My friend's system is running Ceph and has plenty of storage, but he doesn't have a public IP for me to connect to, which made things a little interesting.  Tailscale took care of that, though, so next was deciding on how to actually send the data.  Initially I kind of wanted to just do ZFS snapshots to his storage, but that would have required a lot of extra work on his end.  ZFS send/receive requires a ZFS-aware receiver, so he'd need TrueNAS or at minimum a ZFS-capable system to accept it.  That was more than I wanted to ask him to do.  In the end, we went with an S3 endpoint that he gave me access to.  Pretty easy solution for both of us.</p>
+<p>Next I had to decide how to actually send the data to the S3 endpoint.  I had a couple ideas at first...</p>
+<ul>
+<li>rsync - simple, ubiquitous, but no encryption and no snapshot management</li>
+<li>rclone - supports S3 natively, has optional encryption, but no deduplication or snapshot history</li>
+<li>restic - snapshots, deduplication, and full client-side encryption baked in</li>
+</ul>
+<p>To me the choice is pretty obviously restic.  It gives me easy to manage snapshots with deduplication, and everything is fully encrypted.  It's not that I don't trust my friend with my data, but having the offsite encrypted means I don't have to worry about it.</p>
+<h3 id="zvol-issue">ZVol Issue</h3>
+<p>I have two VMs that I host on TrueNAS: One for development and one to manage my Kubernetes cluster.  TrueNAS stores VM data in Zvols--raw block data rather than files and directories.  Restic backs up files and directories so it has no way to back up a block device directly like it can with my datasets.  Here is how I handled it:</p>
+<ol>
+<li>Stop the VM</li>
+<li>Take a snapshot of the zvol to get the point-in-time state: <code>zfs snapshot pool/vm/zvol@backup</code> (or, preferably, in the TrueNAS GUI)</li>
+<li>Export it to an image file: <code>zfs send pool/vm/zvol@backup &gt; /mnt/pool/zvol-backups/dev.img</code></li>
+<li>Test that the backup is valid: <code>zfs receive -n pool/vm/test_receive &lt; /mnt/pool/zvol-backups/dev.img</code> (the -n flag does a dry run without writing data)</li>
+</ol>
+<p>Once the images are sitting in a regular dataset, restic can pick them up along with everything else.</p>
+<h2 id="so-how-did-i-actually-do-it">So how did I actually do it?</h2>
+<p>I know I said that I didn't want to run another VM on TrueNAS, but... I set one up for the initial backup.  I just used it as a temporary way to get all my data offsite while coming up with a better and more permanent solution when the first backup and migration were done.  I'll talk about my actual longterm solution in part three.  Spoiler: it's another VM but much more elegantly handled.  The VM was just a minimal Ubuntu Server install with Tailscale and restic.</p>
+<p>In TrueNAS I had to set up a couple NFS shares for the datasets that I wanted offsite, including the new VM backup dataset, and I mounted them all inside the new VM.  Then I just set my environment variables for restic, and ran <code>restic backup /mnt/tank</code> in a tmux session and let it go for like... a week.  Just for reference, these are the environment variables restic required:</p>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">export AWS_ACCESS_KEY_ID=&quot;my-access-key&quot;
+export AWS_SECRET_ACCESS_KEY=&quot;super-secret-access-key&quot;
+export RESTIC_REPOSITORY=&quot;s3:http:&#x2F;&#x2F;my-friends-s3-endpoint.com&#x2F;offsite-backup&quot;
+export RESTIC_PASSWORD=&quot;my-password-for-encryption&quot;
+</code></pre>
+<blockquote>
+<p>it's not an Amazon S3 endpoint but we still need the s3: prefix here</p>
+</blockquote>
+<p>At first there were some Tailscale issues.  Upload speeds were quite slow (less than 10Mbps) when we started, but once a port was forwarded on the other end speeds got much better.  Overall I was sending at around 60-110Mbps.  Still not quite the speed I was hoping for, and it may be because Tailscale is hitting a DERP relay, but we haven't quite figured that out yet.  Still, the speed was fine for an offsite backup.</p>
+<h2 id="wrapping-up">Wrapping Up</h2>
+<p>Once all the data was transferred I did a couple of quick checks to confirm that I could actually retrieve it.  And with that I was ready to start my TrueNAS migration.  I'll talk more about that in part 2.</p>
+</section>
+
+  <hr />
+
+  <!-- Post Taxonomies -->
+  
+<footer class="mt-12 flex flex-col">
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  
+  <div class="mb-2 flex flex-wrap">
+    <span class="block-bg mb-1.5 mr-1.5 rounded-lg px-5 py-1.5">Tags </span>
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/truenas/"
+      >truenas</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/homelab/"
+      >homelab</a
+    >
+    
+    <a
+      class="block-bg block-hover mb-1.5 mr-1.5 rounded-lg px-5 py-1.5 no-underline"
+      href="https://jwschman.github.io/tags/backup/"
+      >backup</a
+    >
+    
+  </div>
+  
+</footer>
+
+<!---->
+
+  <!-- Post Nav -->
+  
+<nav class="block-bg mt-12 flex flex-wrap rounded-lg text-lg">
+  
+  <a
+    class="block-hover-mask flex min-w-[50%] grow items-center rounded-l-md p-6 pr-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;02-18-send-your-picks&#x2F;"
+    ><span class="mr-1.5">←</span><span>Send Your Picks: I Over-Engineered My Friends&#x27; Football Pool</span></a
+  >
+  <!---->
+  
+  <a
+    class="block-hover-mask ml-auto flex min-w-[50%] grow items-center justify-end rounded-r-md p-6 pl-3 font-semibold no-underline"
+    href="https:&#x2F;&#x2F;jwschman.github.io&#x2F;posts&#x2F;2026&#x2F;03-04-de-awsing-my-cloud-resume-challenge&#x2F;"
+    ><span>De-AWSing My Cloud Resume Challenge</span><span class="ml-1.5">→</span></a
+  >
+  
+</nav>
+
+<!---->
+
+  <!-- Comment -->
+  
+</article>
+
+
+    </main>
+
+    <footer class="mx-auto flex max-w-3xl flex-wrap items-center px-8 py-4 text-sm opacity-60">
+  <div class="mr-auto basis-full lg:basis-1/2">
+    <!---->
+    <!---->
+    &copy; 2024 - 2026<!---->
+    
+    <a class="link" href="https://jwschman.github.io">
+      JW
+    </a>
+     |<!---->
+    <!---->
+    <a class="link" href="https:&#x2F;&#x2F;creativecommons.org&#x2F;licenses&#x2F;by-sa&#x2F;4.0&#x2F;deed" rel="noopener" target="_blank">
+      CC BY-SA 4.0
+    </a>
+    <!---->
+    
+  </div>
+  <div class="flex basis-full lg:basis-1/2 lg:justify-end">
+    <a class="link mr-6 lg:ml-6" href="https://www.getzola.org/" rel="noopener" target="_blank">
+      Powered by Zola
+    </a>
+    <a class="link" href="https://github.com/st1020/kita" rel="noopener" target="_blank">✎ Kita</a>
+  </div>
+  <!-- Footer inject -->
+  
+</footer>
+
+
+    <!-- Body End inject -->
+    
+  </body>
+</html>
